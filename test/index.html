@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>New Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui">
+    <style>
+      * {
+      	box-sizing: border-box;
+      	margin: 0;
+      	padding: 0;
+      	outline: none;
+      }
+      html,
+      body,
+      #view {
+      	width: 100%;
+      	height: 100%;
+      }
+      #left {
+      	position: relative;
+      	width: 20%;
+      	height: 100%;
+      	float: left;
+      	overflow-y: auto;
+      }
+      #left img {
+      	width: 100%;
+      	height: auto;
+      }
+      #right {
+      	width: 80%;
+      	height: 100%;
+      	float: right;
+      }
+      #print {
+      	width: 100%;
+      	height: 100%;
+      }
+      
+    </style>
+  </head>
+  <body id="body">
+    <div id="view">
+      <div id="left">
+        <div class="title">Suspendisse elementum fermentum consectetur</div>
+        <div class="image"><img src="http://placehold.it/420x240/F0F/FFF"></div>
+        <div class="title">Lorem ipsum dolor sit amet</div>
+        <div class="image"><img src="http://placehold.it/420x240/0FF/FFF"></div>
+        <div class="image"><img src="http://placehold.it/420x240/00F/FFF"></div>
+        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</div>
+      </div>
+      <div id="right">
+        <div id="print">
+          <div class="page A4">
+            <div class="header">
+              <div class="title removable">Hejhej title
+                <div class="remove">&times;</div>
+              </div>
+            </div>
+            <div class="left_column">
+              <div class="texts"></div>
+            </div>
+            <div class="right_column">
+              <div class="images">
+                <div class="image sortable removable"><img src="http://placehold.it/420x240/F00/FFF"></div>
+                <div class="image sortable removable"><img src="http://placehold.it/420x240/FF0/000"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="../aPRINT.js"></script>
+  <script>
+    $(document).ready(function(){
+    	var print = aPRINT('#print',{
+    		format: 'A4',
+    		stylesheet: 'main.css',
+    		rules: {
+    			'#left .title': {
+    				target: '.header',
+    				replace: true
+    			},
+    			'#left .text': '.texts',
+    			'#left .image': '.images'
+    		}
+    	});
+    });
+  </script>
+</html>

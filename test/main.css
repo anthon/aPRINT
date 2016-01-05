@@ -1,0 +1,37 @@
+body .page.A4 {
+  font-size: 0;
+}
+body .page.A4 .header,
+body .page.A4 .left_column,
+body .page.A4 .right_column {
+  font-size: 1rem;
+}
+body .page.A4 .header {
+  font-family: sans-serif;
+  height: 10%;
+  font-size: 2rem;
+  font-weight: 700;
+}
+body .page.A4 .left_column,
+body .page.A4 .right_column {
+  height: 90%;
+  display: inline-block;
+  vertical-align: top;
+}
+body .page.A4 .left_column {
+  width: 33.333333333333336%;
+}
+body .page.A4 .left_column .texts {
+  height: 100%;
+  padding: 0 4mm 0 0;
+}
+body .page.A4 .right_column {
+  width: 66.66666666666667%;
+}
+body .page.A4 .right_column .images {
+  height: 100%;
+}
+body .page.A4 .right_column .images img {
+  width: 100%;
+  height: auto;
+}
