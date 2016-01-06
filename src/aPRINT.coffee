@@ -104,6 +104,8 @@ A = (selector,options)->
 
 	addDragDroppable = (drag,drop)->
 		drag_selector = drag
+		console.log 'Adding draggable:', drag
+		console.log 'Adding droppable:', drop
 		if typeof drop is 'string'
 			drop_selector = drop
 		else if drop.target
@@ -151,6 +153,7 @@ A = (selector,options)->
 				return false
 
 			droppable.addEventListener 'drop', (e)->
+				console.log e
 				if e.stopPropagation then e.stopPropagation()
 				if e.dataTransfer.getData('drop_on') is drop_selector
 					this.classList.remove 'over'

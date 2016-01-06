@@ -80,6 +80,8 @@
     addDragDroppable = function(drag, drop) {
       var drag_selector, draggable, draggables, drop_selector, droppable, droppables, i, j, len, len1, replace_on_drop, results;
       drag_selector = drag;
+      console.log('Adding draggable:', drag);
+      console.log('Adding droppable:', drop);
       if (typeof drop === 'string') {
         drop_selector = drop;
       } else if (drop.target) {
@@ -140,6 +142,7 @@
         });
         results.push(droppable.addEventListener('drop', function(e) {
           var clone;
+          console.log(e);
           if (e.stopPropagation) {
             e.stopPropagation();
           }
