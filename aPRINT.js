@@ -80,8 +80,6 @@
     addDragDroppable = function(drag, drop) {
       var drag_selector, draggable, draggables, drop_selector, droppable, droppables, i, j, len, len1, replace_on_drop, results;
       drag_selector = drag;
-      console.log('Adding draggable:', drag);
-      console.log('Adding droppable:', drop);
       if (typeof drop === 'string') {
         drop_selector = drop;
       } else if (drop.target) {
@@ -92,6 +90,7 @@
       droppables = _body.querySelectorAll(drop_selector);
       for (i = 0, len = draggables.length; i < len; i++) {
         draggable = draggables[i];
+        console.log('Adding draggable:', draggable);
         draggable.draggable = true;
         disableNestedImageDrag(draggable);
         draggable.addEventListener('dragstart', function(e) {
@@ -110,6 +109,7 @@
       results = [];
       for (j = 0, len1 = droppables.length; j < len1; j++) {
         droppable = droppables[j];
+        console.log('Adding droppable:', droppable);
         droppable.addEventListener('dragover', function(e) {
           if (e.dataTransfer.getData('drop_on') === drop_selector) {
             if (e.preventDefault) {

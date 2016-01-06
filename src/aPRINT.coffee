@@ -104,8 +104,6 @@ A = (selector,options)->
 
 	addDragDroppable = (drag,drop)->
 		drag_selector = drag
-		console.log 'Adding draggable:', drag
-		console.log 'Adding droppable:', drop
 		if typeof drop is 'string'
 			drop_selector = drop
 		else if drop.target
@@ -115,6 +113,7 @@ A = (selector,options)->
 		droppables = _body.querySelectorAll drop_selector
 		
 		for draggable in draggables
+			console.log 'Adding draggable:', draggable
 			draggable.draggable = true
 			disableNestedImageDrag(draggable)
 			draggable.addEventListener 'dragstart', (e)->
@@ -129,6 +128,7 @@ A = (selector,options)->
 				return false
 		
 		for droppable in droppables
+			console.log 'Adding droppable:', droppable
 			droppable.addEventListener 'dragover', (e)->
 				if e.dataTransfer.getData('drop_on') is drop_selector
 					if e.preventDefault then e.preventDefault()
