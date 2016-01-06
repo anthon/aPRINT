@@ -94,6 +94,7 @@
         draggable.draggable = true;
         disableNestedImageDrag(draggable);
         draggable.addEventListener('dragstart', function(e) {
+          console.log(e);
           e.dataTransfer.effectAllowed = 'move';
           _current_draggable = e.srcElement;
           e.dataTransfer.setData('drop_on', drop_selector);
@@ -101,6 +102,7 @@
           return false;
         });
         draggable.addEventListener('dragend', function(e) {
+          console.log(e);
           draggable.classList.remove('drag');
           _current_draggable = null;
           return false;
@@ -111,6 +113,7 @@
         droppable = droppables[j];
         console.log('Adding droppable:', droppable);
         droppable.addEventListener('dragover', function(e) {
+          console.log(e);
           if (e.dataTransfer.getData('drop_on') === drop_selector) {
             if (e.preventDefault) {
               e.preventDefault();
@@ -131,12 +134,14 @@
           return false;
         });
         droppable.addEventListener('dragenter', function(e) {
+          console.log(e);
           if (e.dataTransfer.getData('drop_on') === drop_selector) {
             this.classList.add('over');
           }
           return false;
         });
         droppable.addEventListener('dragleave', function(e) {
+          console.log(e);
           this.classList.remove('over');
           return false;
         });

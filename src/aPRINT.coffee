@@ -117,12 +117,14 @@ A = (selector,options)->
 			draggable.draggable = true
 			disableNestedImageDrag(draggable)
 			draggable.addEventListener 'dragstart', (e)->
+				console.log e
 				e.dataTransfer.effectAllowed = 'move'
 				_current_draggable = e.srcElement
 				e.dataTransfer.setData 'drop_on', drop_selector
 				draggable.classList.add 'drag'
 				return false
 			draggable.addEventListener 'dragend', (e)->
+				console.log e
 				draggable.classList.remove 'drag'
 				_current_draggable = null
 				return false
@@ -130,6 +132,7 @@ A = (selector,options)->
 		for droppable in droppables
 			console.log 'Adding droppable:', droppable
 			droppable.addEventListener 'dragover', (e)->
+				console.log e
 				if e.dataTransfer.getData('drop_on') is drop_selector
 					if e.preventDefault then e.preventDefault()
 					e.dataTransfer.dropEffect = 'move'
@@ -144,11 +147,13 @@ A = (selector,options)->
 				return false
 
 			droppable.addEventListener 'dragenter', (e)->
+				console.log e
 				if e.dataTransfer.getData('drop_on') is drop_selector
 					this.classList.add 'over'
 				return false
 
 			droppable.addEventListener 'dragleave', (e)->
+				console.log e
 				this.classList.remove 'over'
 				return false
 
