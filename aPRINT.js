@@ -3,13 +3,13 @@
   var A;
 
   A = function(selector, options) {
-    var _body, _current_draggable, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setupListeners;
+    var _baseStyle, _body, _current_draggable, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
     _current_draggable = null;
+    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 12pt; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 1rem; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .page { background: #fff; margin: 2mm auto; } body .page.A4 { width: 210mm; height: 297mm; padding: 15mm 20mm; }';
     _settings = {
-      baseStyle: '../aPRINT.css',
       stylesheet: null,
       id: 'aPRINT',
       format: 'A4'
@@ -32,18 +32,24 @@
       _frame.style.borderWidth = 0;
       _body.parentNode.insertBefore(_frame, _body);
       _frame.contentDocument.body.appendChild(_body);
-      insertStyle(_settings.baseStyle);
+      insertStyle(_baseStyle);
       if (_settings.stylesheet) {
-        return insertStyle(_settings.stylesheet);
+        return insertStyle(_settings.stylesheet, true);
       }
     };
-    insertStyle = function(href) {
-      var styleLink;
-      styleLink = document.createElement('link');
-      styleLink.type = 'text/css';
-      styleLink.rel = 'stylesheet';
-      styleLink.href = href;
-      return _frame.contentDocument.head.appendChild(styleLink);
+    insertStyle = function(style, is_link) {
+      var styleLink, styleTag;
+      if (is_link) {
+        styleLink = document.createElement('link');
+        styleLink.type = 'text/css';
+        styleLink.rel = 'stylesheet';
+        styleLink.href = style;
+        return _frame.contentDocument.head.appendChild(styleLink);
+      } else {
+        styleTag = document.createElement('style');
+        styleTag.innerHTML = style;
+        return _frame.contentDocument.head.appendChild(styleTag);
+      }
     };
     activateContent = function() {
       var i, j, len, len1, removable, removables, results, sortable, sortables;
