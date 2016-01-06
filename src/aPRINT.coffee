@@ -4,6 +4,7 @@ A = (selector,options)->
 	_body = null
 	_pages = null
 	_current_draggable = null
+	_current_drop_selector = null
 	_baseStyle = 	'* {
 					  -webkit-box-sizing: border-box;
 					  -moz-box-sizing: border-box;
@@ -113,27 +114,22 @@ A = (selector,options)->
 		droppables = _body.querySelectorAll drop_selector
 		
 		for draggable in draggables
-			console.log 'Adding draggable:', draggable
 			draggable.draggable = true
 			disableNestedImageDrag(draggable)
 			draggable.addEventListener 'dragstart', (e)->
-				console.log e
 				e.dataTransfer.effectAllowed = 'move'
 				_current_draggable = e.srcElement
-				e.dataTransfer.setData 'drop_on', drop_selector
+				_current_drop_selector = drop_selector
 				draggable.classList.add 'drag'
 				return false
 			draggable.addEventListener 'dragend', (e)->
-				console.log e
 				draggable.classList.remove 'drag'
 				_current_draggable = null
 				return false
 		
 		for droppable in droppables
-			console.log 'Adding droppable:', droppable
 			droppable.addEventListener 'dragover', (e)->
-				console.log e
-				if e.dataTransfer.getData('drop_on') is drop_selector
+				if _current_drop_selector is drop_selector
 					if e.preventDefault then e.preventDefault()
 					e.dataTransfer.dropEffect = 'move'
 					this.classList.add 'over'
@@ -147,20 +143,17 @@ A = (selector,options)->
 				return false
 
 			droppable.addEventListener 'dragenter', (e)->
-				console.log e
-				if e.dataTransfer.getData('drop_on') is drop_selector
+				if _current_drop_selector is drop_selector
 					this.classList.add 'over'
 				return false
 
 			droppable.addEventListener 'dragleave', (e)->
-				console.log e
 				this.classList.remove 'over'
 				return false
 
 			droppable.addEventListener 'drop', (e)->
-				console.log e
 				if e.stopPropagation then e.stopPropagation()
-				if e.dataTransfer.getData('drop_on') is drop_selector
+				if _current_drop_selector is drop_selector
 					this.classList.remove 'over'
 					clone = _current_draggable.cloneNode(true)
 					makeRemovable clone

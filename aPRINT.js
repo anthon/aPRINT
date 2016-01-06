@@ -3,11 +3,12 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _current_draggable, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setupListeners;
+    var _baseStyle, _body, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
     _current_draggable = null;
+    _current_drop_selector = null;
     _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 12pt; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 1rem; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .page { background: #fff; margin: 2mm auto; } body .page.A4 { width: 210mm; height: 297mm; padding: 15mm 20mm; }';
     _settings = {
       stylesheet: null,
@@ -90,19 +91,16 @@
       droppables = _body.querySelectorAll(drop_selector);
       for (i = 0, len = draggables.length; i < len; i++) {
         draggable = draggables[i];
-        console.log('Adding draggable:', draggable);
         draggable.draggable = true;
         disableNestedImageDrag(draggable);
         draggable.addEventListener('dragstart', function(e) {
-          console.log(e);
           e.dataTransfer.effectAllowed = 'move';
           _current_draggable = e.srcElement;
-          e.dataTransfer.setData('drop_on', drop_selector);
+          _current_drop_selector = drop_selector;
           draggable.classList.add('drag');
           return false;
         });
         draggable.addEventListener('dragend', function(e) {
-          console.log(e);
           draggable.classList.remove('drag');
           _current_draggable = null;
           return false;
@@ -111,10 +109,8 @@
       results = [];
       for (j = 0, len1 = droppables.length; j < len1; j++) {
         droppable = droppables[j];
-        console.log('Adding droppable:', droppable);
         droppable.addEventListener('dragover', function(e) {
-          console.log(e);
-          if (e.dataTransfer.getData('drop_on') === drop_selector) {
+          if (_current_drop_selector === drop_selector) {
             if (e.preventDefault) {
               e.preventDefault();
             }
@@ -134,24 +130,21 @@
           return false;
         });
         droppable.addEventListener('dragenter', function(e) {
-          console.log(e);
-          if (e.dataTransfer.getData('drop_on') === drop_selector) {
+          if (_current_drop_selector === drop_selector) {
             this.classList.add('over');
           }
           return false;
         });
         droppable.addEventListener('dragleave', function(e) {
-          console.log(e);
           this.classList.remove('over');
           return false;
         });
         results.push(droppable.addEventListener('drop', function(e) {
           var clone;
-          console.log(e);
           if (e.stopPropagation) {
             e.stopPropagation();
           }
-          if (e.dataTransfer.getData('drop_on') === drop_selector) {
+          if (_current_drop_selector === drop_selector) {
             this.classList.remove('over');
             clone = _current_draggable.cloneNode(true);
             makeRemovable(clone);
