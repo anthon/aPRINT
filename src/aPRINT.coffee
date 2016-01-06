@@ -24,6 +24,7 @@ A = (selector,options)->
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth
 		_frame.height = _body.offsetHeight
+		_frame.style.borderWidth = 0
 		_body.parentNode.insertBefore _frame, _body
 		_frame.contentDocument.body.appendChild _body
 		insertStyle _settings.baseStyle
