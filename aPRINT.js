@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onOverflow, onTrashClick, print, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -58,7 +58,7 @@
       }
     };
     activateContent = function() {
-      var i, j, l, len, len1, len2, page, removable, removables, results, sortable, sortables;
+      var i, j, len, len1, len2, m, page, removable, removables, results, sortable, sortables;
       _pages = _body.querySelectorAll('.page');
       sortables = _body.querySelectorAll('.sortable');
       removables = _body.querySelectorAll('.removable');
@@ -73,8 +73,8 @@
         makeSortable(sortable);
       }
       results = [];
-      for (l = 0, len2 = removables.length; l < len2; l++) {
-        removable = removables[l];
+      for (m = 0, len2 = removables.length; m < len2; m++) {
+        removable = removables[m];
         results.push(makeRemovable(removable));
       }
       return results;
@@ -90,7 +90,7 @@
       return results;
     };
     addDragDroppable = function(drag, drop) {
-      var drag_selector, draggable, draggables, drop_selector, droppable, droppables, i, j, len, len1, replace_on_drop, results;
+      var drag_selector, draggable, draggables, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, replace_on_drop, results;
       drag_selector = drag;
       if (typeof drop === 'string') {
         drop_selector = drop;
@@ -98,6 +98,7 @@
         drop_selector = drop.target;
       }
       replace_on_drop = typeof drop.replace === 'boolean' ? drop.replace : false;
+      overflow_action = drop.overflow ? drop.overflow : false;
       draggables = document.querySelectorAll(drag_selector);
       droppables = _body.querySelectorAll(drop_selector);
       for (i = 0, len = draggables.length; i < len; i++) {
@@ -154,7 +155,7 @@
           return false;
         });
         results.push(droppable.addEventListener('drop', function(e) {
-          var clone;
+          var clone, clone_img;
           if (e.stopPropagation) {
             e.stopPropagation();
           }
@@ -171,6 +172,17 @@
                 droppable.appendChild(clone);
               } else {
                 insertNextTo(clone, getSortable(e.target, droppable));
+              }
+            }
+            if (clone_img = clone.querySelector('img')) {
+              clone_img.onload = function() {
+                if (droppable.scrollHeight > droppable.clientHeight) {
+                  return onOverflow(droppable, clone, overflow_action);
+                }
+              };
+            } else {
+              if (droppable.scrollHeight > droppable.clientHeight) {
+                onOverflow(droppable, clone, overflow_action);
               }
             }
             fireCallbacks('drop update', e);
@@ -246,7 +258,6 @@
         }
         el = el_parent;
       }
-      console.log(el);
       return el;
     };
     onTrashClick = function(e) {
@@ -254,6 +265,31 @@
       el = e.target.parentNode;
       el.remove();
       return fireCallbacks('remove update', e);
+    };
+    onOverflow = function(droppable, last_el, action) {
+      var el, els, i, l, len, max_height, max_height_percentage, overflow, results;
+      switch (action) {
+        case 'shrinkAll':
+          els = droppable.querySelectorAll('.removable');
+          l = els.length;
+          results = [];
+          for (i = 0, len = els.length; i < len; i++) {
+            el = els[i];
+            results.push(el.style.maxHeight = (100 / l) + '%');
+          }
+          return results;
+          break;
+        case 'shrinkLast':
+          last_el = droppable.lastElementChild;
+          console.log(last_el);
+          overflow = droppable.scrollHeight - droppable.clientHeight;
+          max_height = last_el.clientHeight - overflow;
+          max_height_percentage = (max_height / droppable.clientHeight) * 100;
+          return last_el.style.height = max_height_percentage + '%';
+        default:
+          last_el.remove();
+          return alert("doesn't fit");
+      }
     };
     setCallback = function(key, callback) {
       if (!_callbacks[key]) {
@@ -267,7 +303,6 @@
       results = [];
       for (i = 0, len = keys.length; i < len; i++) {
         k = keys[i];
-        console.log(_callbacks);
         if (_callbacks[k]) {
           results.push((function() {
             var j, len1, ref, results1;

@@ -8,7 +8,7 @@ vendor(prop,args)
 sans-serif()
 	font-family sans-serif
 
-$pt = .3527778
+pt = .3527778
 pageWidth = 90
 
 // A4 w/h
@@ -39,8 +39,11 @@ body
 			position absolute
 			top 6px
 			right 6px
-			padding 3px 7px
+			width 25px
+			height 25px
 			font-size 13px
+			line-height 24px
+			text-align center
 			font-weight 100
 			color black
 			cursor pointer
@@ -60,7 +63,7 @@ body
 
 @media print
 	html
-		font-size (12*$pt)mm
+		font-size (12*pt)mm
 		body
 			.page
 				&.A4

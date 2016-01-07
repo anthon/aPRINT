@@ -44,10 +44,10 @@
     <div id="view">
       <div id="left">
         <div class="title">Suspendisse elementum fermentum consectetur</div>
-        <div class="image"><img src="http://placehold.it/420x240/F0F/FFF"></div>
+        <div class="image"><img src="http://placehold.it/1420x1240/F0F/FFF"></div>
         <div class="title">Lorem ipsum dolor sit amet</div>
-        <div class="image"><img src="http://placehold.it/420x240/0FF/FFF"></div>
-        <div class="image"><img src="http://placehold.it/420x240/00F/FFF"></div>
+        <div class="image"><img src="http://placehold.it/1420x1240/0FF/FFF"></div>
+        <div class="image"><img src="http://placehold.it/1420x1240/00F/FFF"></div>
         <div class="text">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
         </div>
@@ -89,7 +89,10 @@
     				replace: true
     			},
     			'#left .text': '.texts',
-    			'#left .image': '.images'
+    			'#left .image': {
+    				target: '.images',
+    				overflow: 'shrinkLast'
+    			}
     		}
     	});
     	print.on('update', function(e) {

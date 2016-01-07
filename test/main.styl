@@ -2,6 +2,12 @@ sans-serif()
 	font-family sans-serif
 
 pt = .3527778
+pageWidth = 90
+
+// A4 w/h
+a4width = 210
+a4height = 297
+mm = ((100/a4width)*(pageWidth/100))
 
 body
 	
@@ -11,12 +17,14 @@ body
 			.header
 			.left_column
 			.right_column
-				font-size (10*pt)rem
+				font-size (10*mm*pt)vw
 			.header
 				sans-serif()
 				height 10%
-				padding 6rem
-				font-size (20*pt)rem
+				background green
+				width (210*mm)vw
+				padding (6*mm)vw
+				font-size (20*mm*pt)vw
 				font-weight 700
 			.left_column
 			.right_column
@@ -28,12 +36,13 @@ body
 				width (100/3)%
 				.texts
 					height 100%
-					padding 0 4rem 0 0
+					padding 0 (4*mm)vw 0 0
 			.right_column
 				// background green
 				width ((100/3)*2)%
 				.images
 					height 100%
 					img
-						width 100%
+						max-width 100%
 						height auto
+						max-height 100%

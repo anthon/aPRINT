@@ -127,6 +127,7 @@ A = (selector,options)->
 		else if drop.target
 			drop_selector = drop.target
 		replace_on_drop = if typeof drop.replace is 'boolean' then drop.replace else false
+		overflow_action = if drop.overflow then drop.overflow else false
 		draggables = document.querySelectorAll drag_selector
 		droppables = _body.querySelectorAll drop_selector
 		
@@ -186,6 +187,13 @@ A = (selector,options)->
 							droppable.appendChild clone
 						else
 							insertNextTo clone, getSortable(e.target,droppable)
+					if clone_img = clone.querySelector 'img'
+						clone_img.onload = ->
+							if droppable.scrollHeight > droppable.clientHeight
+								onOverflow(droppable,clone,overflow_action)
+					else
+						if droppable.scrollHeight > droppable.clientHeight
+								onOverflow(droppable,clone,overflow_action)
 					fireCallbacks('drop update',e)
 				return false
 
@@ -239,13 +247,30 @@ A = (selector,options)->
 			el_parent = el.parentNode
 			break if el_parent is parent
 			el = el_parent
-		console.log el
 		return el
 
 	onTrashClick = (e)->
 		el = e.target.parentNode
 		el.remove()
 		fireCallbacks 'remove update', e
+
+	onOverflow = (droppable,last_el,action)->
+		switch action
+			when 'shrinkAll'
+				els = droppable.querySelectorAll '.removable'
+				l = els.length
+				for el in els
+					el.style.maxHeight = (100/l)+'%'
+			when 'shrinkLast'
+				last_el = droppable.lastElementChild
+				console.log last_el
+				overflow = droppable.scrollHeight - droppable.clientHeight
+				max_height = last_el.clientHeight - overflow
+				max_height_percentage = (max_height/droppable.clientHeight)*100
+				last_el.style.height = max_height_percentage+'%'
+			else
+				last_el.remove()
+				alert "doesn't fit"
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []
@@ -254,7 +279,6 @@ A = (selector,options)->
 	fireCallbacks = (key,e)->
 		keys = key.split ' '
 		for k in keys
-			console.log _callbacks
 			if _callbacks[k]
 				for callback in _callbacks[k]
 					callback(e)

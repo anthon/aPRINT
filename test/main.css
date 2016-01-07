@@ -4,13 +4,15 @@ body .page.A4 {
 body .page.A4 .header,
 body .page.A4 .left_column,
 body .page.A4 .right_column {
-  font-size: 3.527778rem;
+  font-size: 1.511904857142857vw;
 }
 body .page.A4 .header {
   font-family: sans-serif;
   height: 10%;
-  padding: 6rem;
-  font-size: 7.055555999999999rem;
+  background: #008000;
+  width: 90vw;
+  padding: 2.571428571428571vw;
+  font-size: 3.023809714285714vw;
   font-weight: 700;
 }
 body .page.A4 .left_column,
@@ -24,7 +26,7 @@ body .page.A4 .left_column {
 }
 body .page.A4 .left_column .texts {
   height: 100%;
-  padding: 0 4rem 0 0;
+  padding: 0 1.714285714285714vw 0 0;
 }
 body .page.A4 .right_column {
   width: 66.66666666666667%;
@@ -33,6 +35,7 @@ body .page.A4 .right_column .images {
   height: 100%;
 }
 body .page.A4 .right_column .images img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
+  max-height: 100%;
 }
