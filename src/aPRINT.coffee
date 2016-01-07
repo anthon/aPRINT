@@ -270,7 +270,14 @@ A = (selector,options)->
 				last_el.style.height = max_height_percentage+'%'
 			else
 				last_el.remove()
-				alert "doesn't fit"
+				droppable.classList.add 'nodrop'
+				droppable.offsetWidth = droppable.offsetWidth
+				droppable.classList.add 'fade'
+				droppable.offsetWidth = droppable.offsetWidth
+				droppable.classList.remove 'nodrop'
+				setTimeout ->
+					droppable.classList.remove 'fade'
+				,1000
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []

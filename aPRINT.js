@@ -288,7 +288,14 @@
           return last_el.style.height = max_height_percentage + '%';
         default:
           last_el.remove();
-          return alert("doesn't fit");
+          droppable.classList.add('nodrop');
+          droppable.offsetWidth = droppable.offsetWidth;
+          droppable.classList.add('fade');
+          droppable.offsetWidth = droppable.offsetWidth;
+          droppable.classList.remove('nodrop');
+          return setTimeout(function() {
+            return droppable.classList.remove('fade');
+          }, 1000);
       }
     };
     setCallback = function(key, callback) {

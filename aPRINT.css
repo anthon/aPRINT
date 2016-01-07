@@ -39,6 +39,12 @@ body .removable .remove:hover {
   background: #c20000;
   color: #fff;
 }
+body .nodrop {
+  background: #f00;
+}
+body .fade {
+  transition: background 0.8s;
+}
 body .page {
   background: #fff;
   width: 90vw;
