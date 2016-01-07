@@ -143,9 +143,11 @@ A = (selector,options)->
 			draggable.addEventListener 'dragend', (e)->
 				draggable.classList.remove 'drag'
 				_current_draggable = null
+				_current_drop_selector = null
 				return false
 		
 		for droppable in droppables
+			droppable.dataset.overflowAction = overflow_action
 			droppable.addEventListener 'dragover', (e)->
 				if _current_drop_selector is drop_selector
 					if e.preventDefault then e.preventDefault()
@@ -189,10 +191,9 @@ A = (selector,options)->
 							insertNextTo clone, getSortable(e.target,droppable)
 					if clone_img = clone.querySelector 'img'
 						clone_img.onload = ->
-							checkOverflow(droppable,clone,overflow_action)
-							
+							checkOverflow(droppable,clone)
 					else
-						checkOverflow(droppable,clone,overflow_action)
+						checkOverflow(droppable,clone)
 					fireCallbacks 'drop'
 				return false
 
@@ -224,7 +225,8 @@ A = (selector,options)->
 			return false
 		el.addEventListener 'dragend', (e)->
 			el.classList.remove 'drag'
-			_current_draggable.style.opacity = 1
+			el.style.opacity = 1
+			checkOverflow(e.srcElement.parentNode)
 			_current_draggable = null
 			return false
 
@@ -240,6 +242,7 @@ A = (selector,options)->
 				parent.insertBefore el, sibling.nextSibling
 		else
 			parent.insertBefore el, sibling
+		fireCallbacks 'update'
 
 	getSortable = (el,parent)->
 		loop
@@ -250,11 +253,14 @@ A = (selector,options)->
 
 	onTrashClick = (e)->
 		el = e.target.parentNode
+		droppable = el.parentNode
 		el.remove()
-		fireCallbacks 'remove update', e
+		checkOverflow droppable,el
+		fireCallbacks 'remove', e
 
-	checkOverflow = (droppable,last_el,action)->
+	checkOverflow = (droppable,element)->
 		if droppable.scrollHeight > droppable.clientHeight
+			action = droppable.dataset.overflowAction
 			switch action
 				when 'shrinkAll'
 					els = droppable.querySelectorAll '.removable'
@@ -264,24 +270,33 @@ A = (selector,options)->
 					fireCallbacks 'update'
 				when 'shrinkLast'
 					last_el = droppable.lastElementChild
-					console.log last_el
 					overflow = droppable.scrollHeight - droppable.clientHeight
 					max_height = last_el.clientHeight - overflow
 					max_height_percentage = (max_height/droppable.clientHeight)*100
-					last_el.style.height = max_height_percentage+'%'
-					fireCallbacks 'drop update'
+					if max_height_percentage > 1
+						last_el.style.height = max_height_percentage+'%'
+						fireCallbacks 'update'
+					else
+						element.remove()
+						refuseDrop droppable
 				else
-					last_el.remove()
-					droppable.classList.add 'nodrop'
-					droppable.offsetWidth = droppable.offsetWidth
-					droppable.classList.add 'fade'
-					droppable.offsetWidth = droppable.offsetWidth
-					droppable.classList.remove 'nodrop'
-					setTimeout ->
-						droppable.classList.remove 'fade'
-					,1000
+					element.remove()
+					refuseDrop droppable
 		else
+			els = droppable.querySelectorAll '.removable'
+			for el in els
+				el.style.height = 'auto'
 			fireCallbacks 'update'
+
+	refuseDrop = (droppable)->
+		droppable.classList.add 'nodrop'
+		droppable.offsetWidth = droppable.offsetWidth
+		droppable.classList.add 'fade'
+		droppable.offsetWidth = droppable.offsetWidth
+		droppable.classList.remove 'nodrop'
+		setTimeout ->
+			droppable.classList.remove 'fade'
+		,1000
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []

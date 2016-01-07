@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -115,12 +115,14 @@
         draggable.addEventListener('dragend', function(e) {
           draggable.classList.remove('drag');
           _current_draggable = null;
+          _current_drop_selector = null;
           return false;
         });
       }
       results = [];
       for (j = 0, len1 = droppables.length; j < len1; j++) {
         droppable = droppables[j];
+        droppable.dataset.overflowAction = overflow_action;
         droppable.addEventListener('dragover', function(e) {
           if (_current_drop_selector === drop_selector) {
             if (e.preventDefault) {
@@ -176,10 +178,10 @@
             }
             if (clone_img = clone.querySelector('img')) {
               clone_img.onload = function() {
-                return checkOverflow(droppable, clone, overflow_action);
+                return checkOverflow(droppable, clone);
               };
             } else {
-              checkOverflow(droppable, clone, overflow_action);
+              checkOverflow(droppable, clone);
             }
             fireCallbacks('drop');
           }
@@ -224,7 +226,8 @@
       });
       return el.addEventListener('dragend', function(e) {
         el.classList.remove('drag');
-        _current_draggable.style.opacity = 1;
+        el.style.opacity = 1;
+        checkOverflow(e.srcElement.parentNode);
         _current_draggable = null;
         return false;
       });
@@ -237,13 +240,14 @@
         el_index = Array.prototype.indexOf.call(siblings, el);
         sibling_index = Array.prototype.indexOf.call(siblings, sibling);
         if (el_index > sibling_index) {
-          return parent.insertBefore(el, sibling);
+          parent.insertBefore(el, sibling);
         } else {
-          return parent.insertBefore(el, sibling.nextSibling);
+          parent.insertBefore(el, sibling.nextSibling);
         }
       } else {
-        return parent.insertBefore(el, sibling);
+        parent.insertBefore(el, sibling);
       }
+      return fireCallbacks('update');
     };
     getSortable = function(el, parent) {
       var el_parent;
@@ -257,14 +261,17 @@
       return el;
     };
     onTrashClick = function(e) {
-      var el;
+      var droppable, el;
       el = e.target.parentNode;
+      droppable = el.parentNode;
       el.remove();
-      return fireCallbacks('remove update', e);
+      checkOverflow(droppable, el);
+      return fireCallbacks('remove', e);
     };
-    checkOverflow = function(droppable, last_el, action) {
-      var el, els, i, l, len, max_height, max_height_percentage, overflow;
+    checkOverflow = function(droppable, element) {
+      var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
       if (droppable.scrollHeight > droppable.clientHeight) {
+        action = droppable.dataset.overflowAction;
         switch (action) {
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
@@ -276,26 +283,39 @@
             return fireCallbacks('update');
           case 'shrinkLast':
             last_el = droppable.lastElementChild;
-            console.log(last_el);
             overflow = droppable.scrollHeight - droppable.clientHeight;
             max_height = last_el.clientHeight - overflow;
             max_height_percentage = (max_height / droppable.clientHeight) * 100;
-            last_el.style.height = max_height_percentage + '%';
-            return fireCallbacks('drop update');
+            if (max_height_percentage > 1) {
+              last_el.style.height = max_height_percentage + '%';
+              return fireCallbacks('update');
+            } else {
+              element.remove();
+              return refuseDrop(droppable);
+            }
+            break;
           default:
-            last_el.remove();
-            droppable.classList.add('nodrop');
-            droppable.offsetWidth = droppable.offsetWidth;
-            droppable.classList.add('fade');
-            droppable.offsetWidth = droppable.offsetWidth;
-            droppable.classList.remove('nodrop');
-            return setTimeout(function() {
-              return droppable.classList.remove('fade');
-            }, 1000);
+            element.remove();
+            return refuseDrop(droppable);
         }
       } else {
+        els = droppable.querySelectorAll('.removable');
+        for (j = 0, len1 = els.length; j < len1; j++) {
+          el = els[j];
+          el.style.height = 'auto';
+        }
         return fireCallbacks('update');
       }
+    };
+    refuseDrop = function(droppable) {
+      droppable.classList.add('nodrop');
+      droppable.offsetWidth = droppable.offsetWidth;
+      droppable.classList.add('fade');
+      droppable.offsetWidth = droppable.offsetWidth;
+      droppable.classList.remove('nodrop');
+      return setTimeout(function() {
+        return droppable.classList.remove('fade');
+      }, 1000);
     };
     setCallback = function(key, callback) {
       if (!_callbacks[key]) {
