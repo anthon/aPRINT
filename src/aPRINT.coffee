@@ -238,9 +238,10 @@ A = (selector,options)->
 	fireCallbacks = (key,e)->
 		keys = key.split ' '
 		for k in keys
-			if not _callbacks[k] then return false
-			for callback in _callbacks[k]
-				callback(e)
+			console.log _callbacks
+			if _callbacks[k]
+				for callback in _callbacks[k]
+					callback(e)
 
 	getHTML = (page)->
 		if page and typeof page is 'Integer' then return _pages[page].outerHTML

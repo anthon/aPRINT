@@ -252,19 +252,28 @@
       return _callbacks[key].push(callback);
     };
     fireCallbacks = function(key, e) {
-      var callback, i, j, k, keys, len, len1, ref;
+      var callback, i, k, keys, len, results;
       keys = key.split(' ');
+      results = [];
       for (i = 0, len = keys.length; i < len; i++) {
         k = keys[i];
-        if (!_callbacks[k]) {
-          return false;
-        }
-        ref = _callbacks[k];
-        for (j = 0, len1 = ref.length; j < len1; j++) {
-          callback = ref[j];
-          callback(e);
+        console.log(_callbacks);
+        if (_callbacks[k]) {
+          results.push((function() {
+            var j, len1, ref, results1;
+            ref = _callbacks[k];
+            results1 = [];
+            for (j = 0, len1 = ref.length; j < len1; j++) {
+              callback = ref[j];
+              results1.push(callback(e));
+            }
+            return results1;
+          })());
+        } else {
+          results.push(void 0);
         }
       }
+      return results;
     };
     getHTML = function(page) {
       if (page && typeof page === 'Integer') {
