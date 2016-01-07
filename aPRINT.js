@@ -65,7 +65,6 @@
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
-        makeSortable(page);
       }
       for (j = 0, len1 = sortables.length; j < len1; j++) {
         sortable = sortables[j];
@@ -269,14 +268,21 @@
     };
     checkOverflow = function(droppable, element) {
       var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
+      if (!element) {
+        els = droppable.querySelectorAll('.removable');
+        for (i = 0, len = els.length; i < len; i++) {
+          el = els[i];
+          el.style.height = 'auto';
+        }
+      }
       if (droppable.scrollHeight > droppable.clientHeight) {
         action = droppable.dataset.overflowAction;
         switch (action) {
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
             l = els.length;
-            for (i = 0, len = els.length; i < len; i++) {
-              el = els[i];
+            for (j = 0, len1 = els.length; j < len1; j++) {
+              el = els[j];
               el.style.maxHeight = (100 / l) + '%';
             }
             return fireCallbacks('update');
@@ -298,11 +304,6 @@
             return refuseDrop(droppable);
         }
       } else {
-        els = droppable.querySelectorAll('.removable');
-        for (j = 0, len1 = els.length; j < len1; j++) {
-          el = els[j];
-          el.style.height = 'auto';
-        }
         return fireCallbacks('update');
       }
     };

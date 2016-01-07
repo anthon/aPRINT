@@ -118,7 +118,7 @@ A = (selector,options)->
 		removables = _body.querySelectorAll '.removable'
 		for page in _pages
 			disableNestedImageDrag page
-			makeSortable page
+			# makeSortable page
 		for sortable in sortables
 			disableNestedImageDrag sortable
 			makeSortable sortable
@@ -267,6 +267,10 @@ A = (selector,options)->
 		fireCallbacks 'remove', e
 
 	checkOverflow = (droppable,element)->
+		if not element
+			els = droppable.querySelectorAll '.removable'
+			for el in els
+				el.style.height = 'auto'
 		if droppable.scrollHeight > droppable.clientHeight
 			action = droppable.dataset.overflowAction
 			switch action
@@ -291,9 +295,6 @@ A = (selector,options)->
 					element.remove()
 					refuseDrop droppable
 		else
-			els = droppable.querySelectorAll '.removable'
-			for el in els
-				el.style.height = 'auto'
 			fireCallbacks 'update'
 
 	refuseDrop = (droppable)->
