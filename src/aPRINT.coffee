@@ -251,7 +251,6 @@ A = (selector,options)->
 				parent.insertBefore el, sibling.nextSibling
 		else
 			parent.insertBefore el, sibling
-		fireCallbacks 'update'
 
 	getSortable = (el,parent)->
 		loop

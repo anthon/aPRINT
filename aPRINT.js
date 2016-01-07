@@ -240,14 +240,13 @@
         el_index = Array.prototype.indexOf.call(siblings, el);
         sibling_index = Array.prototype.indexOf.call(siblings, sibling);
         if (el_index > sibling_index) {
-          parent.insertBefore(el, sibling);
+          return parent.insertBefore(el, sibling);
         } else {
-          parent.insertBefore(el, sibling.nextSibling);
+          return parent.insertBefore(el, sibling.nextSibling);
         }
       } else {
-        parent.insertBefore(el, sibling);
+        return parent.insertBefore(el, sibling);
       }
-      return fireCallbacks('update');
     };
     getSortable = function(el, parent) {
       var el_parent;
