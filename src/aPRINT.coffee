@@ -239,6 +239,10 @@ A = (selector,options)->
 		for callback in _callbacks[key]
 			callback(e)
 
+	getHTML = (page)->
+		if page and typeof page is 'Integer' then return _pages[page].outerHTML
+		return _body.outerHTML
+
 	print = ->
 		#
 
@@ -247,6 +251,7 @@ A = (selector,options)->
 	return {
 		print: print
 		on: setCallback
+		get: getHTML
 	}
 
 window.aPRINT = (selector,options)->

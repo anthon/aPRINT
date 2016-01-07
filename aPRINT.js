@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -263,11 +263,18 @@
       }
       return results;
     };
+    getHTML = function(page) {
+      if (page && typeof page === 'Integer') {
+        return _pages[page].outerHTML;
+      }
+      return _body.outerHTML;
+    };
     print = function() {};
     init(selector, options);
     return {
       print: print,
-      on: setCallback
+      on: setCallback,
+      get: getHTML
     };
   };
 
