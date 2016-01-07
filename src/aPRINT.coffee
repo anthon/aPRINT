@@ -189,12 +189,11 @@ A = (selector,options)->
 							insertNextTo clone, getSortable(e.target,droppable)
 					if clone_img = clone.querySelector 'img'
 						clone_img.onload = ->
-							if droppable.scrollHeight > droppable.clientHeight
-								onOverflow(droppable,clone,overflow_action)
+							checkOverflow(droppable,clone,overflow_action)
+							
 					else
-						if droppable.scrollHeight > droppable.clientHeight
-								onOverflow(droppable,clone,overflow_action)
-					fireCallbacks('drop update',e)
+						checkOverflow(droppable,clone,overflow_action)
+					fireCallbacks 'drop'
 				return false
 
 	disableNestedImageDrag = (el)->
@@ -254,30 +253,36 @@ A = (selector,options)->
 		el.remove()
 		fireCallbacks 'remove update', e
 
-	onOverflow = (droppable,last_el,action)->
-		switch action
-			when 'shrinkAll'
-				els = droppable.querySelectorAll '.removable'
-				l = els.length
-				for el in els
-					el.style.maxHeight = (100/l)+'%'
-			when 'shrinkLast'
-				last_el = droppable.lastElementChild
-				console.log last_el
-				overflow = droppable.scrollHeight - droppable.clientHeight
-				max_height = last_el.clientHeight - overflow
-				max_height_percentage = (max_height/droppable.clientHeight)*100
-				last_el.style.height = max_height_percentage+'%'
-			else
-				last_el.remove()
-				droppable.classList.add 'nodrop'
-				droppable.offsetWidth = droppable.offsetWidth
-				droppable.classList.add 'fade'
-				droppable.offsetWidth = droppable.offsetWidth
-				droppable.classList.remove 'nodrop'
-				setTimeout ->
-					droppable.classList.remove 'fade'
-				,1000
+	checkOverflow = (droppable,last_el,action)->
+		if droppable.scrollHeight > droppable.clientHeight
+			onOverflow(droppable,clone,overflow_action)
+			switch action
+				when 'shrinkAll'
+					els = droppable.querySelectorAll '.removable'
+					l = els.length
+					for el in els
+						el.style.maxHeight = (100/l)+'%'
+					fireCallbacks 'update'
+				when 'shrinkLast'
+					last_el = droppable.lastElementChild
+					console.log last_el
+					overflow = droppable.scrollHeight - droppable.clientHeight
+					max_height = last_el.clientHeight - overflow
+					max_height_percentage = (max_height/droppable.clientHeight)*100
+					last_el.style.height = max_height_percentage+'%'
+					fireCallbacks 'drop update'
+				else
+					last_el.remove()
+					droppable.classList.add 'nodrop'
+					droppable.offsetWidth = droppable.offsetWidth
+					droppable.classList.add 'fade'
+					droppable.offsetWidth = droppable.offsetWidth
+					droppable.classList.remove 'nodrop'
+					setTimeout ->
+						droppable.classList.remove 'fade'
+					,1000
+		else
+			fireCallbacks 'update'
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []

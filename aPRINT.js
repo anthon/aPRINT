@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onOverflow, onTrashClick, print, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -176,16 +176,12 @@
             }
             if (clone_img = clone.querySelector('img')) {
               clone_img.onload = function() {
-                if (droppable.scrollHeight > droppable.clientHeight) {
-                  return onOverflow(droppable, clone, overflow_action);
-                }
+                return checkOverflow(droppable, clone, overflow_action);
               };
             } else {
-              if (droppable.scrollHeight > droppable.clientHeight) {
-                onOverflow(droppable, clone, overflow_action);
-              }
+              checkOverflow(droppable, clone, overflow_action);
             }
-            fireCallbacks('drop update', e);
+            fireCallbacks('drop');
           }
           return false;
         }));
@@ -266,36 +262,40 @@
       el.remove();
       return fireCallbacks('remove update', e);
     };
-    onOverflow = function(droppable, last_el, action) {
-      var el, els, i, l, len, max_height, max_height_percentage, overflow, results;
-      switch (action) {
-        case 'shrinkAll':
-          els = droppable.querySelectorAll('.removable');
-          l = els.length;
-          results = [];
-          for (i = 0, len = els.length; i < len; i++) {
-            el = els[i];
-            results.push(el.style.maxHeight = (100 / l) + '%');
-          }
-          return results;
-          break;
-        case 'shrinkLast':
-          last_el = droppable.lastElementChild;
-          console.log(last_el);
-          overflow = droppable.scrollHeight - droppable.clientHeight;
-          max_height = last_el.clientHeight - overflow;
-          max_height_percentage = (max_height / droppable.clientHeight) * 100;
-          return last_el.style.height = max_height_percentage + '%';
-        default:
-          last_el.remove();
-          droppable.classList.add('nodrop');
-          droppable.offsetWidth = droppable.offsetWidth;
-          droppable.classList.add('fade');
-          droppable.offsetWidth = droppable.offsetWidth;
-          droppable.classList.remove('nodrop');
-          return setTimeout(function() {
-            return droppable.classList.remove('fade');
-          }, 1000);
+    checkOverflow = function(droppable, last_el, action) {
+      var el, els, i, l, len, max_height, max_height_percentage, overflow;
+      if (droppable.scrollHeight > droppable.clientHeight) {
+        onOverflow(droppable, clone, overflow_action);
+        switch (action) {
+          case 'shrinkAll':
+            els = droppable.querySelectorAll('.removable');
+            l = els.length;
+            for (i = 0, len = els.length; i < len; i++) {
+              el = els[i];
+              el.style.maxHeight = (100 / l) + '%';
+            }
+            return fireCallbacks('update');
+          case 'shrinkLast':
+            last_el = droppable.lastElementChild;
+            console.log(last_el);
+            overflow = droppable.scrollHeight - droppable.clientHeight;
+            max_height = last_el.clientHeight - overflow;
+            max_height_percentage = (max_height / droppable.clientHeight) * 100;
+            last_el.style.height = max_height_percentage + '%';
+            return fireCallbacks('drop update');
+          default:
+            last_el.remove();
+            droppable.classList.add('nodrop');
+            droppable.offsetWidth = droppable.offsetWidth;
+            droppable.classList.add('fade');
+            droppable.offsetWidth = droppable.offsetWidth;
+            droppable.classList.remove('nodrop');
+            return setTimeout(function() {
+              return droppable.classList.remove('fade');
+            }, 1000);
+        }
+      } else {
+        return fireCallbacks('update');
       }
     };
     setCallback = function(key, callback) {
