@@ -3,6 +3,7 @@ A = (selector,options)->
 	_frame = null
 	_body = null
 	_pages = null
+	_callbacks = {}
 	_current_draggable = null
 	_current_drop_selector = null
 	_baseStyle = 	'* {
@@ -132,7 +133,8 @@ A = (selector,options)->
 				if _current_drop_selector is drop_selector
 					if e.preventDefault then e.preventDefault()
 					e.dataTransfer.dropEffect = 'move'
-					this.classList.add 'over'
+					droppable.classList.add 'over'
+					fireCallbacks('dragover',e)
 				else if _current_draggable.parentNode is droppable
 					if e.preventDefault then e.preventDefault()
 					_current_draggable.style.opacity = 0
@@ -140,21 +142,23 @@ A = (selector,options)->
 						insertNextTo _current_draggable, droppable.lastChild
 					else
 						insertNextTo _current_draggable, getSortable(e.target,droppable)
+					fireCallbacks('dragover',e)
 				return false
 
 			droppable.addEventListener 'dragenter', (e)->
 				if _current_drop_selector is drop_selector
-					this.classList.add 'over'
+					droppable.classList.add 'over'
+					fireCallbacks('dragenter',e)
 				return false
 
 			droppable.addEventListener 'dragleave', (e)->
-				this.classList.remove 'over'
+				droppable.classList.remove 'over'
 				return false
 
 			droppable.addEventListener 'drop', (e)->
 				if e.stopPropagation then e.stopPropagation()
 				if _current_drop_selector is drop_selector
-					this.classList.remove 'over'
+					droppable.classList.remove 'over'
 					clone = _current_draggable.cloneNode(true)
 					makeRemovable clone
 					if replace_on_drop
@@ -166,6 +170,7 @@ A = (selector,options)->
 							droppable.appendChild clone
 						else
 							insertNextTo clone, getSortable(e.target,droppable)
+					fireCallbacks('drop',e)
 				return false
 
 	disableNestedImageDrag = (el)->
@@ -225,6 +230,15 @@ A = (selector,options)->
 		el = e.target.parentNode
 		el.remove()
 
+	setCallback = (key,callback)->
+		if not _callbacks[key] then _callbacks[key] = []
+		_callbacks[key].push callback
+
+	fireCallbacks = (key,e)->
+		if not _callbacks[key] then return false
+		for callback in _callbacks[key]
+			callback(e)
+
 	print = ->
 		#
 
@@ -232,6 +246,7 @@ A = (selector,options)->
 
 	return {
 		print: print
+		on: setCallback
 	}
 
 window.aPRINT = (selector,options)->

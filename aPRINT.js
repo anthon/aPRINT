@@ -3,10 +3,11 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, createIframe, disableNestedImageDrag, fireCallbacks, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
+    _callbacks = {};
     _current_draggable = null;
     _current_drop_selector = null;
     _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 12pt; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 1rem; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .page { background: #fff; margin: 2mm auto; } body .page.A4 { width: 210mm; height: 297mm; padding: 15mm 20mm; }';
@@ -115,7 +116,8 @@
               e.preventDefault();
             }
             e.dataTransfer.dropEffect = 'move';
-            this.classList.add('over');
+            droppable.classList.add('over');
+            fireCallbacks('dragover', e);
           } else if (_current_draggable.parentNode === droppable) {
             if (e.preventDefault) {
               e.preventDefault();
@@ -126,17 +128,19 @@
             } else {
               insertNextTo(_current_draggable, getSortable(e.target, droppable));
             }
+            fireCallbacks('dragover', e);
           }
           return false;
         });
         droppable.addEventListener('dragenter', function(e) {
           if (_current_drop_selector === drop_selector) {
-            this.classList.add('over');
+            droppable.classList.add('over');
+            fireCallbacks('dragenter', e);
           }
           return false;
         });
         droppable.addEventListener('dragleave', function(e) {
-          this.classList.remove('over');
+          droppable.classList.remove('over');
           return false;
         });
         results.push(droppable.addEventListener('drop', function(e) {
@@ -145,7 +149,7 @@
             e.stopPropagation();
           }
           if (_current_drop_selector === drop_selector) {
-            this.classList.remove('over');
+            droppable.classList.remove('over');
             clone = _current_draggable.cloneNode(true);
             makeRemovable(clone);
             if (replace_on_drop) {
@@ -159,6 +163,7 @@
                 insertNextTo(clone, getSortable(e.target, droppable));
               }
             }
+            fireCallbacks('drop', e);
           }
           return false;
         }));
@@ -239,10 +244,30 @@
       el = e.target.parentNode;
       return el.remove();
     };
+    setCallback = function(key, callback) {
+      if (!_callbacks[key]) {
+        _callbacks[key] = [];
+      }
+      return _callbacks[key].push(callback);
+    };
+    fireCallbacks = function(key, e) {
+      var callback, i, len, ref, results;
+      if (!_callbacks[key]) {
+        return false;
+      }
+      ref = _callbacks[key];
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        callback = ref[i];
+        results.push(callback(e));
+      }
+      return results;
+    };
     print = function() {};
     init(selector, options);
     return {
-      print: print
+      print: print,
+      on: setCallback
     };
   };
 
