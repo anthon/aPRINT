@@ -255,7 +255,6 @@ A = (selector,options)->
 
 	checkOverflow = (droppable,last_el,action)->
 		if droppable.scrollHeight > droppable.clientHeight
-			onOverflow(droppable,clone,overflow_action)
 			switch action
 				when 'shrinkAll'
 					els = droppable.querySelectorAll '.removable'

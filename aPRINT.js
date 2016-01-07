@@ -265,7 +265,6 @@
     checkOverflow = function(droppable, last_el, action) {
       var el, els, i, l, len, max_height, max_height_percentage, overflow;
       if (droppable.scrollHeight > droppable.clientHeight) {
-        onOverflow(droppable, clone, overflow_action);
         switch (action) {
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
