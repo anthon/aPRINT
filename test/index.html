@@ -29,9 +29,9 @@
       	height: auto;
       }
       #right {
-      	width: 80%;
+      	width: 40%;
       	height: 100%;
-      	float: right;
+      	float: left;
       }
       #print {
       	width: 100%;
@@ -81,6 +81,7 @@
     	var print = aPRINT('#print',{
     		frame_src: '/test/blank.html',
     		format: 'A4',
+    		baseStyle: '../aPRINT.css',
     		stylesheet: 'main.css',
     		rules: {
     			'#left .title': {

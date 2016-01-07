@@ -9,39 +9,47 @@
   outline: none;
 }
 html {
-  font-size: 12pt;
+  font-size: 0.428571428571429vw;
 }
-body #aPRINT {
+body {
   background: #808080;
 }
-body #aPRINT .over {
+body .over {
   background: #94ff94;
 }
-body #aPRINT .removable {
+body .removable {
   position: relative;
 }
-body #aPRINT .removable .remove {
+body .removable .remove {
   font-family: sans-serif;
   background: #fff;
   position: absolute;
   top: 6px;
   right: 6px;
   padding: 3px 7px;
-  font-size: 1rem;
+  font-size: 13px;
   font-weight: 100;
   color: #000;
   cursor: pointer;
 }
-body #aPRINT .removable .remove:hover {
+body .removable .remove:hover {
   background: #c20000;
   color: #fff;
 }
-body #aPRINT .page {
+body .page {
   background: #fff;
-  margin: 2mm auto;
+  width: 90vw;
+  margin: 4rem auto;
 }
-body #aPRINT .page.A4 {
-  width: 210mm;
-  height: 297mm;
-  padding: 15mm 20mm;
+body .page.A4 {
+  height: 127.28571428571429vw;
+}
+@media print {
+  html {
+    font-size: 4.2333336mm;
+  }
+  html body .page.A4 {
+    width: 210mm;
+    height: 297mm;
+  }
 }

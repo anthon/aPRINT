@@ -8,6 +8,14 @@ vendor(prop,args)
 sans-serif()
 	font-family sans-serif
 
+$pt = .3527778
+pageWidth = 90
+
+// A4 w/h
+a4width = 210
+a4height = 297
+a4mm = ((100/a4width)*(pageWidth/100))
+
 *
 	vendor(box-sizing, border-box)
 	margin 0
@@ -15,36 +23,46 @@ sans-serif()
 	outline none
 
 html
-	font-size 12pt
+	font-size (a4mm)vw
 
 body
-	#aPRINT
-		background gray
-		
-		.over
-			background lighten(green,72%)
-		
-		.removable
-			position relative
-			.remove
-				sans-serif()
-				background white
-				position absolute
-				top 6px
-				right 6px
-				padding 3px 7px
-				font-size 1rem
-				font-weight 100
-				color black
-				cursor pointer
-				&:hover
-					background darken(red,24%)
-					color white
-
-		.page
+	background gray
+	
+	.over
+		background lighten(green,72%)
+	
+	.removable
+		position relative
+		.remove
+			sans-serif()
 			background white
-			margin 2mm auto
-			&.A4
-				width 210mm
-				height 297mm
-				padding 15mm 20mm
+			position absolute
+			top 6px
+			right 6px
+			padding 3px 7px
+			font-size 13px
+			font-weight 100
+			color black
+			cursor pointer
+			&:hover
+				background darken(red,24%)
+				color white
+
+	.page
+		background white
+		width (pageWidth)vw
+		margin 4rem auto
+		&.A4
+			height ((a4height/a4width)*90)vw
+			// .header
+			// 	background green
+			// 	width 210rem
+
+@media print
+	html
+		font-size (12*$pt)mm
+		body
+			.page
+				&.A4
+					width (a4width)mm
+					height (a4height)mm

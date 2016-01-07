@@ -4,12 +4,13 @@ body .page.A4 {
 body .page.A4 .header,
 body .page.A4 .left_column,
 body .page.A4 .right_column {
-  font-size: 1rem;
+  font-size: 3.527778rem;
 }
 body .page.A4 .header {
   font-family: sans-serif;
   height: 10%;
-  font-size: 2rem;
+  padding: 6rem;
+  font-size: 7.055555999999999rem;
   font-weight: 700;
 }
 body .page.A4 .left_column,
@@ -23,7 +24,7 @@ body .page.A4 .left_column {
 }
 body .page.A4 .left_column .texts {
   height: 100%;
-  padding: 0 4mm 0 0;
+  padding: 0 4rem 0 0;
 }
 body .page.A4 .right_column {
   width: 66.66666666666667%;

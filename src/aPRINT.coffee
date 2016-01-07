@@ -17,7 +17,7 @@ A = (selector,options)->
 					  outline: none;
 					}
 					html {
-					  font-size: 12pt;
+					  font-size: 0.428571428571429vw;
 					}
 					body {
 					  background: #808080;
@@ -35,7 +35,7 @@ A = (selector,options)->
 					  top: 6px;
 					  right: 6px;
 					  padding: 3px 7px;
-					  font-size: 1rem;
+					  font-size: 13px;
 					  font-weight: 100;
 					  color: #000;
 					  cursor: pointer;
@@ -46,12 +46,20 @@ A = (selector,options)->
 					}
 					body .page {
 					  background: #fff;
-					  margin: 2mm auto;
+					  width: 90vw;
+					  margin: 4rem auto;
 					}
 					body .page.A4 {
-					  width: 210mm;
-					  height: 297mm;
-					  padding: 15mm 20mm;
+					  height: 127.28571428571429vw;
+					}
+					@media print {
+					  html {
+					    font-size: 4.2333336mm;
+					  }
+					  html body .page.A4 {
+					    width: 210mm;
+					    height: 297mm;
+					  }
 					}'
 	_settings =
 		# baseStyle: '../aPRINT.css'
@@ -73,10 +81,14 @@ A = (selector,options)->
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth
 		_frame.height = _body.offsetHeight
-		_frame.style.borderWidth = 0
+		# _frame.style.borderWidth = 0
+		_frame.style.resize = 'horizontal'
 		_body.parentNode.insertBefore _frame, _body
 		_frame.contentDocument.body.appendChild _body
-		insertStyle _baseStyle
+		if _settings.baseStyle
+			insertStyle _settings.baseStyle, true
+		else
+			insertStyle _baseStyle
 		if _settings.stylesheet then insertStyle _settings.stylesheet, true
 
 	insertStyle = (style,is_link)->

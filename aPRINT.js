@@ -10,7 +10,7 @@
     _callbacks = {};
     _current_draggable = null;
     _current_drop_selector = null;
-    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 12pt; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 1rem; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .page { background: #fff; margin: 2mm auto; } body .page.A4 { width: 210mm; height: 297mm; padding: 15mm 20mm; }';
+    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; padding: 3px 7px; font-size: 13px; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .page { background: #fff; width: 90vw; margin: 4rem auto; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
       stylesheet: null,
       id: 'aPRINT',
@@ -31,10 +31,14 @@
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
       _frame.height = _body.offsetHeight;
-      _frame.style.borderWidth = 0;
+      _frame.style.resize = 'horizontal';
       _body.parentNode.insertBefore(_frame, _body);
       _frame.contentDocument.body.appendChild(_body);
-      insertStyle(_baseStyle);
+      if (_settings.baseStyle) {
+        insertStyle(_settings.baseStyle, true);
+      } else {
+        insertStyle(_baseStyle);
+      }
       if (_settings.stylesheet) {
         return insertStyle(_settings.stylesheet, true);
       }
