@@ -263,7 +263,7 @@
       el = e.target.parentNode;
       droppable = el.parentNode;
       el.remove();
-      checkOverflow(droppable, el);
+      checkOverflow(droppable);
       return fireCallbacks('remove', e);
     };
     checkOverflow = function(droppable, element) {

@@ -263,7 +263,7 @@ A = (selector,options)->
 		el = e.target.parentNode
 		droppable = el.parentNode
 		el.remove()
-		checkOverflow droppable,el
+		checkOverflow droppable
 		fireCallbacks 'remove', e
 
 	checkOverflow = (droppable,element)->
