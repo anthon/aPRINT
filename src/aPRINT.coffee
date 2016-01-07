@@ -104,8 +104,12 @@ A = (selector,options)->
 			_frame.contentDocument.head.appendChild(styleTag)
 
 	activateContent = ->
+		_pages = _body.querySelectorAll '.page'
 		sortables = _body.querySelectorAll '.sortable'
 		removables = _body.querySelectorAll '.removable'
+		for page in _pages
+			disableNestedImageDrag page
+			makeSortable page
 		for sortable in sortables
 			disableNestedImageDrag sortable
 			makeSortable sortable
@@ -256,8 +260,8 @@ A = (selector,options)->
 					callback(e)
 
 	getHTML = (page)->
-		if page and typeof page is 'Integer' then return _pages[page].outerHTML
-		return _body.outerHTML
+		if page and typeof page is 'Integer' then return _pages[page].innerHTML
+		return _body.innerHTML
 
 	print = ->
 		#

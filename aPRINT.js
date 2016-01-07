@@ -58,17 +58,23 @@
       }
     };
     activateContent = function() {
-      var i, j, len, len1, removable, removables, results, sortable, sortables;
+      var i, j, l, len, len1, len2, page, removable, removables, results, sortable, sortables;
+      _pages = _body.querySelectorAll('.page');
       sortables = _body.querySelectorAll('.sortable');
       removables = _body.querySelectorAll('.removable');
-      for (i = 0, len = sortables.length; i < len; i++) {
-        sortable = sortables[i];
+      for (i = 0, len = _pages.length; i < len; i++) {
+        page = _pages[i];
+        disableNestedImageDrag(page);
+        makeSortable(page);
+      }
+      for (j = 0, len1 = sortables.length; j < len1; j++) {
+        sortable = sortables[j];
         disableNestedImageDrag(sortable);
         makeSortable(sortable);
       }
       results = [];
-      for (j = 0, len1 = removables.length; j < len1; j++) {
-        removable = removables[j];
+      for (l = 0, len2 = removables.length; l < len2; l++) {
+        removable = removables[l];
         results.push(makeRemovable(removable));
       }
       return results;
@@ -281,9 +287,9 @@
     };
     getHTML = function(page) {
       if (page && typeof page === 'Integer') {
-        return _pages[page].outerHTML;
+        return _pages[page].innerHTML;
       }
-      return _body.outerHTML;
+      return _body.innerHTML;
     };
     print = function() {};
     init(selector, options);
