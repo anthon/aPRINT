@@ -163,7 +163,7 @@
                 insertNextTo(clone, getSortable(e.target, droppable));
               }
             }
-            fireCallbacks('drop', e);
+            fireCallbacks('drop update', e);
           }
           return false;
         }));
@@ -242,7 +242,8 @@
     onTrashClick = function(e) {
       var el;
       el = e.target.parentNode;
-      return el.remove();
+      el.remove();
+      return fireCallbacks('remove update', e);
     };
     setCallback = function(key, callback) {
       if (!_callbacks[key]) {
@@ -251,17 +252,19 @@
       return _callbacks[key].push(callback);
     };
     fireCallbacks = function(key, e) {
-      var callback, i, len, ref, results;
-      if (!_callbacks[key]) {
-        return false;
+      var callback, i, j, k, keys, len, len1, ref;
+      keys = key.split(' ');
+      for (i = 0, len = keys.length; i < len; i++) {
+        k = keys[i];
+        if (!_callbacks[k]) {
+          return false;
+        }
+        ref = _callbacks[k];
+        for (j = 0, len1 = ref.length; j < len1; j++) {
+          callback = ref[j];
+          callback(e);
+        }
       }
-      ref = _callbacks[key];
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        callback = ref[i];
-        results.push(callback(e));
-      }
-      return results;
     };
     getHTML = function(page) {
       if (page && typeof page === 'Integer') {

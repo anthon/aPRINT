@@ -170,7 +170,7 @@ A = (selector,options)->
 							droppable.appendChild clone
 						else
 							insertNextTo clone, getSortable(e.target,droppable)
-					fireCallbacks('drop',e)
+					fireCallbacks('drop update',e)
 				return false
 
 	disableNestedImageDrag = (el)->
@@ -229,15 +229,18 @@ A = (selector,options)->
 	onTrashClick = (e)->
 		el = e.target.parentNode
 		el.remove()
+		fireCallbacks 'remove update', e
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []
 		_callbacks[key].push callback
 
 	fireCallbacks = (key,e)->
-		if not _callbacks[key] then return false
-		for callback in _callbacks[key]
-			callback(e)
+		keys = key.split ' '
+		for k in keys
+			if not _callbacks[k] then return false
+			for callback in _callbacks[k]
+				callback(e)
 
 	getHTML = (page)->
 		if page and typeof page is 'Integer' then return _pages[page].outerHTML
