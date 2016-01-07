@@ -267,8 +267,9 @@
       return fireCallbacks('remove', e);
     };
     checkOverflow = function(droppable, element) {
-      var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
-      if (!element) {
+      var action, el, els, i, is_sorting, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
+      is_sorting = !element || element.parentNode === droppable;
+      if (is_sorting) {
         els = droppable.querySelectorAll('.removable');
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];
@@ -295,7 +296,9 @@
               last_el.style.height = max_height_percentage + '%';
               return fireCallbacks('update');
             } else {
-              element.remove();
+              if (!is_sorting) {
+                element.remove();
+              }
               return refuseDrop(droppable);
             }
             break;

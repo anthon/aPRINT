@@ -235,7 +235,7 @@ A = (selector,options)->
 		el.addEventListener 'dragend', (e)->
 			el.classList.remove 'drag'
 			el.style.opacity = 1
-			checkOverflow(e.srcElement.parentNode)
+			checkOverflow e.srcElement.parentNode
 			_current_draggable = null
 			return false
 
@@ -267,7 +267,8 @@ A = (selector,options)->
 		fireCallbacks 'remove', e
 
 	checkOverflow = (droppable,element)->
-		if not element
+		is_sorting = not element or element.parentNode is droppable
+		if is_sorting
 			els = droppable.querySelectorAll '.removable'
 			for el in els
 				el.style.height = 'auto'
@@ -289,7 +290,7 @@ A = (selector,options)->
 						last_el.style.height = max_height_percentage+'%'
 						fireCallbacks 'update'
 					else
-						element.remove()
+						if not is_sorting then element.remove()
 						refuseDrop droppable
 				else
 					element.remove()
