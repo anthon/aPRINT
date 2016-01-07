@@ -34,8 +34,11 @@ A = (selector,options)->
 					  position: absolute;
 					  top: 6px;
 					  right: 6px;
-					  padding: 3px 7px;
+					  width: 25px;
+					  height: 25px;
 					  font-size: 13px;
+					  line-height: 24px;
+					  text-align: center;
 					  font-weight: 100;
 					  color: #000;
 					  cursor: pointer;
@@ -43,6 +46,12 @@ A = (selector,options)->
 					body .removable .remove:hover {
 					  background: #c20000;
 					  color: #fff;
+					}
+					body .nodrop {
+					  background: #f00;
+					}
+					body .fade {
+					  transition: background 0.8s;
 					}
 					body .page {
 					  background: #fff;
