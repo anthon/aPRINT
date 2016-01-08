@@ -257,6 +257,7 @@
           item.classList.add('item');
           item.innerHTML = cls;
           list.appendChild(item);
+          items.push(item);
         }
         container.appendChild(list);
         el.appendChild(container);
