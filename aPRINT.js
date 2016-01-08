@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -12,7 +12,7 @@
     _current_drop_selector = null;
     _current_sortable_target = null;
     _is_sorting = false;
-    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; cursor: pointer; background-color: #fff; color: #000; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; } body .removable .remove a { color: #000; } body .removable .remove:hover { background-color: #c20000; color: #fff; } body .removable .remove:hover a { color: #fff; } body .removable .remove.active { background-color: #c20000; color: #fff; } body .removable .remove.active a { color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .classable .classes { position: absolute; top: 6px; left: 6px; text-align: left; } body .classable .classes .expander { cursor: pointer; background-color: #fff; color: #000; width: 25px; height: 25px; line-height: 28px; text-align: center; } body .classable .classes .expander a { color: #000; } body .classable .classes .expander:hover { background-color: #c20000; color: #fff; } body .classable .classes .expander:hover a { color: #fff; } body .classable .classes .expander.active { background-color: #c20000; color: #fff; } body .classable .classes .expander.active a { color: #fff; } body .classable .classes .list { display: none; } body .classable .classes .list .item { cursor: pointer; background-color: #fff; color: #000; padding: 6px 8px; } body .classable .classes .list .item a { color: #000; } body .classable .classes .list .item:hover { background-color: #000; color: #fff; } body .classable .classes .list .item:hover a { color: #fff; } body .classable .classes .list .item.active { background-color: #000; color: #fff; } body .classable .classes .list .item.active a { color: #fff; } body .classable .classes:hover .expander { display: none; } body .classable .classes:hover .list { display: block; } body .page { background: #fff; width: 90vw; margin: 4rem auto 48px; box-shadow: 0 0 4px 1px rgba(0,0,0,0.24); } body .page .add_page { cursor: pointer; background-color: rgba(255,255,255,0.12); color: #000; position: relative; bottom: -12px; width: 60%; margin: 0 auto; font-size: 18px; line-height: 1.4; text-align: center; } body .page .add_page a { color: #000; } body .page .add_page:hover { background-color: #fff; color: #000; } body .page .add_page:hover a { color: #000; } body .page .add_page.active { background-color: #fff; color: #000; } body .page .add_page.active a { color: #000; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
+    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; cursor: pointer; background-color: #fff; color: #000; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; } body .removable .remove a { color: #000; } body .removable .remove:hover { background-color: #c20000; color: #fff; } body .removable .remove:hover a { color: #fff; } body .removable .remove.active { background-color: #c20000; color: #fff; } body .removable .remove.active a { color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .classable .classes { position: absolute; top: 6px; left: 6px; text-align: left; } body .classable .classes .expander { cursor: pointer; background-color: #fff; color: #000; width: 25px; height: 25px; line-height: 28px; text-align: center; } body .classable .classes .expander a { color: #000; } body .classable .classes .expander:hover { background-color: #c20000; color: #fff; } body .classable .classes .expander:hover a { color: #fff; } body .classable .classes .expander.active { background-color: #c20000; color: #fff; } body .classable .classes .expander.active a { color: #fff; } body .classable .classes .list { display: none; } body .classable .classes .list .item { cursor: pointer; background-color: #fff; color: #000; padding: 6px 8px; } body .classable .classes .list .item a { color: #000; } body .classable .classes .list .item:hover { background-color: #000; color: #fff; } body .classable .classes .list .item:hover a { color: #fff; } body .classable .classes .list .item.active { background-color: #000; color: #fff; } body .classable .classes .list .item.active a { color: #fff; } body .classable .classes:hover .expander { display: none; } body .classable .classes:hover .list { display: block; } body .page { background: #fff; width: 90vw; margin: 4rem auto; box-shadow: 0 0 4px 1px rgba(0,0,0,0.24); } body .page.A4 { height: 127.28571428571429vw; } body .add_page { cursor: pointer; background-color: rgba(255,255,255,0.12); color: #000; position: relative; width: 60%; margin: 12px auto; font-size: 18px; line-height: 1.4; text-align: center; } body .add_page a { color: #000; } body .add_page:hover { background-color: #fff; color: #000; } body .add_page:hover a { color: #000; } body .add_page.active { background-color: #fff; color: #000; } body .add_page.active a { color: #000; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
       stylesheet: null,
       id: 'aPRINT',
@@ -28,9 +28,11 @@
     };
     createIframe = function() {
       _body = document.querySelector(selector);
+      _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
       _frame.height = _body.offsetHeight;
+      _frame.style.resize = 'horizontal';
       _body.parentNode.insertBefore(_frame, _body);
       if (_frame.contentWindow.document.readyState === 'complete') {
         return populateIframe();
@@ -69,7 +71,6 @@
     };
     activateContent = function() {
       var classable, classables, i, j, len, len1, len2, len3, m, n, page, removable, removables, results, sortable, sortables;
-      _pages = _body.querySelectorAll('.page');
       sortables = _body.querySelectorAll('.sortable');
       removables = _body.querySelectorAll('.removable');
       classables = _body.querySelectorAll('.classable');
@@ -100,10 +101,8 @@
       adder = document.createElement('div');
       adder.classList.add('add_page');
       adder.innerHTML = '+';
-      adder.addEventListener('click', function() {
-        return addPage(page);
-      });
-      return page.appendChild(adder);
+      adder.addEventListener('click', addPage);
+      return _body.insertBefore(adder, page.nextSibling);
     };
     setupListeners = function() {
       var drag, drop, ref, results;
@@ -114,6 +113,96 @@
         results.push(addDragDroppable(drag, drop));
       }
       return results;
+    };
+    onDraggableDragStart = function(e) {
+      var that;
+      that = this;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('source', 'external');
+      _current_draggable = e.target;
+      _current_drop_selector = that.dataset.dropSelector;
+      that.classList.add('drag');
+      return false;
+    };
+    onDraggableDragEnd = function(e) {
+      var that;
+      that = this;
+      that.classList.remove('drag');
+      _current_draggable = null;
+      _current_drop_selector = null;
+      return false;
+    };
+    onDroppableDragOver = function(e) {
+      var that;
+      that = this;
+      if (_current_drop_selector === that.dataset.dropSelector) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+        e.dataTransfer.dropEffect = 'move';
+        that.classList.add('over');
+        fireCallbacks('dragover', e);
+      } else if (_is_sorting) {
+        if (e.preventDefault) {
+          e.preventDefault();
+        }
+        _current_draggable.style.opacity = 0;
+        if (e.target === that) {
+          insertNextTo(_current_draggable, that.lastChild);
+        } else if (_current_sortable_target !== _current_draggable) {
+          insertNextTo(_current_draggable, getSortable(e.target, that));
+        }
+        fireCallbacks('dragover', e);
+      }
+      return false;
+    };
+    onDroppableDragEnter = function(e) {
+      var that;
+      that = this;
+      if (_current_drop_selector === that.dataset.dropSelector) {
+        that.classList.add('over');
+        fireCallbacks('dragenter', e);
+      }
+      return false;
+    };
+    onDroppableDragLeave = function(e) {
+      var that;
+      that = this;
+      that.classList.remove('over');
+      return false;
+    };
+    onDroppableDrop = function(e) {
+      var clone, clone_img, that;
+      that = this;
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+      if (_current_drop_selector === that.dataset.dropSelector) {
+        that.classList.remove('over');
+        clone = _current_draggable.cloneNode(true);
+        makeRemovable(clone);
+        makeClassable(clone);
+        if (that.dataset.replace) {
+          that.innerHTML = '';
+          that.appendChild(clone);
+        } else {
+          makeSortable(clone);
+          if (e.target === that) {
+            that.appendChild(clone);
+          } else {
+            insertNextTo(clone, getSortable(e.target, that));
+          }
+        }
+        if (clone_img = clone.querySelector('img')) {
+          clone_img.onload = function() {
+            return checkOverflow(that, clone);
+          };
+        } else {
+          checkOverflow(that, clone);
+        }
+        fireCallbacks('drop');
+      }
+      return false;
     };
     addDragDroppable = function(drag, drop) {
       var drag_selector, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, replace_on_drop, results;
@@ -131,94 +220,32 @@
       for (i = 0, len = draggables.length; i < len; i++) {
         draggable = draggables[i];
         draggable.draggable = true;
+        if (drop_classes) {
+          draggable.dataset.classList = drop_classes;
+        }
+        draggable.dataset.dropSelector = drop_selector;
         disableNestedImageDrag(draggable);
-        draggable.addEventListener('dragstart', function(e) {
-          e.dataTransfer.effectAllowed = 'move';
-          e.dataTransfer.setData('source', 'external');
-          _current_draggable = e.target;
-          _current_drop_selector = drop_selector;
-          draggable.classList.add('drag');
-          return false;
-        });
-        draggable.addEventListener('dragend', function(e) {
-          draggable.classList.remove('drag');
-          _current_draggable = null;
-          _current_drop_selector = null;
-          return false;
-        });
+        draggable.removeEventListener('dragstart', onDraggableDragStart);
+        draggable.addEventListener('dragstart', onDraggableDragStart);
+        draggable.removeEventListener('dragend', onDraggableDragEnd);
+        draggable.addEventListener('dragend', onDraggableDragEnd);
       }
       results = [];
       for (j = 0, len1 = droppables.length; j < len1; j++) {
         droppable = droppables[j];
+        droppable.dataset.dropSelector = drop_selector;
         droppable.dataset.overflowAction = overflow_action;
-        droppable.addEventListener('dragover', function(e) {
-          if (_current_drop_selector === drop_selector) {
-            if (e.preventDefault) {
-              e.preventDefault();
-            }
-            e.dataTransfer.dropEffect = 'move';
-            droppable.classList.add('over');
-            fireCallbacks('dragover', e);
-          } else if (_is_sorting) {
-            if (e.preventDefault) {
-              e.preventDefault();
-            }
-            _current_draggable.style.opacity = 0;
-            if (e.target === droppable) {
-              insertNextTo(_current_draggable, droppable.lastChild);
-            } else if (_current_sortable_target !== _current_draggable) {
-              insertNextTo(_current_draggable, getSortable(e.target, droppable));
-            }
-            fireCallbacks('dragover', e);
-          }
-          return false;
-        });
-        droppable.addEventListener('dragenter', function(e) {
-          if (_current_drop_selector === drop_selector) {
-            droppable.classList.add('over');
-            fireCallbacks('dragenter', e);
-          }
-          return false;
-        });
-        droppable.addEventListener('dragleave', function(e) {
-          droppable.classList.remove('over');
-          return false;
-        });
-        results.push(droppable.addEventListener('drop', function(e) {
-          var clone, clone_img;
-          if (e.stopPropagation) {
-            e.stopPropagation();
-          }
-          if (_current_drop_selector === drop_selector) {
-            droppable.classList.remove('over');
-            clone = _current_draggable.cloneNode(true);
-            if (drop_classes) {
-              clone.dataset.classList = drop_classes;
-            }
-            makeRemovable(clone);
-            makeClassable(clone);
-            if (replace_on_drop) {
-              droppable.innerHTML = '';
-              droppable.appendChild(clone);
-            } else {
-              makeSortable(clone);
-              if (e.target === droppable) {
-                droppable.appendChild(clone);
-              } else {
-                insertNextTo(clone, getSortable(e.target, droppable));
-              }
-            }
-            if (clone_img = clone.querySelector('img')) {
-              clone_img.onload = function() {
-                return checkOverflow(droppable, clone);
-              };
-            } else {
-              checkOverflow(droppable, clone);
-            }
-            fireCallbacks('drop');
-          }
-          return false;
-        }));
+        if (replace_on_drop) {
+          droppable.dataset.replace = true;
+        }
+        droppable.removeEventListener('dragover', onDroppableDragOver);
+        droppable.addEventListener('dragover', onDroppableDragOver);
+        droppable.removeEventListener('dragenter', onDroppableDragEnter);
+        droppable.addEventListener('dragenter', onDroppableDragEnter);
+        droppable.removeEventListener('dragleave', onDroppableDragLeave);
+        droppable.addEventListener('dragleave', onDroppableDragLeave);
+        droppable.removeEventListener('drop', onDroppableDrop);
+        results.push(droppable.addEventListener('drop', onDroppableDrop));
       }
       return results;
     };
@@ -341,18 +368,18 @@
       }
       return el;
     };
-    addPage = function(page) {
-      var i, len, new_page, removable, removables;
-      if (!page) {
-        page = _body.lastChild;
-      }
+    addPage = function(e) {
+      var i, len, new_page, page, removable, removables, that;
+      that = this;
+      page = that.previousSibling;
       new_page = _body.querySelector('.page').cloneNode(true);
       removables = new_page.querySelectorAll('.removable');
       for (i = 0, len = removables.length; i < len; i++) {
         removable = removables[i];
         removable.remove();
       }
-      _body.insertBefore(new_page, page.nextSibling);
+      _body.insertBefore(new_page, that.nextSibling);
+      addAddPage(new_page);
       return setupListeners();
     };
     onTrashClick = function(e) {
