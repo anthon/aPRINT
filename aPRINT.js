@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -11,6 +11,7 @@
     _current_draggable = null;
     _current_drop_selector = null;
     _current_sortable_target = null;
+    _is_sorting = false;
     _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .page { background: #fff; width: 90vw; margin: 4rem auto; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
       stylesheet: null,
@@ -114,7 +115,6 @@
         draggable.draggable = true;
         disableNestedImageDrag(draggable);
         draggable.addEventListener('dragstart', function(e) {
-          console.log(draggable);
           e.dataTransfer.effectAllowed = 'move';
           e.dataTransfer.setData('source', 'external');
           _current_draggable = e.target;
@@ -141,7 +141,7 @@
             e.dataTransfer.dropEffect = 'move';
             droppable.classList.add('over');
             fireCallbacks('dragover', e);
-          } else if (_current_draggable.parentNode === droppable) {
+          } else if (_is_sorting) {
             if (e.preventDefault) {
               e.preventDefault();
             }
@@ -234,6 +234,7 @@
         e.dataTransfer.setData('source', 'internal');
         _current_draggable = e.target;
         _current_draggable.classList.add('drag');
+        _is_sorting = true;
         return false;
       });
       el.addEventListener('dragend', function(e) {
@@ -241,6 +242,7 @@
         _current_draggable.style.opacity = 1;
         checkOverflow(e.target.parentNode);
         _current_draggable = null;
+        _is_sorting = false;
         return false;
       });
       return el.addEventListener('dragover', function(e) {
@@ -283,9 +285,8 @@
       return fireCallbacks('remove', e);
     };
     checkOverflow = function(droppable, element) {
-      var action, el, els, i, is_sorting, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
-      is_sorting = !element || element.parentNode === droppable;
-      if (is_sorting) {
+      var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
+      if (_is_sorting) {
         els = droppable.querySelectorAll('.removable');
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];
@@ -308,11 +309,12 @@
             overflow = droppable.scrollHeight - droppable.clientHeight;
             max_height = last_el.clientHeight - overflow;
             max_height_percentage = (max_height / droppable.clientHeight) * 100;
+            console.log(max_height_percentage);
             if (max_height_percentage > 1) {
               last_el.style.height = max_height_percentage + '%';
               return fireCallbacks('update');
             } else {
-              if (!is_sorting) {
+              if (!_is_sorting) {
                 element.remove();
               }
               return refuseDrop(droppable);

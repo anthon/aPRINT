@@ -7,6 +7,7 @@ A = (selector,options)->
 	_current_draggable = null
 	_current_drop_selector = null
 	_current_sortable_target = null
+	_is_sorting = false
 	_baseStyle = 	'* {
 					  -webkit-box-sizing: border-box;
 					  -moz-box-sizing: border-box;
@@ -153,7 +154,6 @@ A = (selector,options)->
 			draggable.draggable = true
 			disableNestedImageDrag(draggable)
 			draggable.addEventListener 'dragstart', (e)->
-				console.log draggable
 				e.dataTransfer.effectAllowed = 'move'
 				e.dataTransfer.setData 'source','external'
 				_current_draggable = e.target
@@ -174,7 +174,7 @@ A = (selector,options)->
 					e.dataTransfer.dropEffect = 'move'
 					droppable.classList.add 'over'
 					fireCallbacks('dragover',e)
-				else if _current_draggable.parentNode is droppable
+				else if _is_sorting
 					if e.preventDefault then e.preventDefault()
 					_current_draggable.style.opacity = 0
 					if e.target is droppable
@@ -244,12 +244,14 @@ A = (selector,options)->
 			e.dataTransfer.setData 'source','internal'
 			_current_draggable = e.target
 			_current_draggable.classList.add 'drag'
+			_is_sorting = true
 			return false
 		el.addEventListener 'dragend', (e)->
 			_current_draggable.classList.remove 'drag'
 			_current_draggable.style.opacity = 1
 			checkOverflow e.target.parentNode
 			_current_draggable = null
+			_is_sorting = false
 			return false
 		el.addEventListener 'dragover', (e)->
 			_current_sortable_target = el
@@ -282,8 +284,7 @@ A = (selector,options)->
 		fireCallbacks 'remove', e
 
 	checkOverflow = (droppable,element)->
-		is_sorting = not element or element.parentNode is droppable
-		if is_sorting
+		if _is_sorting
 			els = droppable.querySelectorAll '.removable'
 			for el in els
 				el.style.height = 'auto'
@@ -301,11 +302,12 @@ A = (selector,options)->
 					overflow = droppable.scrollHeight - droppable.clientHeight
 					max_height = last_el.clientHeight - overflow
 					max_height_percentage = (max_height/droppable.clientHeight)*100
+					console.log max_height_percentage
 					if max_height_percentage > 1
 						last_el.style.height = max_height_percentage+'%'
 						fireCallbacks 'update'
 					else
-						if not is_sorting then element.remove()
+						if not _is_sorting then element.remove()
 						refuseDrop droppable
 				else
 					element.remove()
