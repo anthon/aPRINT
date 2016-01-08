@@ -35,8 +35,19 @@ body .page.A4 .right_column {
 body .page.A4 .right_column .images {
   height: 100%;
 }
-body .page.A4 .right_column .images img {
+body .page.A4 .right_column .images .image img {
   max-width: 100%;
   height: auto;
   max-height: 100%;
+}
+body .page.A4 .right_column .images .image.left img,
+body .page.A4 .right_column .images .image.right img,
+body .page.A4 .right_column .images .image.middle img {
+  max-width: 50%;
+}
+body .page.A4 .right_column .images .image.right {
+  text-align: right;
+}
+body .page.A4 .right_column .images .image.middle {
+  text-align: center;
 }

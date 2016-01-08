@@ -5,6 +5,32 @@ vendor(prop,args)
 	-o-{prop} args
 	{prop} args
 
+clickable($bg,$bg2=0,$colour=0,$colour2=0)
+	cursor pointer
+	background-color $bg
+	if $colour != 0
+		color $colour
+		a
+			color $colour
+	&:hover
+		if $bg2 == 0
+			background-color $bg
+		else
+			background-color $bg2
+		if $colour2 != 0
+			color $colour2
+			a
+				color $colour2
+	&.active
+		if $bg2 == 0
+			background-color $bg
+		else
+			background-color $bg2
+		if $colour2 != 0
+			color $colour2
+			a
+				color $colour2
+
 sans-serif()
 	font-family sans-serif
 
@@ -35,7 +61,7 @@ body
 		position relative
 		.remove
 			sans-serif()
-			background white
+			clickable white, darken(red,24%), black, white
 			position absolute
 			top 6px
 			right 6px
@@ -45,15 +71,34 @@ body
 			line-height 24px
 			text-align center
 			font-weight 100
-			color black
-			cursor pointer
-			&:hover
-				background darken(red,24%)
-				color white
+	
 	.nodrop
 		background red
 	.fade
 		transition background .8s
+	
+	.classable
+		.classes
+			position absolute
+			top 6px
+			left 6px
+			text-align left
+			.expander
+				clickable white, darken(red,24%), black, white
+				width 25px
+				height 25px
+				line-height 28px
+				text-align center
+			.list
+				display none
+				.item
+					clickable white, black, black, white
+					padding 6px 8px
+			&:hover
+				.expander
+					display none
+				.list
+					display block
 
 	.page
 		background white

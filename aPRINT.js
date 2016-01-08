@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -68,10 +68,11 @@
       }
     };
     activateContent = function() {
-      var i, j, len, len1, len2, m, page, removable, removables, results, sortable, sortables;
+      var classable, classables, i, j, len, len1, len2, len3, m, n, page, removable, removables, results, sortable, sortables;
       _pages = _body.querySelectorAll('.page');
       sortables = _body.querySelectorAll('.sortable');
       removables = _body.querySelectorAll('.removable');
+      classables = _body.querySelectorAll('.classable');
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
@@ -81,10 +82,14 @@
         disableNestedImageDrag(sortable);
         makeSortable(sortable);
       }
-      results = [];
       for (m = 0, len2 = removables.length; m < len2; m++) {
         removable = removables[m];
-        results.push(makeRemovable(removable));
+        makeRemovable(removable);
+      }
+      results = [];
+      for (n = 0, len3 = classables.length; n < len3; n++) {
+        classable = classables[n];
+        results.push(makeClassable(classable));
       }
       return results;
     };
@@ -99,7 +104,7 @@
       return results;
     };
     addDragDroppable = function(drag, drop) {
-      var drag_selector, draggable, draggables, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, replace_on_drop, results;
+      var drag_selector, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, replace_on_drop, results;
       drag_selector = drag;
       if (typeof drop === 'string') {
         drop_selector = drop;
@@ -108,6 +113,7 @@
       }
       replace_on_drop = typeof drop.replace === 'boolean' ? drop.replace : false;
       overflow_action = drop.overflow ? drop.overflow : false;
+      drop_classes = drop.classes ? drop.classes : false;
       draggables = document.querySelectorAll(drag_selector);
       droppables = _body.querySelectorAll(drop_selector);
       for (i = 0, len = draggables.length; i < len; i++) {
@@ -174,7 +180,11 @@
           if (_current_drop_selector === drop_selector) {
             droppable.classList.remove('over');
             clone = _current_draggable.cloneNode(true);
+            if (drop_classes) {
+              clone.dataset.classList = drop_classes;
+            }
             makeRemovable(clone);
+            makeClassable(clone);
             if (replace_on_drop) {
               droppable.innerHTML = '';
               droppable.appendChild(clone);
@@ -224,6 +234,41 @@
         el.appendChild(trasher);
       }
       return trasher.addEventListener('click', onTrashClick);
+    };
+    makeClassable = function(el) {
+      var class_list, cls, container, expander, i, item, len, list;
+      el.classList.add('classable');
+      container = el.querySelector('.classes');
+      if (!container) {
+        class_list = el.dataset.classList.split(',');
+        container = document.createElement('div');
+        container.classList.add('classes');
+        expander = document.createElement('div');
+        expander.classList.add('expander');
+        expander.innerHTML = '&bull;';
+        container.appendChild(expander);
+        list = document.createElement('div');
+        list.classList.add('list');
+        class_list.unshift('none');
+        for (i = 0, len = class_list.length; i < len; i++) {
+          cls = class_list[i];
+          item = document.createElement('div');
+          item.classList.add('item');
+          item.innerHTML = cls;
+          list.appendChild(item);
+          item.addEventListener('click', function(e) {
+            var j, len1;
+            for (j = 0, len1 = class_list.length; j < len1; j++) {
+              cls = class_list[j];
+              el.classList.remove(cls);
+            }
+            el.classList.add(this.innerHTML);
+            return checkOverflow(el.parentNode);
+          });
+        }
+        container.appendChild(list);
+        return el.appendChild(container);
+      }
     };
     makeSortable = function(el) {
       el.draggable = true;
@@ -286,7 +331,7 @@
     };
     checkOverflow = function(droppable, element) {
       var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
-      if (_is_sorting) {
+      if (_is_sorting || !element) {
         els = droppable.querySelectorAll('.removable');
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];

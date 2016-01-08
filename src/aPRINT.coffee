@@ -126,6 +126,7 @@ A = (selector,options)->
 		_pages = _body.querySelectorAll '.page'
 		sortables = _body.querySelectorAll '.sortable'
 		removables = _body.querySelectorAll '.removable'
+		classables = _body.querySelectorAll '.classable'
 		for page in _pages
 			disableNestedImageDrag page
 			# makeSortable page
@@ -134,6 +135,8 @@ A = (selector,options)->
 			makeSortable sortable
 		for removable in removables
 			makeRemovable removable
+		for classable in classables
+			makeClassable classable
 
 	setupListeners = ->
 		for drag,drop of _settings.rules
@@ -147,6 +150,7 @@ A = (selector,options)->
 			drop_selector = drop.target
 		replace_on_drop = if typeof drop.replace is 'boolean' then drop.replace else false
 		overflow_action = if drop.overflow then drop.overflow else false
+		drop_classes = if drop.classes then drop.classes else false
 		draggables = document.querySelectorAll drag_selector
 		droppables = _body.querySelectorAll drop_selector
 		
@@ -199,7 +203,9 @@ A = (selector,options)->
 				if _current_drop_selector is drop_selector
 					droppable.classList.remove 'over'
 					clone = _current_draggable.cloneNode(true)
+					if drop_classes then clone.dataset.classList = drop_classes
 					makeRemovable clone
+					makeClassable clone
 					if replace_on_drop
 						droppable.innerHTML = ''
 						droppable.appendChild clone
@@ -234,6 +240,33 @@ A = (selector,options)->
 			trasher.classList.add 'remove'
 			el.appendChild trasher
 		trasher.addEventListener 'click', onTrashClick
+
+	makeClassable = (el)->
+		el.classList.add 'classable'
+		container = el.querySelector '.classes'
+		if not container
+			class_list = el.dataset.classList.split ','
+			container = document.createElement 'div'
+			container.classList.add 'classes'
+			expander = document.createElement 'div'
+			expander.classList.add 'expander'
+			expander.innerHTML = '&bull;'
+			container.appendChild expander
+			list = document.createElement 'div'
+			list.classList.add 'list'
+			class_list.unshift 'none'
+			for cls in class_list
+				item = document.createElement 'div'
+				item.classList.add 'item'
+				item.innerHTML = cls
+				list.appendChild item
+				item.addEventListener 'click', (e)->
+					for cls in class_list
+						el.classList.remove cls
+					el.classList.add this.innerHTML
+					checkOverflow el.parentNode
+			container.appendChild list
+			el.appendChild container
 
 	makeSortable = (el)->
 		el.draggable = true
@@ -284,7 +317,7 @@ A = (selector,options)->
 		fireCallbacks 'remove', e
 
 	checkOverflow = (droppable,element)->
-		if _is_sorting
+		if _is_sorting or not element
 			els = droppable.querySelectorAll '.removable'
 			for el in els
 				el.style.height = 'auto'

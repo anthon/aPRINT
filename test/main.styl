@@ -43,7 +43,17 @@ body
 				width ((100/3)*2)%
 				.images
 					height 100%
-					img
-						max-width 100%
-						height auto
-						max-height 100%
+					.image
+						img
+							max-width 100%
+							height auto
+							max-height 100%
+						&.left
+						&.right
+						&.middle
+							img
+								max-width 50%
+						&.right
+							text-align right
+						&.middle
+							text-align center

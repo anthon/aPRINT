@@ -69,16 +69,16 @@ html(lang="en")
 									| &times;
 						.left_column
 							.texts
-								.text
+								.text.sortable.removable
 									p
 										| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 						.right_column
 							.images
-								.image.sortable.removable
+								.image.sortable.removable.classable(data-class-list="left,right,middle")
 									img(src="http://placehold.it/1420x1240/0FF/FFF")
-								.image.sortable.removable
+								.image.sortable.removable.classable(data-class-list="left,right,middle")
 									img(src="http://placehold.it/420x240/FF0/000")
-								.image.sortable.removable(style="opacity: 1; height: 24.2748%;")
+								.image.sortable.removable.classable(style="opacity: 1; height: 24.2748%;",data-class-list="left,right,middle")
 									img(src="http://placehold.it/1120x1640/F00/FFF")
 		
 	script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
@@ -98,7 +98,8 @@ html(lang="en")
 					'#left .text': '.texts',
 					'#left .image': {
 						target: '.images',
-						overflow: 'shrinkLast'
+						overflow: 'shrinkLast',
+						classes: ['left','middle','right']
 					}
 				}
 			});
