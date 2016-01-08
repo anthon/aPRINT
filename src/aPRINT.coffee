@@ -143,7 +143,7 @@ A = (selector,options)->
 					  background-color: rgba(255,255,255,0.12);
 					  color: #000;
 					  position: relative;
-					  bottom: -4rem;
+					  bottom: -12px;
 					  width: 60%;
 					  margin: 0 auto;
 					  font-size: 18px;
