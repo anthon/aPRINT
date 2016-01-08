@@ -3,13 +3,14 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
     _callbacks = {};
     _current_draggable = null;
     _current_drop_selector = null;
+    _current_sortable_target = null;
     _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; background: #fff; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; color: #000; cursor: pointer; } body .removable .remove:hover { background: #c20000; color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .page { background: #fff; width: 90vw; margin: 4rem auto; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
       stylesheet: null,
@@ -22,17 +23,23 @@
         value = options[key];
         _settings[key] = value;
       }
-      createIframe();
-      activateContent();
-      return setupListeners();
+      return createIframe();
     };
     createIframe = function() {
       _body = document.querySelector(selector);
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
       _frame.height = _body.offsetHeight;
-      _frame.style.resize = 'horizontal';
       _body.parentNode.insertBefore(_frame, _body);
+      if (_frame.contentWindow.document.readyState === 'complete') {
+        return populateIframe();
+      } else {
+        return _frame.contentWindow.addEventListener('load', function() {
+          return populateIframe();
+        });
+      }
+    };
+    populateIframe = function() {
       _frame.contentDocument.body.appendChild(_body);
       if (_settings.baseStyle) {
         insertStyle(_settings.baseStyle, true);
@@ -40,8 +47,10 @@
         insertStyle(_baseStyle);
       }
       if (_settings.stylesheet) {
-        return insertStyle(_settings.stylesheet, true);
+        insertStyle(_settings.stylesheet, true);
       }
+      activateContent();
+      return setupListeners();
     };
     insertStyle = function(style, is_link) {
       var styleLink, styleTag;
@@ -105,8 +114,10 @@
         draggable.draggable = true;
         disableNestedImageDrag(draggable);
         draggable.addEventListener('dragstart', function(e) {
+          console.log(draggable);
           e.dataTransfer.effectAllowed = 'move';
-          _current_draggable = e.srcElement;
+          e.dataTransfer.setData('source', 'external');
+          _current_draggable = e.target;
           _current_drop_selector = drop_selector;
           draggable.classList.add('drag');
           return false;
@@ -137,7 +148,7 @@
             _current_draggable.style.opacity = 0;
             if (e.target === droppable) {
               insertNextTo(_current_draggable, droppable.lastChild);
-            } else {
+            } else if (_current_sortable_target !== _current_draggable) {
               insertNextTo(_current_draggable, getSortable(e.target, droppable));
             }
             fireCallbacks('dragover', e);
@@ -195,6 +206,7 @@
       results = [];
       for (i = 0, len = images_in_draggable.length; i < len; i++) {
         image = images_in_draggable[i];
+        image.draggable = false;
         image.style['user-drag'] = 'none';
         image.style['-moz-user-select'] = 'none';
         results.push(image.style['-webkit-user-drag'] = 'none');
@@ -219,16 +231,20 @@
       el.addEventListener('dragstart', function(e) {
         e.dataTransfer.dropEffect = 'move';
         e.dataTransfer.effectAllowed = 'move';
-        _current_draggable = e.srcElement;
-        el.classList.add('drag');
+        e.dataTransfer.setData('source', 'internal');
+        _current_draggable = e.target;
+        _current_draggable.classList.add('drag');
         return false;
       });
-      return el.addEventListener('dragend', function(e) {
-        el.classList.remove('drag');
-        el.style.opacity = 1;
-        checkOverflow(e.srcElement.parentNode);
+      el.addEventListener('dragend', function(e) {
+        _current_draggable.classList.remove('drag');
+        _current_draggable.style.opacity = 1;
+        checkOverflow(e.target.parentNode);
         _current_draggable = null;
         return false;
+      });
+      return el.addEventListener('dragover', function(e) {
+        return _current_sortable_target = el;
       });
     };
     insertNextTo = function(el, sibling) {

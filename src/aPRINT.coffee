@@ -6,6 +6,7 @@ A = (selector,options)->
 	_callbacks = {}
 	_current_draggable = null
 	_current_drop_selector = null
+	_current_sortable_target = null
 	_baseStyle = 	'* {
 					  -webkit-box-sizing: border-box;
 					  -moz-box-sizing: border-box;
@@ -82,8 +83,6 @@ A = (selector,options)->
 			_settings[key] = value
 
 		createIframe()
-		activateContent()
-		setupListeners()
 
 	createIframe = ->
 		_body = document.querySelector selector
@@ -91,14 +90,24 @@ A = (selector,options)->
 		_frame.width = _body.offsetWidth
 		_frame.height = _body.offsetHeight
 		# _frame.style.borderWidth = 0
-		_frame.style.resize = 'horizontal'
+		# _frame.style.resize = 'horizontal'
+		# _frame.src = 'about:blank'
 		_body.parentNode.insertBefore _frame, _body
+		if _frame.contentWindow.document.readyState is 'complete'
+			populateIframe()
+		else
+			_frame.contentWindow.addEventListener 'load', ->
+				populateIframe()
+
+	populateIframe = ->
 		_frame.contentDocument.body.appendChild _body
 		if _settings.baseStyle
 			insertStyle _settings.baseStyle, true
 		else
 			insertStyle _baseStyle
 		if _settings.stylesheet then insertStyle _settings.stylesheet, true
+		activateContent()
+		setupListeners()
 
 	insertStyle = (style,is_link)->
 		if is_link
@@ -144,8 +153,10 @@ A = (selector,options)->
 			draggable.draggable = true
 			disableNestedImageDrag(draggable)
 			draggable.addEventListener 'dragstart', (e)->
+				console.log draggable
 				e.dataTransfer.effectAllowed = 'move'
-				_current_draggable = e.srcElement
+				e.dataTransfer.setData 'source','external'
+				_current_draggable = e.target
 				_current_drop_selector = drop_selector
 				draggable.classList.add 'drag'
 				return false
@@ -168,7 +179,7 @@ A = (selector,options)->
 					_current_draggable.style.opacity = 0
 					if e.target is droppable
 						insertNextTo _current_draggable, droppable.lastChild
-					else
+					else if _current_sortable_target isnt _current_draggable
 						insertNextTo _current_draggable, getSortable(e.target,droppable)
 					fireCallbacks('dragover',e)
 				return false
@@ -209,6 +220,7 @@ A = (selector,options)->
 	disableNestedImageDrag = (el)->
 		images_in_draggable = el.querySelectorAll 'img'
 		for image in images_in_draggable
+			image.draggable = false
 			image.style['user-drag'] = 'none'
 			image.style['-moz-user-select'] = 'none'
 			image.style['-webkit-user-drag'] = 'none'
@@ -229,15 +241,18 @@ A = (selector,options)->
 		el.addEventListener 'dragstart', (e)->
 			e.dataTransfer.dropEffect = 'move'
 			e.dataTransfer.effectAllowed = 'move'
-			_current_draggable = e.srcElement
-			el.classList.add 'drag'
+			e.dataTransfer.setData 'source','internal'
+			_current_draggable = e.target
+			_current_draggable.classList.add 'drag'
 			return false
 		el.addEventListener 'dragend', (e)->
-			el.classList.remove 'drag'
-			el.style.opacity = 1
-			checkOverflow e.srcElement.parentNode
+			_current_draggable.classList.remove 'drag'
+			_current_draggable.style.opacity = 1
+			checkOverflow e.target.parentNode
 			_current_draggable = null
 			return false
+		el.addEventListener 'dragover', (e)->
+			_current_sortable_target = el
 
 	insertNextTo = (el,sibling)->
 		parent = sibling.parentNode

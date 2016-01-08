@@ -4,7 +4,8 @@ body .page.A4 {
 body .page.A4 .header,
 body .page.A4 .left_column,
 body .page.A4 .right_column {
-  font-size: 1.511904857142857vw;
+  font-size: 1.965476314285714vw;
+  line-height: 2.721428742857142vw;
 }
 body .page.A4 .header {
   font-family: sans-serif;
