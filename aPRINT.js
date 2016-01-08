@@ -89,6 +89,7 @@
       results = [];
       for (n = 0, len3 = classables.length; n < len3; n++) {
         classable = classables[n];
+        console.log(classable);
         results.push(makeClassable(classable));
       }
       return results;
@@ -366,7 +367,9 @@
             }
             break;
           default:
-            element.remove();
+            if (!_is_sorting) {
+              element.remove();
+            }
             return refuseDrop(droppable);
         }
       } else {

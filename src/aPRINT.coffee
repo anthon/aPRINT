@@ -213,6 +213,7 @@ A = (selector,options)->
 		for removable in removables
 			makeRemovable removable
 		for classable in classables
+			console.log classable
 			makeClassable classable
 
 	setupListeners = ->
@@ -420,7 +421,7 @@ A = (selector,options)->
 						if not _is_sorting then element.remove()
 						refuseDrop droppable
 				else
-					element.remove()
+					if not _is_sorting then element.remove()
 					refuseDrop droppable
 		else
 			fireCallbacks 'update'
