@@ -321,9 +321,9 @@ A = (selector,options)->
 
 	makeClassable = (el)->
 		el.classList.add 'classable'
-		container = el.querySelector '.classes'
-		if not container
-			class_list = el.dataset.classList.split ','
+		items = el.querySelectorAll '.classes .item'
+		class_list = el.dataset.classList.split ','
+		if items.length is 0
 			container = document.createElement 'div'
 			container.classList.add 'classes'
 			expander = document.createElement 'div'
@@ -338,13 +338,14 @@ A = (selector,options)->
 				item.classList.add 'item'
 				item.innerHTML = cls
 				list.appendChild item
-				item.addEventListener 'click', (e)->
-					for cls in class_list
-						el.classList.remove cls
-					el.classList.add this.innerHTML
-					checkOverflow el.parentNode
 			container.appendChild list
 			el.appendChild container
+		for item in items
+			item.addEventListener 'click', (e)->
+				for cls in class_list
+					el.classList.remove cls
+				el.classList.add this.innerHTML
+				checkOverflow el.parentNode
 
 	makeSortable = (el)->
 		el.draggable = true

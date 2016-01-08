@@ -237,11 +237,11 @@
       return trasher.addEventListener('click', onTrashClick);
     };
     makeClassable = function(el) {
-      var class_list, cls, container, expander, i, item, len, list;
+      var class_list, cls, container, expander, i, item, items, j, len, len1, list, results;
       el.classList.add('classable');
-      container = el.querySelector('.classes');
-      if (!container) {
-        class_list = el.dataset.classList.split(',');
+      items = el.querySelectorAll('.classes .item');
+      class_list = el.dataset.classList.split(',');
+      if (items.length === 0) {
         container = document.createElement('div');
         container.classList.add('classes');
         expander = document.createElement('div');
@@ -257,19 +257,24 @@
           item.classList.add('item');
           item.innerHTML = cls;
           list.appendChild(item);
-          item.addEventListener('click', function(e) {
-            var j, len1;
-            for (j = 0, len1 = class_list.length; j < len1; j++) {
-              cls = class_list[j];
-              el.classList.remove(cls);
-            }
-            el.classList.add(this.innerHTML);
-            return checkOverflow(el.parentNode);
-          });
         }
         container.appendChild(list);
-        return el.appendChild(container);
+        el.appendChild(container);
       }
+      results = [];
+      for (j = 0, len1 = items.length; j < len1; j++) {
+        item = items[j];
+        results.push(item.addEventListener('click', function(e) {
+          var len2, m;
+          for (m = 0, len2 = class_list.length; m < len2; m++) {
+            cls = class_list[m];
+            el.classList.remove(cls);
+          }
+          el.classList.add(this.innerHTML);
+          return checkOverflow(el.parentNode);
+        }));
+      }
+      return results;
     };
     makeSortable = function(el) {
       el.draggable = true;
