@@ -125,7 +125,37 @@ body .classable .classes:hover .list {
 body .page {
   background: #fff;
   width: 90vw;
-  margin: 4rem auto;
+  margin: 4rem auto 48px;
+  box-shadow: 0 0 4px 1px rgba(0,0,0,0.24);
+}
+body .page .add_page {
+  cursor: pointer;
+  background-color: rgba(255,255,255,0.12);
+  color: #000;
+  position: relative;
+  bottom: -4rem;
+  width: 60%;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.4;
+  text-align: center;
+}
+body .page .add_page a {
+  color: #000;
+}
+body .page .add_page:hover {
+  background-color: #fff;
+  color: #000;
+}
+body .page .add_page:hover a {
+  color: #000;
+}
+body .page .add_page.active {
+  background-color: #fff;
+  color: #000;
+}
+body .page .add_page.active a {
+  color: #000;
 }
 body .page.A4 {
   height: 127.28571428571429vw;

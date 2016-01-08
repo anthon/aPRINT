@@ -103,7 +103,17 @@ body
 	.page
 		background white
 		width (pageWidth)vw
-		margin 4rem auto
+		margin 4rem auto 48px
+		box-shadow 0 0 4px 1px rgba(0,0,0,.24)
+		.add_page
+			clickable rgba(255,255,255,.12), white, black, black
+			position relative
+			bottom -4rem
+			width 60%
+			margin 0 auto
+			font-size 18px
+			line-height 1.4
+			text-align center
 		&.A4
 			height ((a4height/a4width)*90)vw
 			// .header

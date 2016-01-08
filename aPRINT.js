@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addDragDroppable, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -12,7 +12,7 @@
     _current_drop_selector = null;
     _current_sortable_target = null;
     _is_sorting = false;
-    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; cursor: pointer; background-color: #fff; color: #000; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; } body .removable .remove a { color: #000; } body .removable .remove:hover { background-color: #c20000; color: #fff; } body .removable .remove:hover a { color: #fff; } body .removable .remove.active { background-color: #c20000; color: #fff; } body .removable .remove.active a { color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .classable .classes { position: absolute; top: 6px; left: 6px; text-align: left; } body .classable .classes .expander { cursor: pointer; background-color: #fff; color: #000; width: 25px; height: 25px; line-height: 28px; text-align: center; } body .classable .classes .expander a { color: #000; } body .classable .classes .expander:hover { background-color: #c20000; color: #fff; } body .classable .classes .expander:hover a { color: #fff; } body .classable .classes .expander.active { background-color: #c20000; color: #fff; } body .classable .classes .expander.active a { color: #fff; } body .classable .classes .list { display: none; } body .classable .classes .list .item { cursor: pointer; background-color: #fff; color: #000; padding: 6px 8px; } body .classable .classes .list .item a { color: #000; } body .classable .classes .list .item:hover { background-color: #000; color: #fff; } body .classable .classes .list .item:hover a { color: #fff; } body .classable .classes .list .item.active { background-color: #000; color: #fff; } body .classable .classes .list .item.active a { color: #fff; } body .classable .classes:hover .expander { display: none; } body .classable .classes:hover .list { display: block; } body .page { background: #fff; width: 90vw; margin: 4rem auto; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
+    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: #808080; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; cursor: pointer; background-color: #fff; color: #000; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; } body .removable .remove a { color: #000; } body .removable .remove:hover { background-color: #c20000; color: #fff; } body .removable .remove:hover a { color: #fff; } body .removable .remove.active { background-color: #c20000; color: #fff; } body .removable .remove.active a { color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .classable .classes { position: absolute; top: 6px; left: 6px; text-align: left; } body .classable .classes .expander { cursor: pointer; background-color: #fff; color: #000; width: 25px; height: 25px; line-height: 28px; text-align: center; } body .classable .classes .expander a { color: #000; } body .classable .classes .expander:hover { background-color: #c20000; color: #fff; } body .classable .classes .expander:hover a { color: #fff; } body .classable .classes .expander.active { background-color: #c20000; color: #fff; } body .classable .classes .expander.active a { color: #fff; } body .classable .classes .list { display: none; } body .classable .classes .list .item { cursor: pointer; background-color: #fff; color: #000; padding: 6px 8px; } body .classable .classes .list .item a { color: #000; } body .classable .classes .list .item:hover { background-color: #000; color: #fff; } body .classable .classes .list .item:hover a { color: #fff; } body .classable .classes .list .item.active { background-color: #000; color: #fff; } body .classable .classes .list .item.active a { color: #fff; } body .classable .classes:hover .expander { display: none; } body .classable .classes:hover .list { display: block; } body .page { background: #fff; width: 90vw; margin: 4rem auto 48px; box-shadow: 0 0 4px 1px rgba(0,0,0,0.24); } body .page .add_page { cursor: pointer; background-color: rgba(255,255,255,0.12); color: #000; position: relative; bottom: -4rem; width: 60%; margin: 0 auto; font-size: 18px; line-height: 1.4; text-align: center; } body .page .add_page a { color: #000; } body .page .add_page:hover { background-color: #fff; color: #000; } body .page .add_page:hover a { color: #000; } body .page .add_page.active { background-color: #fff; color: #000; } body .page .add_page.active a { color: #000; } body .page.A4 { height: 127.28571428571429vw; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
       stylesheet: null,
       id: 'aPRINT',
@@ -76,6 +76,7 @@
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
+        addAddPage(page);
       }
       for (j = 0, len1 = sortables.length; j < len1; j++) {
         sortable = sortables[j];
@@ -93,6 +94,16 @@
         results.push(makeClassable(classable));
       }
       return results;
+    };
+    addAddPage = function(page) {
+      var adder;
+      adder = document.createElement('div');
+      adder.classList.add('add_page');
+      adder.innerHTML = '+';
+      adder.addEventListener('click', function() {
+        return addPage(page);
+      });
+      return page.appendChild(adder);
     };
     setupListeners = function() {
       var drag, drop, ref, results;
@@ -238,44 +249,46 @@
     };
     makeClassable = function(el) {
       var class_list, cls, container, expander, i, item, items, j, len, len1, list, results;
-      el.classList.add('classable');
-      items = el.querySelectorAll('.classes .item');
-      class_list = el.dataset.classList.split(',');
-      if (items.length === 0) {
-        container = document.createElement('div');
-        container.classList.add('classes');
-        expander = document.createElement('div');
-        expander.classList.add('expander');
-        expander.innerHTML = '&bull;';
-        container.appendChild(expander);
-        list = document.createElement('div');
-        list.classList.add('list');
-        class_list.unshift('none');
-        for (i = 0, len = class_list.length; i < len; i++) {
-          cls = class_list[i];
-          item = document.createElement('div');
-          item.classList.add('item');
-          item.innerHTML = cls;
-          list.appendChild(item);
-        }
-        items = list.querySelectorAll('.item');
-        container.appendChild(list);
-        el.appendChild(container);
-      }
-      results = [];
-      for (j = 0, len1 = items.length; j < len1; j++) {
-        item = items[j];
-        results.push(item.addEventListener('click', function(e) {
-          var len2, m;
-          for (m = 0, len2 = class_list.length; m < len2; m++) {
-            cls = class_list[m];
-            el.classList.remove(cls);
+      if (el.dataset.classList) {
+        el.classList.add('classable');
+        items = el.querySelectorAll('.classes .item');
+        class_list = el.dataset.classList.split(',');
+        if (items.length === 0) {
+          container = document.createElement('div');
+          container.classList.add('classes');
+          expander = document.createElement('div');
+          expander.classList.add('expander');
+          expander.innerHTML = '&bull;';
+          container.appendChild(expander);
+          list = document.createElement('div');
+          list.classList.add('list');
+          class_list.unshift('none');
+          for (i = 0, len = class_list.length; i < len; i++) {
+            cls = class_list[i];
+            item = document.createElement('div');
+            item.classList.add('item');
+            item.innerHTML = cls;
+            list.appendChild(item);
           }
-          el.classList.add(this.innerHTML);
-          return checkOverflow(el.parentNode);
-        }));
+          items = list.querySelectorAll('.item');
+          container.appendChild(list);
+          el.appendChild(container);
+        }
+        results = [];
+        for (j = 0, len1 = items.length; j < len1; j++) {
+          item = items[j];
+          results.push(item.addEventListener('click', function(e) {
+            var len2, m;
+            for (m = 0, len2 = class_list.length; m < len2; m++) {
+              cls = class_list[m];
+              el.classList.remove(cls);
+            }
+            el.classList.add(this.innerHTML);
+            return checkOverflow(el.parentNode);
+          }));
+        }
+        return results;
       }
-      return results;
     };
     makeSortable = function(el) {
       el.draggable = true;
@@ -327,6 +340,20 @@
         el = el_parent;
       }
       return el;
+    };
+    addPage = function(page) {
+      var i, len, new_page, removable, removables;
+      if (!page) {
+        page = _body.lastChild;
+      }
+      new_page = _body.querySelector('.page').cloneNode(true);
+      removables = new_page.querySelectorAll('.removable');
+      for (i = 0, len = removables.length; i < len; i++) {
+        removable = removables[i];
+        removable.remove();
+      }
+      _body.insertBefore(new_page, page.nextSibling);
+      return setupListeners();
     };
     onTrashClick = function(e) {
       var droppable, el;

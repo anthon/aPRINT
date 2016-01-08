@@ -135,7 +135,37 @@ A = (selector,options)->
 					body .page {
 					  background: #fff;
 					  width: 90vw;
-					  margin: 4rem auto;
+					  margin: 4rem auto 48px;
+					  box-shadow: 0 0 4px 1px rgba(0,0,0,0.24);
+					}
+					body .page .add_page {
+					  cursor: pointer;
+					  background-color: rgba(255,255,255,0.12);
+					  color: #000;
+					  position: relative;
+					  bottom: -4rem;
+					  width: 60%;
+					  margin: 0 auto;
+					  font-size: 18px;
+					  line-height: 1.4;
+					  text-align: center;
+					}
+					body .page .add_page a {
+					  color: #000;
+					}
+					body .page .add_page:hover {
+					  background-color: #fff;
+					  color: #000;
+					}
+					body .page .add_page:hover a {
+					  color: #000;
+					}
+					body .page .add_page.active {
+					  background-color: #fff;
+					  color: #000;
+					}
+					body .page .add_page.active a {
+					  color: #000;
 					}
 					body .page.A4 {
 					  height: 127.28571428571429vw;
@@ -207,6 +237,7 @@ A = (selector,options)->
 		for page in _pages
 			disableNestedImageDrag page
 			# makeSortable page
+			addAddPage page
 		for sortable in sortables
 			disableNestedImageDrag sortable
 			makeSortable sortable
@@ -215,6 +246,14 @@ A = (selector,options)->
 		for classable in classables
 			console.log classable
 			makeClassable classable
+
+	addAddPage = (page)->
+		adder = document.createElement 'div'
+		adder.classList.add 'add_page'
+		adder.innerHTML = '+'
+		adder.addEventListener 'click', ->
+			addPage page
+		page.appendChild adder
 
 	setupListeners = ->
 		for drag,drop of _settings.rules
@@ -320,33 +359,34 @@ A = (selector,options)->
 		trasher.addEventListener 'click', onTrashClick
 
 	makeClassable = (el)->
-		el.classList.add 'classable'
-		items = el.querySelectorAll '.classes .item'
-		class_list = el.dataset.classList.split ','
-		if items.length is 0
-			container = document.createElement 'div'
-			container.classList.add 'classes'
-			expander = document.createElement 'div'
-			expander.classList.add 'expander'
-			expander.innerHTML = '&bull;'
-			container.appendChild expander
-			list = document.createElement 'div'
-			list.classList.add 'list'
-			class_list.unshift 'none'
-			for cls in class_list
-				item = document.createElement 'div'
-				item.classList.add 'item'
-				item.innerHTML = cls
-				list.appendChild item
-			items = list.querySelectorAll '.item'
-			container.appendChild list
-			el.appendChild container
-		for item in items
-			item.addEventListener 'click', (e)->
+		if el.dataset.classList
+			el.classList.add 'classable'
+			items = el.querySelectorAll '.classes .item'
+			class_list = el.dataset.classList.split ','
+			if items.length is 0
+				container = document.createElement 'div'
+				container.classList.add 'classes'
+				expander = document.createElement 'div'
+				expander.classList.add 'expander'
+				expander.innerHTML = '&bull;'
+				container.appendChild expander
+				list = document.createElement 'div'
+				list.classList.add 'list'
+				class_list.unshift 'none'
 				for cls in class_list
-					el.classList.remove cls
-				el.classList.add this.innerHTML
-				checkOverflow el.parentNode
+					item = document.createElement 'div'
+					item.classList.add 'item'
+					item.innerHTML = cls
+					list.appendChild item
+				items = list.querySelectorAll '.item'
+				container.appendChild list
+				el.appendChild container
+			for item in items
+				item.addEventListener 'click', (e)->
+					for cls in class_list
+						el.classList.remove cls
+					el.classList.add this.innerHTML
+					checkOverflow el.parentNode
 
 	makeSortable = (el)->
 		el.draggable = true
@@ -388,6 +428,15 @@ A = (selector,options)->
 			break if el_parent is parent
 			el = el_parent
 		return el
+
+	addPage = (page)->
+		if not page then page = _body.lastChild
+		new_page = _body.querySelector('.page').cloneNode true
+		removables = new_page.querySelectorAll '.removable'
+		for removable in removables
+			removable.remove()
+		_body.insertBefore new_page, page.nextSibling
+		setupListeners()
 
 	onTrashClick = (e)->
 		el = e.target.parentNode
