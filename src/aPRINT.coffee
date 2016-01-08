@@ -338,7 +338,7 @@ A = (selector,options)->
 				item.classList.add 'item'
 				item.innerHTML = cls
 				list.appendChild item
-				items.push item
+			items = list.querySelectorAll '.item'
 			container.appendChild list
 			el.appendChild container
 		for item in items
