@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -68,6 +68,10 @@
         styleTag.innerHTML = style;
         return _frame.contentDocument.head.appendChild(styleTag);
       }
+    };
+    addEventListener = function(el, evt, callback) {
+      el.removeEventListener(evt, callback);
+      return el.addEventListener(evt, callback);
     };
     activateContent = function() {
       var classable, classables, i, j, len, len1, len2, len3, m, n, page, removable, removables, results, sortable, sortables;
@@ -225,10 +229,8 @@
         }
         draggable.dataset.dropSelector = drop_selector;
         disableNestedImageDrag(draggable);
-        draggable.removeEventListener('dragstart', onDraggableDragStart);
-        draggable.addEventListener('dragstart', onDraggableDragStart);
-        draggable.removeEventListener('dragend', onDraggableDragEnd);
-        draggable.addEventListener('dragend', onDraggableDragEnd);
+        addEventListener(draggable, 'dragstart', onDraggableDragStart);
+        addEventListener(draggable, 'dragend', onDraggableDragEnd);
       }
       results = [];
       for (j = 0, len1 = droppables.length; j < len1; j++) {
@@ -238,14 +240,10 @@
         if (replace_on_drop) {
           droppable.dataset.replace = true;
         }
-        droppable.removeEventListener('dragover', onDroppableDragOver);
-        droppable.addEventListener('dragover', onDroppableDragOver);
-        droppable.removeEventListener('dragenter', onDroppableDragEnter);
-        droppable.addEventListener('dragenter', onDroppableDragEnter);
-        droppable.removeEventListener('dragleave', onDroppableDragLeave);
-        droppable.addEventListener('dragleave', onDroppableDragLeave);
-        droppable.removeEventListener('drop', onDroppableDrop);
-        results.push(droppable.addEventListener('drop', onDroppableDrop));
+        addEventListener(droppable, 'dragover', onDroppableDragOver);
+        addEventListener(droppable, 'dragenter', onDroppableDragEnter);
+        addEventListener(droppable, 'dragleave', onDroppableDragLeave);
+        results.push(addEventListener(droppable, 'drop', onDroppableDrop));
       }
       return results;
     };

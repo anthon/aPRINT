@@ -229,6 +229,10 @@ A = (selector,options)->
 			styleTag.innerHTML = style
 			_frame.contentDocument.head.appendChild(styleTag)
 
+	addEventListener = (el,evt,callback)->
+		el.removeEventListener evt, callback
+		el.addEventListener evt, callback
+
 	activateContent = ->
 		sortables = _body.querySelectorAll '.sortable'
 		removables = _body.querySelectorAll '.removable'
@@ -345,28 +349,18 @@ A = (selector,options)->
 			draggable.dataset.dropSelector = drop_selector
 			disableNestedImageDrag(draggable)
 			
-			draggable.removeEventListener 'dragstart', onDraggableDragStart
-			draggable.addEventListener 'dragstart', onDraggableDragStart
-			
-			draggable.removeEventListener 'dragend', onDraggableDragEnd
-			draggable.addEventListener 'dragend', onDraggableDragEnd
+			addEventListener draggable, 'dragstart', onDraggableDragStart
+			addEventListener draggable, 'dragend', onDraggableDragEnd
 		
 		for droppable in droppables
 			droppable.dataset.dropSelector = drop_selector
 			droppable.dataset.overflowAction = overflow_action
 			if replace_on_drop then droppable.dataset.replace = true
 
-			droppable.removeEventListener 'dragover', onDroppableDragOver
-			droppable.addEventListener 'dragover', onDroppableDragOver
-
-			droppable.removeEventListener 'dragenter', onDroppableDragEnter
-			droppable.addEventListener 'dragenter', onDroppableDragEnter
-
-			droppable.removeEventListener 'dragleave', onDroppableDragLeave
-			droppable.addEventListener 'dragleave', onDroppableDragLeave
-
-			droppable.removeEventListener 'drop', onDroppableDrop
-			droppable.addEventListener 'drop', onDroppableDrop
+			addEventListener droppable, 'dragover', onDroppableDragOver
+			addEventListener droppable, 'dragenter', onDroppableDragEnter
+			addEventListener droppable, 'dragleave', onDroppableDragLeave
+			addEventListener droppable, 'drop', onDroppableDrop
 
 	disableNestedImageDrag = (el)->
 		images_in_draggable = el.querySelectorAll 'img'
