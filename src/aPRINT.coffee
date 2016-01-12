@@ -535,7 +535,6 @@ A = (selector,options)->
 		print: print
 		on: setCallback
 		get: getHTML
-		refresh: refresh
 	}
 
 window.aPRINT = (selector,options)->

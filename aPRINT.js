@@ -484,8 +484,7 @@
     return {
       print: print,
       on: setCallback,
-      get: getHTML,
-      refresh: refresh
+      get: getHTML
     };
   };
 
