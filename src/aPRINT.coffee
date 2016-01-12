@@ -538,4 +538,7 @@ A = (selector,options)->
 	}
 
 window.aPRINT = (selector,options)->
-	new A(selector,options)
+	el = document.querySelector(selector)
+	if el then return new A(selector,options) else return false
+
+	

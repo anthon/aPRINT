@@ -81,29 +81,27 @@ html(lang="en")
 								.image.sortable.removable.classable(style="opacity: 1; height: 24.2748%;",data-class-list="left,right,middle")
 									img(src="http://placehold.it/1120x1640/F00/FFF")
 		
-	script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+	//- script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
 	script(src="../aPRINT.js")
 	script.
-		$(document).ready(function(){
-			var print = aPRINT('#print',{
-				frame_src: '/test/blank.html',
-				format: 'A4',
-				baseStyle: '../aPRINT.css',
-				stylesheet: 'main.css',
-				rules: {
-					'#left .title': {
-						target: '.header',
-						replace: true
-					},
-					'#left .text': '.texts',
-					'#left .image': {
-						target: '.images',
-						overflow: 'shrinkLast',
-						classes: ['left','middle','right']
-					}
+		var print = aPRINT('#print',{
+			frame_src: '/test/blank.html',
+			format: 'A4',
+			baseStyle: '../aPRINT.css',
+			stylesheet: 'main.css',
+			rules: {
+				'#left .title': {
+					target: '.header',
+					replace: true
+				},
+				'#left .text': '.texts',
+				'#left .image': {
+					target: '.images',
+					overflow: 'shrinkLast',
+					classes: ['left','middle','right']
 				}
-			});
-			print.on('update', function(e) {
-				console.log(e);
-			});
+			}
+		});
+		print.on('update', function(e) {
+			console.log(e);
 		});

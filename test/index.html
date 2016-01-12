@@ -79,31 +79,28 @@
       </div>
     </div>
   </body>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script src="../aPRINT.js"></script>
   <script>
-    $(document).ready(function(){
-    	var print = aPRINT('#print',{
-    		frame_src: '/test/blank.html',
-    		format: 'A4',
-    		baseStyle: '../aPRINT.css',
-    		stylesheet: 'main.css',
-    		rules: {
-    			'#left .title': {
-    				target: '.header',
-    				replace: true
-    			},
-    			'#left .text': '.texts',
-    			'#left .image': {
-    				target: '.images',
-    				overflow: 'shrinkLast',
-    				classes: ['left','middle','right']
-    			}
+    var print = aPRINT('#print',{
+    	frame_src: '/test/blank.html',
+    	format: 'A4',
+    	baseStyle: '../aPRINT.css',
+    	stylesheet: 'main.css',
+    	rules: {
+    		'#left .title': {
+    			target: '.header',
+    			replace: true
+    		},
+    		'#left .text': '.texts',
+    		'#left .image': {
+    			target: '.images',
+    			overflow: 'shrinkLast',
+    			classes: ['left','middle','right']
     		}
-    	});
-    	print.on('update', function(e) {
-    		console.log(e);
-    	});
+    	}
+    });
+    print.on('update', function(e) {
+    	console.log(e);
     });
   </script>
 </html>

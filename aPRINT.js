@@ -489,7 +489,13 @@
   };
 
   window.aPRINT = function(selector, options) {
-    return new A(selector, options);
+    var el;
+    el = document.querySelector(selector);
+    if (el) {
+      return new A(selector, options);
+    } else {
+      return false;
+    }
   };
 
 }).call(this);
