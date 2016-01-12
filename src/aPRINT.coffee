@@ -535,10 +535,10 @@ A = (selector,options)->
 		print: print
 		on: setCallback
 		get: getHTML
+		refresh: refresh
 	}
 
 window.aPRINT = (selector,options)->
 	el = document.querySelector(selector)
 	if el then return new A(selector,options) else return false
 
-	
