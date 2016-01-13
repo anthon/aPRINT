@@ -22,7 +22,7 @@ A = (selector,options)->
 					  font-size: 0.428571428571429vw;
 					}
 					body {
-					  background: #808080;
+					  background: transparent;
 					}
 					body .over {
 					  background: #94ff94;
@@ -183,6 +183,7 @@ A = (selector,options)->
 		stylesheet: null
 		id: 'aPRINT'
 		format: 'A4'
+		transparent: false
 
 	init = (selector,options)->
 		# Update _settings
@@ -197,8 +198,9 @@ A = (selector,options)->
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth
 		_frame.height = _body.offsetHeight
-		# _frame.style.borderWidth = 0
+		_frame.style.borderWidth = 0
 		_frame.style.resize = 'horizontal'
+		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
 		# _frame.src = 'about:blank'
 		_body.parentNode.insertBefore _frame, _body
 		if _frame.contentWindow.document.readyState is 'complete'
