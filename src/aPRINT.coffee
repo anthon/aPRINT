@@ -42,7 +42,7 @@ A = (selector,options)->
 
 	populateIframe = ->
 		_frame.contentDocument.body.appendChild _body
-		if typeof _settings.styles is 'String' then _settings.styles = [_settings.styles]
+		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
 		activateContent()

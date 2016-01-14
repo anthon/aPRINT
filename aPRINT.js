@@ -52,7 +52,7 @@
     populateIframe = function() {
       var i, len, ref, stylesheet;
       _frame.contentDocument.body.appendChild(_body);
-      if (typeof _settings.styles === 'String') {
+      if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
       }
       ref = _settings.styles;
