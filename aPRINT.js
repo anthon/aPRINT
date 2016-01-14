@@ -3,7 +3,7 @@
   var A;
 
   A = function(selector, options) {
-    var _baseStyle, _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -12,12 +12,14 @@
     _current_drop_selector = null;
     _current_sortable_target = null;
     _is_sorting = false;
-    _baseStyle = '* { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; -o-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; outline: none; } html { font-size: 0.428571428571429vw; } body { background: transparent; } body .over { background: #94ff94; } body .removable { position: relative; } body .removable .remove { font-family: sans-serif; cursor: pointer; background-color: #fff; color: #000; position: absolute; top: 6px; right: 6px; width: 25px; height: 25px; font-size: 13px; line-height: 24px; text-align: center; font-weight: 100; } body .removable .remove a { color: #000; } body .removable .remove:hover { background-color: #c20000; color: #fff; } body .removable .remove:hover a { color: #fff; } body .removable .remove.active { background-color: #c20000; color: #fff; } body .removable .remove.active a { color: #fff; } body .nodrop { background: #f00; } body .fade { transition: background 0.8s; } body .classable .classes { position: absolute; top: 6px; left: 6px; text-align: left; } body .classable .classes .expander { cursor: pointer; background-color: #fff; color: #000; width: 25px; height: 25px; line-height: 28px; text-align: center; } body .classable .classes .expander a { color: #000; } body .classable .classes .expander:hover { background-color: #c20000; color: #fff; } body .classable .classes .expander:hover a { color: #fff; } body .classable .classes .expander.active { background-color: #c20000; color: #fff; } body .classable .classes .expander.active a { color: #fff; } body .classable .classes .list { display: none; } body .classable .classes .list .item { cursor: pointer; background-color: #fff; color: #000; padding: 6px 8px; } body .classable .classes .list .item a { color: #000; } body .classable .classes .list .item:hover { background-color: #000; color: #fff; } body .classable .classes .list .item:hover a { color: #fff; } body .classable .classes .list .item.active { background-color: #000; color: #fff; } body .classable .classes .list .item.active a { color: #fff; } body .classable .classes:hover .expander { display: none; } body .classable .classes:hover .list { display: block; } body .page { background: #fff; width: 90vw; margin: 4rem auto; box-shadow: 0 0 4px 1px rgba(0,0,0,0.24); } body .page.A4 { height: 127.28571428571429vw; } body .add_page { cursor: pointer; background-color: rgba(255,255,255,0.12); color: #000; position: relative; width: 60%; margin: 12px auto; font-size: 18px; line-height: 1.4; text-align: center; } body .add_page a { color: #000; } body .add_page:hover { background-color: #fff; color: #000; } body .add_page:hover a { color: #000; } body .add_page.active { background-color: #fff; color: #000; } body .add_page.active a { color: #000; } @media print { html { font-size: 4.2333336mm; } html body .page.A4 { width: 210mm; height: 297mm; } }';
     _settings = {
-      stylesheet: null,
+      stylesheets: ['../aPRINT.css'],
       id: 'aPRINT',
       format: 'A4',
-      transparent: false
+      transparent: false,
+      margins: {
+        left: ''
+      }
     };
     init = function(selector, options) {
       var key, value;
@@ -48,31 +50,23 @@
       }
     };
     populateIframe = function() {
+      var i, len, ref, stylesheet;
       _frame.contentDocument.body.appendChild(_body);
-      if (_settings.baseStyle) {
-        insertStyle(_settings.baseStyle, true);
-      } else {
-        insertStyle(_baseStyle);
-      }
-      if (_settings.stylesheet) {
-        insertStyle(_settings.stylesheet, true);
+      ref = _settings.stylesheets;
+      for (i = 0, len = ref.length; i < len; i++) {
+        stylesheet = ref[i];
+        insertStyle(stylesheet);
       }
       activateContent();
       return setupListeners();
     };
-    insertStyle = function(style, is_link) {
-      var styleLink, styleTag;
-      if (is_link) {
-        styleLink = document.createElement('link');
-        styleLink.type = 'text/css';
-        styleLink.rel = 'stylesheet';
-        styleLink.href = style;
-        return _frame.contentDocument.head.appendChild(styleLink);
-      } else {
-        styleTag = document.createElement('style');
-        styleTag.innerHTML = style;
-        return _frame.contentDocument.head.appendChild(styleTag);
-      }
+    insertStyle = function(style) {
+      var styleLink;
+      styleLink = document.createElement('link');
+      styleLink.type = 'text/css';
+      styleLink.rel = 'stylesheet';
+      styleLink.href = style;
+      return _frame.contentDocument.head.appendChild(styleLink);
     };
     addEventListener = function(el, evt, callback) {
       el.removeEventListener(evt, callback);
