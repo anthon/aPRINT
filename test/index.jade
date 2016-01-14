@@ -87,8 +87,7 @@ html(lang="en")
 		var print = aPRINT('#print',{
 			frame_src: '/test/blank.html',
 			format: 'A4',
-			baseStyle: '../aPRINT.css',
-			stylesheet: 'main.css',
+			styles: ['../aPRINT.css','main.css'],
 			rules: {
 				'#left .title': {
 					target: '.header',
