@@ -349,8 +349,15 @@ A = (selector,options)->
 					callback(e)
 
 	getHTML = (page)->
-		if page and typeof page is 'Integer' then return _pages[page].innerHTML
-		return _body.innerHTML
+		if page and typeof page is 'Integer'
+			clone = _pages[page].cloneNode true
+		else
+			clone = _body.cloneNode true
+		console.log clone
+		to_removes = clone.querySelectorAll '.add_page, .classes, .remove'
+		for to_remove in to_removes
+			to_remove.remove()
+		return clone.innerHTML
 
 	print = ->
 		#

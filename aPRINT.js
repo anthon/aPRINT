@@ -476,10 +476,19 @@
       return results;
     };
     getHTML = function(page) {
+      var clone, i, len, to_remove, to_removes;
       if (page && typeof page === 'Integer') {
-        return _pages[page].innerHTML;
+        clone = _pages[page].cloneNode(true);
+      } else {
+        clone = _body.cloneNode(true);
       }
-      return _body.innerHTML;
+      console.log(clone);
+      to_removes = clone.querySelectorAll('.add_page, .classes, .remove');
+      for (i = 0, len = to_removes.length; i < len; i++) {
+        to_remove = to_removes[i];
+        to_remove.remove();
+      }
+      return clone.innerHTML;
     };
     print = function() {};
     init(selector, options);
