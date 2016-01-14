@@ -9,7 +9,7 @@ A = (selector,options)->
 	_current_sortable_target = null
 	_is_sorting = false
 	_settings =
-		stylesheets: ['../aPRINT.css']
+		styles: ['../aPRINT.css']
 		id: 'aPRINT'
 		format: 'A4'
 		transparent: false
@@ -42,7 +42,8 @@ A = (selector,options)->
 
 	populateIframe = ->
 		_frame.contentDocument.body.appendChild _body
-		for stylesheet in _settings.stylesheets
+		if typeof _settings.styles is 'String' then _settings.styles = [_settings.styles]
+		for stylesheet in _settings.styles
 			insertStyle stylesheet
 		activateContent()
 		setupListeners()

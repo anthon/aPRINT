@@ -13,7 +13,7 @@
     _current_sortable_target = null;
     _is_sorting = false;
     _settings = {
-      stylesheets: ['../aPRINT.css'],
+      styles: ['../aPRINT.css'],
       id: 'aPRINT',
       format: 'A4',
       transparent: false,
@@ -52,7 +52,10 @@
     populateIframe = function() {
       var i, len, ref, stylesheet;
       _frame.contentDocument.body.appendChild(_body);
-      ref = _settings.stylesheets;
+      if (typeof _settings.styles === 'String') {
+        _settings.styles = [_settings.styles];
+      }
+      ref = _settings.styles;
       for (i = 0, len = ref.length; i < len; i++) {
         stylesheet = ref[i];
         insertStyle(stylesheet);
