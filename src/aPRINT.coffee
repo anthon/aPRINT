@@ -8,6 +8,7 @@ A = (body,options)->
 	_current_drop_selector = null
 	_current_sortable_target = null
 	_is_sorting = false
+	_editable = true
 	_settings =
 		styles: ['../aPRINT.css']
 		id: 'aPRINT'
@@ -44,8 +45,9 @@ A = (body,options)->
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
-		activateContent()
-		setupListeners()
+		if _editable
+			activateContent()
+			setupListeners()
 		frameResize()
 
 	insertStyle = (style)->
@@ -80,7 +82,7 @@ A = (body,options)->
 		frameResize()
 
 	frameResize = ->
-		_frame.height = _body.offsetHeight + 24
+		_frame.height = _body.offsetHeight + 32
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'

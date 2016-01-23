@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _editable, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -12,6 +12,7 @@
     _current_drop_selector = null;
     _current_sortable_target = null;
     _is_sorting = false;
+    _editable = true;
     _settings = {
       styles: ['../aPRINT.css'],
       id: 'aPRINT',
@@ -60,8 +61,10 @@
         stylesheet = ref[i];
         insertStyle(stylesheet);
       }
-      activateContent();
-      setupListeners();
+      if (_editable) {
+        activateContent();
+        setupListeners();
+      }
       return frameResize();
     };
     insertStyle = function(style) {
@@ -107,7 +110,7 @@
       return frameResize();
     };
     frameResize = function() {
-      return _frame.height = _body.offsetHeight + 24;
+      return _frame.height = _body.offsetHeight + 32;
     };
     addAddPage = function(page) {
       var adder;
