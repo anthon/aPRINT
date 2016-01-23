@@ -56,9 +56,7 @@
         <div id="print">
           <div class="page A4">
             <div class="header">
-              <div class="title removable">Hejhej title
-                <div class="remove">&times;</div>
-              </div>
+              <div class="title removable">Hejhej title</div>
             </div>
             <div class="left_column">
               <div class="texts">
@@ -84,6 +82,7 @@
     var print = aPRINT('#print',{
     	frame_src: '/test/blank.html',
     	format: 'A4',
+    	editable: false,
     	styles: ['../aPRINT.css','main.css'],
     	rules: {
     		'#left .title': {
