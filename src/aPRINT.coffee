@@ -361,7 +361,7 @@ A = (body,options)->
 	print = ->
 		#
 
-	init(selector,options)
+	init(body,options)
 
 	return {
 		print: print
@@ -369,7 +369,7 @@ A = (body,options)->
 		get: getHTML
 	}
 
-window.aPRINT = (selector,options)->
+window.aPRINT = (el,options)->
 	if typeof el is 'string'
 		el = document.querySelector(el)
 		if not el then return false

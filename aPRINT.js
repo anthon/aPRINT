@@ -491,7 +491,7 @@
       return clone.innerHTML;
     };
     print = function() {};
-    init(selector, options);
+    init(body, options);
     return {
       print: print,
       on: setCallback,
@@ -499,8 +499,7 @@
     };
   };
 
-  window.aPRINT = function(selector, options) {
-    var el;
+  window.aPRINT = function(el, options) {
     if (typeof el === 'string') {
       el = document.querySelector(el);
       if (!el) {
