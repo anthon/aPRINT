@@ -80,7 +80,7 @@ A = (body,options)->
 		frameResize()
 
 	frameResize = ->
-		_frame.height = _frame.contentDocument.body.offsetHeight
+		_frame.height = _body.offsetHeight
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'
