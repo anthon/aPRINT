@@ -48,7 +48,9 @@ A = (body,options)->
 		if _settings.editable
 			activateContent()
 			setupListeners()
-		frameResize()
+		setTimeout ->
+			frameResize()
+		,200
 
 	insertStyle = (style)->
 		styleLink = document.createElement 'link'

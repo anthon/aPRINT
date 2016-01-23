@@ -65,7 +65,9 @@
         activateContent();
         setupListeners();
       }
-      return frameResize();
+      return setTimeout(function() {
+        return frameResize();
+      }, 200);
     };
     insertStyle = function(style) {
       var styleLink;
