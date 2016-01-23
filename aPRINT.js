@@ -107,7 +107,7 @@
       return frameResize();
     };
     frameResize = function() {
-      return _frame.height = _body.offsetHeight;
+      return _frame.height = _body.offsetHeight + 12;
     };
     addAddPage = function(page) {
       var adder;
