@@ -387,6 +387,7 @@
       }
       _body.insertBefore(new_page, that.nextSibling);
       addAddPage(new_page);
+      frameResize();
       return setupListeners();
     };
     onTrashClick = function(e) {

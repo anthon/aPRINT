@@ -292,6 +292,7 @@ A = (body,options)->
 			removable.remove()
 		_body.insertBefore new_page, that.nextSibling
 		addAddPage new_page
+		frameResize()
 		setupListeners()
 
 	onTrashClick = (e)->
