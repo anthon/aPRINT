@@ -34,7 +34,6 @@
       _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
-      _frame.height = _body.offsetHeight;
       _frame.style.borderWidth = 0;
       _frame.style.resize = 'horizontal';
       if (_settings.transparent) {
@@ -112,6 +111,7 @@
     };
     setupListeners = function() {
       var drag, drop, ref, results;
+      _frame.height = _body.offsetHeight;
       ref = _settings.rules;
       results = [];
       for (drag in ref) {
@@ -501,12 +501,13 @@
 
   window.aPRINT = function(selector, options) {
     var el;
-    el = document.querySelector(selector);
-    if (el) {
-      return new A(selector, options);
-    } else {
-      return false;
+    if (typeof el === 'string') {
+      el = document.querySelector(el);
+      if (!el) {
+        return false;
+      }
     }
+    return new A(el, options);
   };
 
 }).call(this);

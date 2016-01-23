@@ -28,7 +28,6 @@ A = (selector,options)->
 		_pages = _body.querySelectorAll '.page'
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth
-		_frame.height = _body.offsetHeight
 		_frame.style.borderWidth = 0
 		_frame.style.resize = 'horizontal'
 		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
@@ -84,6 +83,7 @@ A = (selector,options)->
 		_body.insertBefore adder, page.nextSibling
 
 	setupListeners = ->
+		_frame.height = _body.offsetHeight
 		for drag,drop of _settings.rules
 			addDragDroppable drag, drop
 
