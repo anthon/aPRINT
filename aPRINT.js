@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -40,6 +40,7 @@
         _frame.setAttribute('allowtransparency', true);
       }
       _body.parentNode.insertBefore(_frame, _body);
+      window.addEventListener('resize', onWindowResize);
       if (_frame.contentWindow.document.readyState === 'complete') {
         return populateIframe();
       } else {
@@ -60,7 +61,8 @@
         insertStyle(stylesheet);
       }
       activateContent();
-      return setupListeners();
+      setupListeners();
+      return frameResize();
     };
     insertStyle = function(style) {
       var styleLink;
@@ -101,6 +103,12 @@
       }
       return results;
     };
+    onWindowResize = function(e) {
+      return frameResize();
+    };
+    frameResize = function() {
+      return _frame.height = _frame.contentDocument.body.offsetHeight;
+    };
     addAddPage = function(page) {
       var adder;
       adder = document.createElement('div');
@@ -111,7 +119,6 @@
     };
     setupListeners = function() {
       var drag, drop, ref, results;
-      _frame.height = _body.offsetHeight;
       ref = _settings.rules;
       results = [];
       for (drag in ref) {

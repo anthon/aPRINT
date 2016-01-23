@@ -32,6 +32,7 @@ A = (body,options)->
 		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
 		# _frame.src = 'about:blank'
 		_body.parentNode.insertBefore _frame, _body
+		window.addEventListener 'resize', onWindowResize
 		if _frame.contentWindow.document.readyState is 'complete'
 			populateIframe()
 		else
@@ -45,6 +46,7 @@ A = (body,options)->
 			insertStyle stylesheet
 		activateContent()
 		setupListeners()
+		frameResize()
 
 	insertStyle = (style)->
 		styleLink = document.createElement 'link'
@@ -74,6 +76,12 @@ A = (body,options)->
 			console.log classable
 			makeClassable classable
 
+	onWindowResize = (e)->
+		frameResize()
+
+	frameResize = ->
+		_frame.height = _frame.contentDocument.body.offsetHeight
+
 	addAddPage = (page)->
 		adder = document.createElement 'div'
 		adder.classList.add 'add_page'
@@ -82,7 +90,6 @@ A = (body,options)->
 		_body.insertBefore adder, page.nextSibling
 
 	setupListeners = ->
-		_frame.height = _body.offsetHeight
 		for drag,drop of _settings.rules
 			addDragDroppable drag, drop
 
