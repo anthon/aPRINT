@@ -1,4 +1,4 @@
-A = (selector,options)->
+A = (body,options)->
 	
 	_frame = null
 	_body = null
@@ -16,15 +16,14 @@ A = (selector,options)->
 		margins:
 			left: ''
 
-	init = (selector,options)->
+	init = (body,options)->
 		# Update _settings
 		for key,value of options
 			_settings[key] = value
-
+		_body = body
 		createIframe()
 
 	createIframe = ->
-		_body = document.querySelector selector
 		_pages = _body.querySelectorAll '.page'
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth

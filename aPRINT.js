@@ -2,7 +2,7 @@
 (function() {
   var A;
 
-  A = function(selector, options) {
+  A = function(body, options) {
     var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, populateIframe, print, refuseDrop, setCallback, setupListeners;
     _frame = null;
     _body = null;
@@ -21,16 +21,16 @@
         left: ''
       }
     };
-    init = function(selector, options) {
+    init = function(body, options) {
       var key, value;
       for (key in options) {
         value = options[key];
         _settings[key] = value;
       }
+      _body = body;
       return createIframe();
     };
     createIframe = function() {
-      _body = document.querySelector(selector);
       _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
