@@ -371,6 +371,7 @@ A = (selector,options)->
 	}
 
 window.aPRINT = (selector,options)->
-	el = document.querySelector(selector)
-	if el then return new A(selector,options) else return false
-
+	if typeof el is 'string'
+		el = document.querySelector(el)
+		if not el then return false
+	return new A(el,options)
