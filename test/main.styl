@@ -2,12 +2,16 @@ sans-serif()
 	font-family sans-serif
 
 pt = .3527778
-pageWidth = 90
+// pageWidth = 90
+
+// @media print
+	// pageWidth = 100
 
 // A4 w/h
-a4width = 210
-a4height = 297
-mm = ((100/a4width)*(pageWidth/100))
+// a4width = 210
+// a4height = 297
+// mm = ((100/a4width)*(pageWidth/100))
+// pt = mm*pt
 
 body
 	
@@ -17,27 +21,25 @@ body
 			.header
 			.left_column
 			.right_column
-				font-size (13*mm*pt)vw
-				line-height (18*mm*pt)vw
+				font-size 13pt
+				line-height 18pt
 			.header
 				sans-serif()
 				height 10%
 				background green
-				width (210*mm)vw
-				padding (6*mm)vw
-				font-size (20*mm*pt)vw
+				width 100%
+				padding 6mm
+				font-size 20pt
 				font-weight 700
 			.left_column
 			.right_column
 				height 90%
-				display inline-block
-				vertical-align top
 			.left_column
 				// background red
 				width (100/3)%
 				.texts
 					height 100%
-					padding 0 (4*mm)vw 0 0
+					padding 0 4mm 0 0
 			.right_column
 				// background green
 				width ((100/3)*2)%
@@ -57,3 +59,11 @@ body
 							text-align right
 						&.middle
 							text-align center
+			&.odd
+				.left_column
+				.right_column
+					float left
+			&.even
+				.left_column
+				.right_column
+					float right

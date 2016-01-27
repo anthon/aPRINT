@@ -49,7 +49,8 @@ a4mm = ((100/a4width)*(pageWidth/100))
 	outline none
 
 html
-	font-size (a4mm)vw
+	// font-size (a4mm)vw
+	overflow hidden
 
 body
 	background transparent
@@ -101,30 +102,60 @@ body
 					display block
 
 	.page
+		page StandardPage
+		position relative
+		width 210mm
+		height 297mm
 		background white
-		width (pageWidth)vw
-		margin 4rem auto
-		box-shadow 0 0 4px 1px rgba(0,0,0,.24)
+		// width (pageWidth)vw
+		margin 4mm 4mm 52px
+		box-shadow 0 0 6mm 1mm rgba(0,0,0,.2)
 		&.A4
-			height ((a4height/a4width)*90)vw
+			// height ((a4height/a4width)*pageWidth)vw
 			// .header
 			// 	background green
 			// 	width 210rem
 	
 	.add_page
 			clickable rgba(255,255,255,.12), white, black, black
-			position relative
+			position absolute
+			bottom -50px
+			left 0
+			right 0
 			width 60%
 			margin 12px auto
 			font-size 18px
 			line-height 1.4
 			text-align center
 
+@page StandardPage
+	size 210mm 297mm
+	@bottom-left
+		content 'number'
+	margin 0
+	padding 0
+	
 @media print
 	html
-		font-size (12*pt)mm
-		body
-			.page
-				&.A4
-					width (a4width)mm
-					height (a4height)mm
+	body
+		width 210mm
+		height 296mm
+		// font-size 1mm !important
+	body
+		transform scale(1) !important
+		.page
+			margin initial
+			padding initial
+			border initial
+			border-radius initial
+			width initial
+			height initial
+			box-shadow initial
+			page-break-inside avoid
+			page-break-after always
+		.remove
+		.classes
+		.add_page
+			display none
+		img
+			image-resolution from-image

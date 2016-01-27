@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, addAddPage, addDragDroppable, addEventListener, addPage, checkOverflow, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getSortable, init, insertNextTo, insertStyle, makeClassable, makeRemovable, makeSortable, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, populateIframe, print, refuseDrop, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, activatePrinter, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -36,7 +36,7 @@
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
       _frame.style.borderWidth = 0;
-      _frame.style.resize = 'horizontal';
+      _frame.style.overflow = 'hidden';
       if (_settings.transparent) {
         _frame.setAttribute('allowtransparency', true);
       }
@@ -53,6 +53,7 @@
     populateIframe = function() {
       var i, len, ref, stylesheet;
       _frame.contentDocument.body.appendChild(_body);
+      refreshPageNumbers();
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
       }
@@ -61,13 +62,21 @@
         stylesheet = ref[i];
         insertStyle(stylesheet);
       }
+      insertSizer();
       if (_settings.editable) {
         activateContent();
         setupListeners();
       }
+      activatePrinter();
       return setTimeout(function() {
         return frameResize();
       }, 200);
+    };
+    insertSizer = function() {
+      var sizer;
+      sizer = document.createElement('style');
+      sizer.id = 'sizer';
+      return _frame.contentDocument.head.appendChild(sizer);
     };
     insertStyle = function(style) {
       var styleLink;
@@ -82,45 +91,65 @@
       return el.addEventListener(evt, callback);
     };
     activateContent = function() {
-      var classable, classables, i, j, len, len1, len2, len3, m, n, page, removable, removables, results, sortable, sortables;
-      sortables = _body.querySelectorAll('.sortable');
-      removables = _body.querySelectorAll('.removable');
-      classables = _body.querySelectorAll('.classable');
+      var i, item, items, j, len, len1, page, results;
+      items = _body.querySelectorAll('[data-item]');
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
         addAddPage(page);
       }
-      for (j = 0, len1 = sortables.length; j < len1; j++) {
-        sortable = sortables[j];
-        disableNestedImageDrag(sortable);
-        makeSortable(sortable);
-      }
-      for (m = 0, len2 = removables.length; m < len2; m++) {
-        removable = removables[m];
-        makeRemovable(removable);
-      }
       results = [];
-      for (n = 0, len3 = classables.length; n < len3; n++) {
-        classable = classables[n];
-        console.log(classable);
-        results.push(makeClassable(classable));
+      for (j = 0, len1 = items.length; j < len1; j++) {
+        item = items[j];
+        results.push(addFeatures(item));
       }
       return results;
     };
+    activatePrinter = function() {
+      return document.addEventListener('keydown', function(e) {
+        if (e.metaKey && e.keyCode === 80) {
+          e.preventDefault();
+          print();
+          return false;
+        }
+      });
+    };
     onWindowResize = function(e) {
+      console.log('resizing');
       return frameResize();
     };
     frameResize = function() {
-      return _frame.height = _body.offsetHeight + 32;
+      var act_widh, factor, margin, max_width, mm2px, paper_width;
+      mm2px = 3.78;
+      paper_width = 210;
+      margin = 16;
+      max_width = (paper_width + margin) * mm2px;
+      act_widh = _frame.offsetWidth;
+      factor = act_widh / max_width;
+      _frame.contentDocument.body.style.transformOrigin = '0 0';
+      _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
+      return _frame.height = (_body.scrollHeight + 12) * factor;
+    };
+    refreshPageNumbers = function() {
+      var i, len, page, results, seq;
+      _pages = _body.querySelectorAll('.page');
+      seq = 'odd';
+      results = [];
+      for (i = 0, len = _pages.length; i < len; i++) {
+        page = _pages[i];
+        page.classList.remove('even', 'odd');
+        page.classList.add(seq);
+        results.push(seq = seq === 'odd' ? 'even' : 'odd');
+      }
+      return results;
     };
     addAddPage = function(page) {
       var adder;
       adder = document.createElement('div');
       adder.classList.add('add_page');
       adder.innerHTML = '+';
-      adder.addEventListener('click', addPage);
-      return _body.insertBefore(adder, page.nextSibling);
+      adder.addEventListener('click', onAddPageClick);
+      return page.appendChild(adder);
     };
     setupListeners = function() {
       var drag, drop, ref, results;
@@ -198,8 +227,8 @@
       if (_current_drop_selector === that.dataset.dropSelector) {
         that.classList.remove('over');
         clone = _current_draggable.cloneNode(true);
-        makeRemovable(clone);
-        makeClassable(clone);
+        clone.removeAttribute('draggable');
+        itemise(clone);
         if (that.dataset.replace) {
           that.innerHTML = '';
           that.appendChild(clone);
@@ -218,12 +247,19 @@
         } else {
           checkOverflow(that, clone);
         }
-        fireCallbacks('drop');
+        makeRemovable(clone);
+        makeClassable(clone);
+      } else if (_is_sorting) {
+        checkOverflow(that);
       }
+      fireCallbacks('drop');
       return false;
     };
+    itemise = function(el, sibling) {
+      return el.dataset.item = sibling ? sibling.dataset.id : getID();
+    };
     addDragDroppable = function(drag, drop) {
-      var drag_selector, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, replace_on_drop, results;
+      var drag_selector, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, removable, replace_on_drop, results, sortable;
       drag_selector = drag;
       if (typeof drop === 'string') {
         drop_selector = drop;
@@ -231,6 +267,8 @@
         drop_selector = drop.target;
       }
       replace_on_drop = typeof drop.replace === 'boolean' ? drop.replace : false;
+      removable = typeof drop.removable === 'boolean' ? drop.removable : true;
+      sortable = typeof drop.sortable === 'boolean' ? drop.sortable : true;
       overflow_action = drop.overflow ? drop.overflow : false;
       drop_classes = drop.classes ? drop.classes : false;
       draggables = document.querySelectorAll(drag_selector);
@@ -240,6 +278,12 @@
         draggable.draggable = true;
         if (drop_classes) {
           draggable.dataset.classList = drop_classes;
+        }
+        if (removable) {
+          draggable.dataset.removable = removable;
+        }
+        if (sortable) {
+          draggable.dataset.sortable = sortable;
         }
         draggable.dataset.dropSelector = drop_selector;
         disableNestedImageDrag(draggable);
@@ -274,17 +318,24 @@
       }
       return results;
     };
+    addFeatures = function(el) {
+      makeSortable(el);
+      makeRemovable(el);
+      return makeClassable(el);
+    };
     makeRemovable = function(el) {
       var trasher;
-      el.classList.add('removable');
-      trasher = el.querySelector('.remove');
-      if (!trasher) {
-        trasher = document.createElement('div');
-        trasher.innerHTML = '&times;';
-        trasher.classList.add('remove');
-        el.appendChild(trasher);
+      if (el.dataset.removable) {
+        el.classList.add('removable');
+        trasher = el.querySelector('.remove');
+        if (!trasher) {
+          trasher = document.createElement('div');
+          trasher.innerHTML = '&times;';
+          trasher.classList.add('remove');
+          el.appendChild(trasher);
+        }
+        return trasher.addEventListener('click', onTrashClick);
       }
-      return trasher.addEventListener('click', onTrashClick);
     };
     makeClassable = function(el) {
       var class_list, cls, container, expander, i, item, items, j, len, len1, list, results;
@@ -317,41 +368,63 @@
         for (j = 0, len1 = items.length; j < len1; j++) {
           item = items[j];
           results.push(item.addEventListener('click', function(e) {
-            var len2, m;
-            for (m = 0, len2 = class_list.length; m < len2; m++) {
-              cls = class_list[m];
-              el.classList.remove(cls);
+            var len2, len3, m, n, results1, set, set_el;
+            set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
+            results1 = [];
+            for (m = 0, len2 = set.length; m < len2; m++) {
+              set_el = set[m];
+              for (n = 0, len3 = class_list.length; n < len3; n++) {
+                cls = class_list[n];
+                set_el.classList.remove(cls);
+              }
+              set_el.classList.add(this.innerHTML);
+              results1.push(checkOverflow(set_el.parentNode));
             }
-            el.classList.add(this.innerHTML);
-            return checkOverflow(el.parentNode);
+            return results1;
           }));
         }
         return results;
       }
     };
     makeSortable = function(el) {
-      el.draggable = true;
-      el.classList.add('sortable');
-      el.addEventListener('dragstart', function(e) {
-        e.dataTransfer.dropEffect = 'move';
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('source', 'internal');
-        _current_draggable = e.target;
-        _current_draggable.classList.add('drag');
-        _is_sorting = true;
-        return false;
-      });
-      el.addEventListener('dragend', function(e) {
-        _current_draggable.classList.remove('drag');
-        _current_draggable.style.opacity = 1;
-        checkOverflow(e.target.parentNode);
-        _current_draggable = null;
-        _is_sorting = false;
-        return false;
-      });
-      return el.addEventListener('dragover', function(e) {
-        return _current_sortable_target = el;
-      });
+      if (el.dataset.sortable) {
+        disableNestedImageDrag(el);
+        el.draggable = true;
+        el.classList.add('sortable');
+        el.addEventListener('dragstart', function(e) {
+          e.dataTransfer.dropEffect = 'move';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('source', 'internal');
+          _current_draggable = e.target;
+          _current_draggable.classList.add('drag');
+          _is_sorting = true;
+          return false;
+        });
+        el.addEventListener('dragend', function(e) {
+          if (_current_draggable) {
+            _current_draggable.classList.remove('drag');
+            _current_draggable.style.opacity = 1;
+            checkOverflow(e.target.parentNode);
+            _current_draggable = null;
+            _is_sorting = false;
+            return false;
+          }
+        });
+        return el.addEventListener('dragover', function(e) {
+          _current_sortable_target = el;
+          return consolidate(_current_sortable_target);
+        });
+      }
+    };
+    removeFeatures = function(el) {
+      var i, len, results, to_remove, to_removes;
+      to_removes = el.querySelectorAll('.add_page, .classes, .remove');
+      results = [];
+      for (i = 0, len = to_removes.length; i < len; i++) {
+        to_remove = to_removes[i];
+        results.push(to_remove.remove());
+      }
+      return results;
     };
     insertNextTo = function(el, sibling) {
       var el_index, parent, sibling_index, siblings;
@@ -380,33 +453,58 @@
       }
       return el;
     };
-    addPage = function(e) {
-      var i, len, new_page, page, removable, removables, that;
-      that = this;
-      page = that.previousSibling;
+    onAddPageClick = function(e) {
+      return addPage(e.target.parentNode);
+    };
+    addPage = function(page) {
+      var i, item, items, len, new_page;
       new_page = _body.querySelector('.page').cloneNode(true);
-      removables = new_page.querySelectorAll('.removable');
-      for (i = 0, len = removables.length; i < len; i++) {
-        removable = removables[i];
-        removable.remove();
+      items = new_page.querySelectorAll('[data-item],.add_page');
+      for (i = 0, len = items.length; i < len; i++) {
+        item = items[i];
+        item.remove();
       }
-      _body.insertBefore(new_page, that.nextSibling);
+      _body.insertBefore(new_page, page.nextSibling);
       addAddPage(new_page);
+      refreshPageNumbers();
       frameResize();
-      return setupListeners();
+      setupListeners();
+      return new_page;
     };
     onTrashClick = function(e) {
-      var droppable, el;
+      var droppable, el, i, len, set, set_el;
       el = e.target.parentNode;
-      droppable = el.parentNode;
-      el.remove();
-      checkOverflow(droppable);
+      set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
+      for (i = 0, len = set.length; i < len; i++) {
+        set_el = set[i];
+        droppable = set_el.parentNode;
+        set_el.remove();
+        checkOverflow(droppable);
+      }
       return fireCallbacks('remove', e);
     };
+    consolidate = function(el) {
+      var els, i, len, results, set_el;
+      els = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
+      if (els.length > 1) {
+        results = [];
+        for (i = 0, len = els.length; i < len; i++) {
+          set_el = els[i];
+          if (set_el === el) {
+            set_el.innerHTML = set_el.dataset.content;
+            addFeatures(set_el);
+            results.push(delete set_el.dataset.content);
+          } else {
+            results.push(set_el.remove());
+          }
+        }
+        return results;
+      }
+    };
     checkOverflow = function(droppable, element) {
-      var action, el, els, i, j, l, last_el, len, len1, max_height, max_height_percentage, overflow;
+      var action, cl, continuer, drp, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, max_height, max_height_percentage, next_page, overflow, page;
       if (_is_sorting || !element) {
-        els = droppable.querySelectorAll('.removable');
+        els = droppable.querySelectorAll('[data-item]');
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];
           el.style.height = 'auto';
@@ -415,6 +513,53 @@
       if (droppable.scrollHeight > droppable.clientHeight) {
         action = droppable.dataset.overflowAction;
         switch (action) {
+          case 'continue':
+            last_el = droppable.lastElementChild;
+            removeFeatures(last_el);
+            last_el.dataset.content = last_el.innerHTML;
+            continuer = last_el.cloneNode();
+            l = 200;
+            while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+              lc = last_el.lastChild;
+              if (!lc) {
+                last_el.remove();
+                refuseDrop(droppable);
+                return false;
+              }
+              switch (lc.nodeType) {
+                case 1:
+                  continuer.insertBefore(lc, continuer.firstChild);
+                  break;
+                case 3:
+                  if (/\S/.test(lc.nodeValue)) {
+
+                  } else {
+                    lc.remove();
+                  }
+                  break;
+              }
+            }
+            fc = continuer.firstChild;
+            cl = fc.cloneNode();
+            last_el.appendChild(fc);
+            cl.innerHTML = '';
+            l = 200;
+            while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+              fcHTML = fc.innerHTML.split(' ');
+              cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
+              fc.innerHTML = fcHTML.join(' ');
+            }
+            continuer.insertBefore(cl, continuer.firstChild);
+            page = parentPage(droppable);
+            next_page = page.nextSibling;
+            if (!next_page || next_page.nodeType !== 1) {
+              next_page = addPage(page);
+            }
+            drp = next_page.querySelector('.' + droppable.className);
+            drp.insertBefore(continuer, drp.firstChild);
+            addFeatures(last_el);
+            checkOverflow(drp);
+            return fireCallbacks('update');
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
             l = els.length;
@@ -428,7 +573,6 @@
             overflow = droppable.scrollHeight - droppable.clientHeight;
             max_height = last_el.clientHeight - overflow;
             max_height_percentage = (max_height / droppable.clientHeight) * 100;
-            console.log(max_height_percentage);
             if (max_height_percentage > 1) {
               last_el.style.height = max_height_percentage + '%';
               return fireCallbacks('update');
@@ -465,6 +609,15 @@
       }
       return _callbacks[key].push(callback);
     };
+    parentPage = function(el) {
+      while (!el.classList.contains('page')) {
+        el = el.parentNode;
+      }
+      return el;
+    };
+    getID = function() {
+      return Math.random().toString(36).substring(8);
+    };
     fireCallbacks = function(key, e) {
       var callback, i, k, keys, len, results;
       keys = key.split(' ');
@@ -489,21 +642,18 @@
       return results;
     };
     getHTML = function(page) {
-      var clone, i, len, to_remove, to_removes;
+      var clone;
       if (page && typeof page === 'Integer') {
         clone = _pages[page].cloneNode(true);
       } else {
         clone = _body.cloneNode(true);
       }
-      console.log(clone);
-      to_removes = clone.querySelectorAll('.add_page, .classes, .remove');
-      for (i = 0, len = to_removes.length; i < len; i++) {
-        to_remove = to_removes[i];
-        to_remove.remove();
-      }
+      removeFeatures(clone);
       return clone.innerHTML;
     };
-    print = function() {};
+    print = function() {
+      return _frame.contentWindow.print();
+    };
     init(body, options);
     return {
       print: print,

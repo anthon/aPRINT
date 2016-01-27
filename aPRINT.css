@@ -9,7 +9,7 @@
   outline: none;
 }
 html {
-  font-size: 0.428571428571429vw;
+  overflow: hidden;
 }
 body {
   background: transparent;
@@ -123,19 +123,22 @@ body .classable .classes:hover .list {
   display: block;
 }
 body .page {
+  page: StandardPage;
+  position: relative;
+  width: 210mm;
+  height: 297mm;
   background: #fff;
-  width: 90vw;
-  margin: 4rem auto;
-  box-shadow: 0 0 4px 1px rgba(0,0,0,0.24);
-}
-body .page.A4 {
-  height: 127.28571428571429vw;
+  margin: 4mm 4mm 52px;
+  box-shadow: 0 0 6mm 1mm rgba(0,0,0,0.2);
 }
 body .add_page {
   cursor: pointer;
   background-color: rgba(255,255,255,0.12);
   color: #000;
-  position: relative;
+  position: absolute;
+  bottom: -50px;
+  left: 0;
+  right: 0;
   width: 60%;
   margin: 12px auto;
   font-size: 18px;
@@ -159,12 +162,40 @@ body .add_page.active {
 body .add_page.active a {
   color: #000;
 }
-@media print {
-  html {
-    font-size: 4.2333336mm;
+@page StandardPage {
+  size: 210mm 297mm;
+  margin: 0;
+  padding: 0;
+  @bottom-left {
+    content: 'number';
   }
-  html body .page.A4 {
+}
+@media print {
+  html,
+  body {
     width: 210mm;
-    height: 297mm;
+    height: 296mm;
+  }
+  body {
+    transform: scale(1) !important;
+  }
+  body .page {
+    margin: initial;
+    padding: initial;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    height: initial;
+    box-shadow: initial;
+    page-break-inside: avoid;
+    page-break-after: always;
+  }
+  body .remove,
+  body .classes,
+  body .add_page {
+    display: none;
+  }
+  body img {
+    image-resolution: from-image;
   }
 }
