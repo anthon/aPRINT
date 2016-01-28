@@ -141,8 +141,9 @@
         if (!duration) {
           duration = 200;
         }
-        section = target.nodeName === 'section' ? target : target.parentNode;
+        section = target.nodeName === 'SECTION' ? target : target.parentNode;
         section_id = section.dataset.id;
+        console.log('section id', section_id);
         body = _frame.contentDocument.body;
         start = body.scrollTop;
         target_top = Math.round(target.getBoundingClientRect().top + start);
@@ -189,7 +190,6 @@
       }
     };
     onWindowResize = function(e) {
-      console.log('resizing');
       return frameResize();
     };
     frameResize = function() {

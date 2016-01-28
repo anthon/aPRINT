@@ -109,9 +109,10 @@ A = (body,options)->
 	scrollTo = (target,duration)->
 		if typeof target is 'string' then target = _body.querySelector target
 		if target and target.getBoundingClientRect
-			if not duration then duration = 200 
-			section = if target.nodeName is 'section' then target else target.parentNode
+			if not duration then duration = 200
+			section = if target.nodeName is 'SECTION' then target else target.parentNode
 			section_id = section.dataset.id
+			console.log 'section id', section_id
 			body = _frame.contentDocument.body
 			start = body.scrollTop
 			target_top = Math.round(target.getBoundingClientRect().top + start)
@@ -146,7 +147,6 @@ A = (body,options)->
 					return scrollTo els[index+1]
 
 	onWindowResize = (e)->
-		console.log 'resizing'
 		frameResize()
 
 	frameResize = ->
