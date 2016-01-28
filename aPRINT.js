@@ -133,7 +133,7 @@
       }
     };
     scrollTo = function(target, duration) {
-      var animate, change, currentTime, increment, start, target_top;
+      var animate, change, currentTime, increment, section, section_id, start, target_top;
       if (typeof target === 'string') {
         target = _body.querySelector(target);
       }
@@ -141,6 +141,8 @@
         if (!duration) {
           duration = 200;
         }
+        section = target.nodeName === 'section' ? target : target.parentNode;
+        section_id = section.dataset('id');
         body = _frame.contentDocument.body;
         start = body.scrollTop;
         target_top = Math.round(target.getBoundingClientRect().top + start);
@@ -156,7 +158,8 @@
             return setTimeout(animate, increment);
           }
         };
-        return animate();
+        animate();
+        return fireCallbacks('scroll', section_id);
       }
     };
     scrollToEl = function(selector, reverse) {

@@ -110,6 +110,8 @@ A = (body,options)->
 		if typeof target is 'string' then target = _body.querySelector target
 		if target and target.getBoundingClientRect
 			if not duration then duration = 200 
+			section = if target.nodeName is 'section' then target else target.parentNode
+			section_id = section.dataset 'id'
 			body = _frame.contentDocument.body
 			start = body.scrollTop
 			target_top = Math.round(target.getBoundingClientRect().top + start)
@@ -123,6 +125,7 @@ A = (body,options)->
 				if currentTime < duration
 					setTimeout animate, increment
 			animate()
+			fireCallbacks('scroll',section_id)
 
 	scrollToEl = (selector,reverse)->
 		els = _body.querySelectorAll selector
