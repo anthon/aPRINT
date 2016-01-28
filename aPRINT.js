@@ -196,10 +196,11 @@
       var act_widh, factor, margin, max_width, mm2px, paper_width;
       mm2px = 3.78;
       paper_width = 210;
-      margin = 16;
+      margin = 24;
       max_width = (paper_width + margin) * mm2px;
       act_widh = _frame.offsetWidth;
       factor = act_widh / max_width;
+      _frame.contentDocument.body.style.marginLeft = '12px';
       _frame.contentDocument.body.style.transformOrigin = '0 0';
       return _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
     };
