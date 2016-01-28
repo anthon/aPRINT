@@ -557,7 +557,8 @@ A = (body,options)->
 		print: print
 		on: setCallback
 		get: getHTML
-		scrollTo: scrollToEl
+		scrollTo: scrollTo
+		scrollToNext: scrollToEl
 	}
 
 window.aPRINT = (el,options)->
