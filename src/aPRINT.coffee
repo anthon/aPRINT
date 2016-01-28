@@ -111,7 +111,7 @@ A = (body,options)->
 		if target and target.getBoundingClientRect
 			if not duration then duration = 200 
 			section = if target.nodeName is 'section' then target else target.parentNode
-			section_id = section.dataset 'id'
+			section_id = section.dataset.id
 			body = _frame.contentDocument.body
 			start = body.scrollTop
 			target_top = Math.round(target.getBoundingClientRect().top + start)

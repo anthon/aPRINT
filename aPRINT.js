@@ -142,7 +142,7 @@
           duration = 200;
         }
         section = target.nodeName === 'section' ? target : target.parentNode;
-        section_id = section.dataset('id');
+        section_id = section.dataset.id;
         body = _frame.contentDocument.body;
         start = body.scrollTop;
         target_top = Math.round(target.getBoundingClientRect().top + start);
