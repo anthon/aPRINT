@@ -719,7 +719,7 @@
         clone = _body.querySelector('section').cloneNode(true);
       }
       removeFeatures(clone);
-      return clone.innerHTML;
+      return clone.innerHTML.trim();
     };
     print = function() {
       return _frame.contentWindow.print();
