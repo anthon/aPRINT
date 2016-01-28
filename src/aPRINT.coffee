@@ -540,11 +540,11 @@ A = (body,options)->
 				for callback in _callbacks[k]
 					callback(e)
 
-	getHTML = (page)->
-		if page and typeof page is 'Integer'
-			clone = _pages[page].cloneNode true
+	getHTML = (section)->
+		if section
+			clone = _body.querySelector('section[data-id="'+section+'"]').cloneNode true
 		else
-			clone = _body.cloneNode true
+			clone = _body.querySelector('section').cloneNode true
 		removeFeatures clone
 		return clone.innerHTML
 

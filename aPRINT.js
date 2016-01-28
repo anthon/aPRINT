@@ -711,12 +711,12 @@
       }
       return results;
     };
-    getHTML = function(page) {
+    getHTML = function(section) {
       var clone;
-      if (page && typeof page === 'Integer') {
-        clone = _pages[page].cloneNode(true);
+      if (section) {
+        clone = _body.querySelector('section[data-id="' + section + '"]').cloneNode(true);
       } else {
-        clone = _body.cloneNode(true);
+        clone = _body.querySelector('section').cloneNode(true);
       }
       removeFeatures(clone);
       return clone.innerHTML;
