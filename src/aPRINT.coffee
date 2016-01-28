@@ -29,7 +29,7 @@ A = (body,options)->
 		_frame = document.createElement 'iframe'
 		_frame.width = _body.offsetWidth
 		_frame.style.borderWidth = 0
-		_frame.style.overflow = 'hidden'
+		# _frame.style.overflow = 'hidden'
 		# _frame.style.resize = 'horizontal'
 		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
 		# _frame.src = 'about:blank'
@@ -51,7 +51,7 @@ A = (body,options)->
 		if _settings.editable
 			activateContent()
 			setupListeners()
-		activatePrinter()
+		activateKeys()
 		setTimeout ->
 			frameResize()
 		,200
@@ -81,12 +81,66 @@ A = (body,options)->
 		for item in items
 			addFeatures item
 
-	activatePrinter = ->
-		document.addEventListener 'keydown', (e)->
-			if e.metaKey && e.keyCode is 80
-				e.preventDefault()
-				print()
-				return false
+	activateKeys = ->
+		document.addEventListener 'keydown', onKeyDown
+		_frame.contentDocument.addEventListener 'keydown', onKeyDown
+
+	onKeyDown = (e)->
+		switch e.keyCode
+			when 80
+				# p
+				if e.metaKey
+					e.preventDefault()
+					print()
+					return false
+			when 40
+				# down
+				if e.shiftKey
+					scrollToEl 'section'
+				else
+					scrollToEl '.page'
+			when 38
+				# up
+				if e.shiftKey
+					scrollToEl 'section', true
+				else
+					scrollToEl '.page', true
+
+	scrollTo = (target,duration)->
+		if typeof target is 'string' then target = _body.querySelector target
+		if target and target.getBoundingClientRect
+			if not duration then duration = 200 
+			body = _frame.contentDocument.body
+			start = body.scrollTop
+			target_top = Math.round(target.getBoundingClientRect().top + start)
+			change = if target then target_top - start else 0 - start
+			currentTime = 0
+			increment = 20
+			animate = ->
+				currentTime += increment
+				scrollTop = Math.easeInOutQuad currentTime,start,change,duration
+				body.scrollTop = scrollTop
+				if currentTime < duration
+					setTimeout animate, increment
+			animate()
+
+	scrollToEl = (selector,reverse)->
+		els = _body.querySelectorAll selector
+		wb = _frame.contentWindow.innerHeight
+		for el,index in els
+			r = el.getBoundingClientRect()
+			r_top = Math.round(r.top)
+			r_bottom = Math.round(r.bottom)
+			if reverse
+				if r_top >= 0 and r_top <= wb
+					return scrollTo els[index-1]
+				if r_top <= 0 and r_bottom >= wb
+					return scrollTo el
+			else
+				if r_top > 0 and r_top < wb
+					return scrollTo el
+				if (r_top == 0 and r_top < wb) or (r_top <= 0 and r_bottom >= wb)
+					return scrollTo els[index+1]
 
 	onWindowResize = (e)->
 		console.log 'resizing'
@@ -101,7 +155,7 @@ A = (body,options)->
 		factor = act_widh / max_width
 		_frame.contentDocument.body.style.transformOrigin = '0 0'
 		_frame.contentDocument.body.style.transform = 'scale('+factor+')'
-		_frame.height = (_body.scrollHeight + 12)*factor
+		# _frame.height = (_frame.contentDocument.body.scrollHeight + 12)*factor
 		# pageWidth = .9 * _body.offsetWidth
 		# a4width = 210
 		# a4height = 297
@@ -503,6 +557,7 @@ A = (body,options)->
 		print: print
 		on: setCallback
 		get: getHTML
+		scrollTo: scrollToEl
 	}
 
 window.aPRINT = (el,options)->
@@ -510,3 +565,9 @@ window.aPRINT = (el,options)->
 		el = document.querySelector(el)
 		if not el then return false
 	return new A(el,options)
+
+Math.easeInOutQuad = (ct,s,c,d)->
+	ct /= d/2
+	if ct < 1 then return c/2*ct*ct + s
+	ct--
+	return -c/2 * (ct*(ct-2) - 1) + s

@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, activatePrinter, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, activateKeys, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _pages = null;
@@ -36,7 +36,6 @@
       _frame = document.createElement('iframe');
       _frame.width = _body.offsetWidth;
       _frame.style.borderWidth = 0;
-      _frame.style.overflow = 'hidden';
       if (_settings.transparent) {
         _frame.setAttribute('allowtransparency', true);
       }
@@ -67,7 +66,7 @@
         activateContent();
         setupListeners();
       }
-      activatePrinter();
+      activateKeys();
       return setTimeout(function() {
         return frameResize();
       }, 200);
@@ -105,14 +104,86 @@
       }
       return results;
     };
-    activatePrinter = function() {
-      return document.addEventListener('keydown', function(e) {
-        if (e.metaKey && e.keyCode === 80) {
-          e.preventDefault();
-          print();
-          return false;
+    activateKeys = function() {
+      document.addEventListener('keydown', onKeyDown);
+      return _frame.contentDocument.addEventListener('keydown', onKeyDown);
+    };
+    onKeyDown = function(e) {
+      switch (e.keyCode) {
+        case 80:
+          if (e.metaKey) {
+            e.preventDefault();
+            print();
+            return false;
+          }
+          break;
+        case 40:
+          if (e.shiftKey) {
+            return scrollToEl('section');
+          } else {
+            return scrollToEl('.page');
+          }
+          break;
+        case 38:
+          if (e.shiftKey) {
+            return scrollToEl('section', true);
+          } else {
+            return scrollToEl('.page', true);
+          }
+      }
+    };
+    scrollTo = function(target, duration) {
+      var animate, change, currentTime, increment, start, target_top;
+      if (typeof target === 'string') {
+        target = _body.querySelector(target);
+      }
+      if (target && target.getBoundingClientRect) {
+        if (!duration) {
+          duration = 200;
         }
-      });
+        body = _frame.contentDocument.body;
+        start = body.scrollTop;
+        target_top = Math.round(target.getBoundingClientRect().top + start);
+        change = target ? target_top - start : 0 - start;
+        currentTime = 0;
+        increment = 20;
+        animate = function() {
+          var scrollTop;
+          currentTime += increment;
+          scrollTop = Math.easeInOutQuad(currentTime, start, change, duration);
+          body.scrollTop = scrollTop;
+          if (currentTime < duration) {
+            return setTimeout(animate, increment);
+          }
+        };
+        return animate();
+      }
+    };
+    scrollToEl = function(selector, reverse) {
+      var el, els, i, index, len, r, r_bottom, r_top, wb;
+      els = _body.querySelectorAll(selector);
+      wb = _frame.contentWindow.innerHeight;
+      for (index = i = 0, len = els.length; i < len; index = ++i) {
+        el = els[index];
+        r = el.getBoundingClientRect();
+        r_top = Math.round(r.top);
+        r_bottom = Math.round(r.bottom);
+        if (reverse) {
+          if (r_top >= 0 && r_top <= wb) {
+            return scrollTo(els[index - 1]);
+          }
+          if (r_top <= 0 && r_bottom >= wb) {
+            return scrollTo(el);
+          }
+        } else {
+          if (r_top > 0 && r_top < wb) {
+            return scrollTo(el);
+          }
+          if ((r_top === 0 && r_top < wb) || (r_top <= 0 && r_bottom >= wb)) {
+            return scrollTo(els[index + 1]);
+          }
+        }
+      }
     };
     onWindowResize = function(e) {
       console.log('resizing');
@@ -127,8 +198,7 @@
       act_widh = _frame.offsetWidth;
       factor = act_widh / max_width;
       _frame.contentDocument.body.style.transformOrigin = '0 0';
-      _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
-      return _frame.height = (_body.scrollHeight + 12) * factor;
+      return _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
     };
     refreshPageNumbers = function() {
       var i, len, page, results, seq;
@@ -658,7 +728,8 @@
     return {
       print: print,
       on: setCallback,
-      get: getHTML
+      get: getHTML,
+      scrollTo: scrollToEl
     };
   };
 
@@ -670,6 +741,15 @@
       }
     }
     return new A(el, options);
+  };
+
+  Math.easeInOutQuad = function(ct, s, c, d) {
+    ct /= d / 2;
+    if (ct < 1) {
+      return c / 2 * ct * ct + s;
+    }
+    ct--;
+    return -c / 2 * (ct * (ct - 2) - 1) + s;
   };
 
 }).call(this);
