@@ -39,7 +39,7 @@ pageWidth = 90
 
 // A4 w/h
 a4width = 210
-a4height = 297
+a4height = 296
 a4mm = ((100/a4width)*(pageWidth/100))
 
 *
@@ -54,7 +54,7 @@ html
 
 body
 	background transparent
-	
+	font-size 0
 	.over
 		background lighten(green,72%)
 	
@@ -101,20 +101,21 @@ body
 				.list
 					display block
 
-	.page
-		page StandardPage
-		position relative
-		width 210mm
-		height 297mm
-		background white
-		// width (pageWidth)vw
-		margin 4mm 4mm 52px
-		box-shadow 0 0 6mm 1mm rgba(0,0,0,.2)
-		&.A4
-			// height ((a4height/a4width)*pageWidth)vw
-			// .header
-			// 	background green
-			// 	width 210rem
+	section
+		.page
+			// page StandardPage
+			position relative
+			width (a4width)mm
+			height (a4height)mm
+			background white
+			// width (pageWidth)vw
+			margin 4mm 4mm 52px
+			box-shadow 0 0 6mm 1mm rgba(0,0,0,.2)
+			&.A4
+				// height ((a4height/a4width)*pageWidth)vw
+				// .header
+				// 	background green
+				// 	width 210rem
 	
 	.add_page
 			clickable rgba(255,255,255,.12), white, black, black
@@ -128,34 +129,41 @@ body
 			line-height 1.4
 			text-align center
 
-@page StandardPage
-	size 210mm 297mm
-	@bottom-left
-		content 'number'
+@page
 	margin 0
-	padding 0
+// 	size (a4width*2)mm (a4height)mm
+// 	@bottom-left
+// 		content 'number'
+// 	padding 0
 	
 @media print
-	html
-	body
-		width 210mm
-		height 296mm
-		// font-size 1mm !important
 	body
 		transform scale(1) !important
-		.page
-			margin initial
-			padding initial
-			border initial
-			border-radius initial
-			width initial
-			height initial
-			box-shadow initial
-			page-break-inside avoid
+		section
 			page-break-after always
+			.page
+				margin 0
+				padding 0
+				border none
+				width (a4width)mm
+				height (a4height)mm
+				box-shadow none
+				page-break-inside avoid
+				overflow hidden
 		.remove
 		.classes
 		.add_page
 			display none
 		img
 			image-resolution from-image
+		&.A4
+			width (a4width)mm
+			height (a4height)mm
+		&.A3
+			width (a4width*2)mm
+			height (a4height)mm
+			section
+				.page
+					display inline-block
+					vertical-align top
+

@@ -2,6 +2,7 @@ A = (body,options)->
 	
 	_frame = null
 	_body = null
+	_sections = null
 	_pages = null
 	_callbacks = {}
 	_current_draggable = null
@@ -42,6 +43,7 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
+		_frame.contentDocument.body.classList.add _settings.format
 		_frame.contentDocument.body.appendChild _body
 		refreshPageNumbers()
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
@@ -156,10 +158,9 @@ A = (body,options)->
 		max_width = (paper_width + margin) * mm2px
 		act_widh = _frame.offsetWidth
 		factor = act_widh / max_width
-		_frame.contentDocument.body.style.marginLeft = '12px'
-		_frame.contentDocument.body.style.transformOrigin = '0 0'
+		_frame.contentDocument.body.style.transformOrigin = '48px 0'
 		_frame.contentDocument.body.style.transform = 'scale('+factor+')'
-		# _frame.height = (_frame.contentDocument.body.scrollHeight + 12)*factor
+		_frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height
 		# pageWidth = .9 * _body.offsetWidth
 		# a4width = 210
 		# a4height = 297
@@ -167,12 +168,14 @@ A = (body,options)->
 		# _frame.contentDocument.querySelector('#sizer').innerHTML = 'html{font-size:'+a4mm+'px}'
 
 	refreshPageNumbers = ->
-		_pages = _body.querySelectorAll '.page'
-		seq = 'odd'
-		for page in _pages
-			page.classList.remove('even','odd')
-			page.classList.add seq
-			seq = if seq is 'odd' then 'even' else 'odd'
+		_sections = _body.querySelectorAll 'section'
+		for section in _sections
+			pages = section.querySelectorAll '.page'
+			seq = 'odd'
+			for page in pages
+				page.classList.remove('even','odd')
+				page.classList.add seq
+				seq = if seq is 'odd' then 'even' else 'odd'
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'
@@ -408,11 +411,12 @@ A = (body,options)->
 		addPage e.target.parentNode
 
 	addPage = (page)->
+		section = page.parentNode
 		new_page = _body.querySelector('.page').cloneNode true
 		items = new_page.querySelectorAll '[data-item],.add_page'
 		for item in items
 			item.remove()
-		_body.insertBefore new_page, page.nextSibling
+		section.insertBefore new_page, page.nextSibling
 		addAddPage new_page
 		refreshPageNumbers()
 		frameResize()

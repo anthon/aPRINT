@@ -3,9 +3,10 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _settings, activateContent, activateKeys, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _sections, _settings, activateContent, activateKeys, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
+    _sections = null;
     _pages = null;
     _callbacks = {};
     _current_draggable = null;
@@ -51,6 +52,7 @@
     };
     populateIframe = function() {
       var i, len, ref, stylesheet;
+      _frame.contentDocument.body.classList.add(_settings.format);
       _frame.contentDocument.body.appendChild(_body);
       refreshPageNumbers();
       if (typeof _settings.styles === 'string') {
@@ -200,20 +202,29 @@
       max_width = (paper_width + margin) * mm2px;
       act_widh = _frame.offsetWidth;
       factor = act_widh / max_width;
-      _frame.contentDocument.body.style.marginLeft = '12px';
-      _frame.contentDocument.body.style.transformOrigin = '0 0';
-      return _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
+      _frame.contentDocument.body.style.transformOrigin = '48px 0';
+      _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
+      return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
     };
     refreshPageNumbers = function() {
-      var i, len, page, results, seq;
-      _pages = _body.querySelectorAll('.page');
-      seq = 'odd';
+      var i, len, page, pages, results, section, seq;
+      _sections = _body.querySelectorAll('section');
       results = [];
-      for (i = 0, len = _pages.length; i < len; i++) {
-        page = _pages[i];
-        page.classList.remove('even', 'odd');
-        page.classList.add(seq);
-        results.push(seq = seq === 'odd' ? 'even' : 'odd');
+      for (i = 0, len = _sections.length; i < len; i++) {
+        section = _sections[i];
+        pages = section.querySelectorAll('.page');
+        seq = 'odd';
+        results.push((function() {
+          var j, len1, results1;
+          results1 = [];
+          for (j = 0, len1 = pages.length; j < len1; j++) {
+            page = pages[j];
+            page.classList.remove('even', 'odd');
+            page.classList.add(seq);
+            results1.push(seq = seq === 'odd' ? 'even' : 'odd');
+          }
+          return results1;
+        })());
       }
       return results;
     };
@@ -531,14 +542,15 @@
       return addPage(e.target.parentNode);
     };
     addPage = function(page) {
-      var i, item, items, len, new_page;
+      var i, item, items, len, new_page, section;
+      section = page.parentNode;
       new_page = _body.querySelector('.page').cloneNode(true);
       items = new_page.querySelectorAll('[data-item],.add_page');
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
         item.remove();
       }
-      _body.insertBefore(new_page, page.nextSibling);
+      section.insertBefore(new_page, page.nextSibling);
       addAddPage(new_page);
       refreshPageNumbers();
       frameResize();

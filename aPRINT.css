@@ -13,6 +13,7 @@ html {
 }
 body {
   background: transparent;
+  font-size: 0;
 }
 body .over {
   background: #94ff94;
@@ -122,11 +123,10 @@ body .classable .classes:hover .expander {
 body .classable .classes:hover .list {
   display: block;
 }
-body .page {
-  page: StandardPage;
+body section .page {
   position: relative;
   width: 210mm;
-  height: 297mm;
+  height: 296mm;
   background: #fff;
   margin: 4mm 4mm 52px;
   box-shadow: 0 0 6mm 1mm rgba(0,0,0,0.2);
@@ -162,33 +162,25 @@ body .add_page.active {
 body .add_page.active a {
   color: #000;
 }
-@page StandardPage {
-  size: 210mm 297mm;
+@page {
   margin: 0;
-  padding: 0;
-  @bottom-left {
-    content: 'number';
-  }
 }
 @media print {
-  html,
-  body {
-    width: 210mm;
-    height: 296mm;
-  }
   body {
     transform: scale(1) !important;
   }
-  body .page {
-    margin: initial;
-    padding: initial;
-    border: initial;
-    border-radius: initial;
-    width: initial;
-    height: initial;
-    box-shadow: initial;
-    page-break-inside: avoid;
+  body section {
     page-break-after: always;
+  }
+  body section .page {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 210mm;
+    height: 296mm;
+    box-shadow: none;
+    page-break-inside: avoid;
+    overflow: hidden;
   }
   body .remove,
   body .classes,
@@ -197,5 +189,17 @@ body .add_page.active a {
   }
   body img {
     image-resolution: from-image;
+  }
+  body.A4 {
+    width: 210mm;
+    height: 296mm;
+  }
+  body.A3 {
+    width: 420mm;
+    height: 296mm;
+  }
+  body.A3 section .page {
+    display: inline-block;
+    vertical-align: top;
   }
 }
