@@ -204,7 +204,8 @@
       factor = act_widh / max_width;
       _frame.contentDocument.body.style.transformOrigin = '48px 0';
       _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
-      return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
+      _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
+      return console.log(_frame.contentDocument.body.getBoundingClientRect().height);
     };
     refreshPageNumbers = function() {
       var i, len, page, pages, results, section, seq;
