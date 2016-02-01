@@ -65,6 +65,13 @@ html(lang="en")
 					| Suspendisse elementum fermentum consectetur
 				.image
 					img(src="http://placehold.it/1240x1620/F0F/FFF")
+				.list
+					ul
+						li Some item
+						li Another item
+						li A third item
+						li Number four
+						li And five
 				.text
 					span Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.
 					span Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit.
@@ -72,10 +79,10 @@ html(lang="en")
 					span Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in.
 					span Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis.
 					span Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-				.title
-					| Lorem ipsum dolor sit amet
 				.image
 					img(src="http://placehold.it/1420x1240/0FF/FFF")
+				.title
+					| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.
 				.image
 					img(src="http://placehold.it/1420x1240/00F/FFF")
 				.text
@@ -86,91 +93,106 @@ html(lang="en")
 				#print
 					section(data-id="1")
 						.page.A4
-							.header
-								.title(data-removable="true",data-item="kjhgkj")
-									| Hejhej title
-							.left_column
-								.texts
-									.text(data-removable="true",data-item="lacopacs")
-										p
-											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-							.right_column
-								.images
-									.image(data-sortable="true",data-removable="true",data-item="565d65",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1420x1240/0FF/FFF")
-									.image(data-sortable="true",data-removable="true",data-item="56df654fdg",data-class-list="left,right,middle")
-										img(src="http://placehold.it/2420x1400/FF0/000")
-									.image(data-sortable="true",data-removable="true",data-item="asffar8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1240x1620/F00/FFF")
+							#header
+								.header
+									.title(data-removable="true",data-item="kjhgkj")
+										| Hejhej title
+								.list
+							#body
+								.left_column
+									.texts
+										.text(data-removable="true",data-item="lacopacs")
+											p
+												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
+								.right_column
+									.images
+										.image(data-sortable="true",data-removable="true",data-item="565d65",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1420x1240/0FF/FFF")
+										.image(data-sortable="true",data-removable="true",data-item="56df654fdg",data-class-list="left,right,middle")
+											img(src="http://placehold.it/2420x1400/FF0/000")
+										.image(data-sortable="true",data-removable="true",data-item="asffar8",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1240x1620/F00/FFF")
 						.page.A4
-							.header
-								.title(data-removable="true",data-item="iuggvhjbkl")
-									| Hejhej title
-							.left_column
-								.texts
-									.text(data-removable="true",data-item="lacopaugilhjcs")
-										p
-											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-							.right_column
-								.images
-									.image(data-sortable="true",data-removable="true",data-item="56d654f654fdg",data-class-list="left,right,middle")
-										img(src="http://placehold.it/2420x1400/FF0/000")
-									.image(data-sortable="true",data-removable="true",data-item="56kj5d65",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1420x1240/0FF/FFF")
-									.image(data-sortable="true",data-removable="true",data-item="asffaior8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1240x1620/F00/FFF")
+							#header
+								.header
+									.title(data-removable="true",data-item="iuggvhjbkl")
+										| Hejhej title
+								.list
+							#body
+								.left_column
+									.texts
+										.text(data-removable="true",data-item="lacopaugilhjcs")
+											p
+												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
+								.right_column
+									.images
+										.image(data-sortable="true",data-removable="true",data-item="56d654f654fdg",data-class-list="left,right,middle")
+											img(src="http://placehold.it/2420x1400/FF0/000")
+										.image(data-sortable="true",data-removable="true",data-item="56kj5d65",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1420x1240/0FF/FFF")
+										.image(data-sortable="true",data-removable="true",data-item="asffaior8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1240x1620/F00/FFF")
 						.page.A4
-							.header
-								.title(data-removable="true",data-item="iugg54vhjbkl")
-									| Hejhej title
-							.left_column
-								.texts
-									.text(data-removable="true",data-item="lacop5augilhjcs")
-										p
-											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-							.right_column
-								.images
-									.image(data-sortable="true",data-removable="true",data-item="56d654f6654fdg",data-class-list="left,right,middle")
-										img(src="http://placehold.it/2420x1400/FF0/000")
-									.image(data-sortable="true",data-removable="true",data-item="5658kj5d65",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1420x1240/0FF/FFF")
-									.image(data-sortable="true",data-removable="true",data-item="asffai64or8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1240x1620/F00/FFF")
+							#header
+								.header
+									.title(data-removable="true",data-item="iugg54vhjbkl")
+										| Hejhej title
+								.list
+							#body
+								.left_column
+									.texts
+										.text(data-removable="true",data-item="lacop5augilhjcs")
+											p
+												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
+								.right_column
+									.images
+										.image(data-sortable="true",data-removable="true",data-item="56d654f6654fdg",data-class-list="left,right,middle")
+											img(src="http://placehold.it/2420x1400/FF0/000")
+										.image(data-sortable="true",data-removable="true",data-item="5658kj5d65",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1420x1240/0FF/FFF")
+										.image(data-sortable="true",data-removable="true",data-item="asffai64or8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1240x1620/F00/FFF")
 					section(data-id="2")
 						.page.A4
-							.header
-								.title(data-removable="true",data-item="krjhgkj")
-									| Hejhej title
-							.left_column
-								.texts
-									.text(data-removable="true",data-item="lacoppacs")
-										p
-											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-							.right_column
-								.images
-									.image(data-sortable="true",data-removable="true",data-item="565645d65",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1420x1240/0FF/FFF")
-									.image(data-sortable="true",data-removable="true",data-item="56rdtdf654fdg",data-class-list="left,right,middle")
-										img(src="http://placehold.it/2420x1400/FF0/000")
-									.image(data-sortable="true",data-removable="true",data-item="asffakkr8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1240x1620/F00/FFF")
+							#header
+								.header
+									.title(data-removable="true",data-item="krjhgkj")
+										| Hejhej title
+								.list
+							#body
+								.left_column
+									.texts
+										.text(data-removable="true",data-item="lacoppacs")
+											p
+												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
+								.right_column
+									.images
+										.image(data-sortable="true",data-removable="true",data-item="565645d65",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1420x1240/0FF/FFF")
+										.image(data-sortable="true",data-removable="true",data-item="56rdtdf654fdg",data-class-list="left,right,middle")
+											img(src="http://placehold.it/2420x1400/FF0/000")
+										.image(data-sortable="true",data-removable="true",data-item="asffakkr8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1240x1620/F00/FFF")
 						.page.A4
-							.header
-								.title(data-removable="true",data-item="kjhhhjgkj")
-									| Hejhej title
-							.left_column
-								.texts
-									.text(data-removable="true",data-item="lacfgcopacs")
-										p
-											| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
-							.right_column
-								.images
-									.image(data-sortable="true",data-removable="true",data-item="56dfgh5d65",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1420x1240/0FF/FFF")
-									.image(data-sortable="true",data-removable="true",data-item="5dfh6df654fdg",data-class-list="left,right,middle")
-										img(src="http://placehold.it/2420x1400/FF0/000")
-									.image(data-sortable="true",data-removable="true",data-item="a54sffar8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
-										img(src="http://placehold.it/1240x1620/F00/FFF")
+							#header
+								.header
+									.title(data-removable="true",data-item="kjhhhjgkj")
+										| Hejhej title
+								.list
+							#body
+								.left_column
+									.texts
+										.text(data-removable="true",data-item="lacfgcopacs")
+											p
+												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
+								.right_column
+									.images
+										.image(data-sortable="true",data-removable="true",data-item="56dfgh5d65",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1420x1240/0FF/FFF")
+										.image(data-sortable="true",data-removable="true",data-item="5dfh6df654fdg",data-class-list="left,right,middle")
+											img(src="http://placehold.it/2420x1400/FF0/000")
+										.image(data-sortable="true",data-removable="true",data-item="a54sffar8",style="opacity: 1; height: 24.0909%;",data-class-list="left,right,middle")
+											img(src="http://placehold.it/1240x1620/F00/FFF")
 		
 	//- script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
 	script(src="../aPRINT.js")
@@ -182,6 +204,10 @@ html(lang="en")
 			rules: {
 				'#left .title': {
 					target: '.header',
+					replace: true
+				},
+				'#left .list': {
+					target: '.list',
 					replace: true
 				},
 				'#left .text': {

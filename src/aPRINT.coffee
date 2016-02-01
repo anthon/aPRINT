@@ -253,9 +253,9 @@ A = (body,options)->
 					insertNextTo clone, getSortable(e.target,that)
 			if clone_img = clone.querySelector 'img'
 				clone_img.onload = ->
-					checkOverflow(that,clone)
+					checkOverflow(that,clone,true)
 			else
-				checkOverflow(that,clone)
+				checkOverflow(that,clone,true)
 			makeRemovable clone
 			makeClassable clone
 		else if _is_sorting
@@ -430,7 +430,7 @@ A = (body,options)->
 		for set_el in set
 			droppable = set_el.parentNode
 			set_el.remove()
-			checkOverflow droppable
+			checkOverflow droppable, null, true
 		fireCallbacks 'remove', e
 
 	consolidate = (el)->
@@ -444,7 +444,7 @@ A = (body,options)->
 				else
 					set_el.remove()
 
-	checkOverflow = (droppable,element)->
+	checkOverflow = (droppable,element,check_all)->
 		if _is_sorting or not element
 			els = droppable.querySelectorAll '[data-item]'
 			for el in els
@@ -512,13 +512,18 @@ A = (body,options)->
 						last_el.style.height = max_height_percentage+'%'
 						fireCallbacks 'update'
 					else
-						if not _is_sorting then element.remove()
+						if not _is_sorting and element then element.remove()
 						refuseDrop droppable
 				else
-					if not _is_sorting then element.remove()
+					if not _is_sorting and element then element.remove()
 					refuseDrop droppable
 		else
 			fireCallbacks 'update'
+		if check_all
+			droppables_on_page = parentPage(droppable).querySelectorAll '[data-drop-selector]'
+			for dop in droppables_on_page
+				if dop isnt droppable
+					checkOverflow dop
 
 	refuseDrop = (droppable)->
 		droppable.classList.add 'nodrop'

@@ -1,56 +1,80 @@
-body .page.A4 .header,
-body .page.A4 .left_column,
-body .page.A4 .right_column {
+body .page {
+  display: flex;
+  flex-direction: column;
+}
+body .page.A4 #header,
+body .page.A4 #body {
   font-size: 13pt;
   line-height: 18pt;
 }
-body .page.A4 .header {
+body .page.A4 #header {
   font-family: sans-serif;
-  height: 10%;
   background: #008000;
   width: 100%;
   padding: 6mm;
+  display: flex;
+  flex-direction: row;
+}
+body .page.A4 #header .header,
+body .page.A4 #header .list {
+  min-height: 1.5em;
   font-size: 20pt;
+  line-height: 1.5em;
   font-weight: 700;
 }
-body .page.A4 .left_column,
-body .page.A4 .right_column {
-  height: 90%;
-}
-body .page.A4 .left_column {
-  width: 33.333333333333336%;
-}
-body .page.A4 .left_column .texts {
-  height: 100%;
-  padding: 0 4mm 0 0;
-}
-body .page.A4 .right_column {
+body .page.A4 #header .header {
   width: 66.66666666666667%;
 }
-body .page.A4 .right_column .images {
-  height: 100%;
+body .page.A4 #header .list {
+  width: 33.333333333333336%;
 }
-body .page.A4 .right_column .images .image img {
+body .page.A4 #body {
+  background: rgba(255,0,0,0.24);
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+body .page.A4 #body .left_column,
+body .page.A4 #body .right_column {
+  position: relative;
+}
+body .page.A4 #body .left_column {
+  width: 33.333333333333336%;
+}
+body .page.A4 #body .left_column .texts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 4mm 0 0;
+}
+body .page.A4 #body .right_column {
+  width: 66.66666666666667%;
+}
+body .page.A4 #body .right_column .images {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+body .page.A4 #body .right_column .images .image img {
   max-width: 100%;
   height: auto;
   max-height: 100%;
 }
-body .page.A4 .right_column .images .image.left img,
-body .page.A4 .right_column .images .image.right img,
-body .page.A4 .right_column .images .image.middle img {
+body .page.A4 #body .right_column .images .image.left img,
+body .page.A4 #body .right_column .images .image.right img,
+body .page.A4 #body .right_column .images .image.middle img {
   max-width: 50%;
 }
-body .page.A4 .right_column .images .image.right {
+body .page.A4 #body .right_column .images .image.right {
   text-align: right;
 }
-body .page.A4 .right_column .images .image.middle {
+body .page.A4 #body .right_column .images .image.middle {
   text-align: center;
 }
-body .page.A4.odd .left_column,
-body .page.A4.odd .right_column {
-  float: left;
-}
-body .page.A4.even .left_column,
-body .page.A4.even .right_column {
-  float: right;
+body .page.A4.even #body {
+  flex-direction: row-reverse;
 }

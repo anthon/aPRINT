@@ -328,10 +328,10 @@
         }
         if (clone_img = clone.querySelector('img')) {
           clone_img.onload = function() {
-            return checkOverflow(that, clone);
+            return checkOverflow(that, clone, true);
           };
         } else {
-          checkOverflow(that, clone);
+          checkOverflow(that, clone, true);
         }
         makeRemovable(clone);
         makeClassable(clone);
@@ -566,7 +566,7 @@
         set_el = set[i];
         droppable = set_el.parentNode;
         set_el.remove();
-        checkOverflow(droppable);
+        checkOverflow(droppable, null, true);
       }
       return fireCallbacks('remove', e);
     };
@@ -588,8 +588,8 @@
         return results;
       }
     };
-    checkOverflow = function(droppable, element) {
-      var action, cl, continuer, drp, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, max_height, max_height_percentage, next_page, overflow, page;
+    checkOverflow = function(droppable, element, check_all) {
+      var action, cl, continuer, dop, droppables_on_page, drp, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, next_page, overflow, page, results;
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
         for (i = 0, len = els.length; i < len; i++) {
@@ -646,7 +646,8 @@
             drp.insertBefore(continuer, drp.firstChild);
             addFeatures(last_el);
             checkOverflow(drp);
-            return fireCallbacks('update');
+            fireCallbacks('update');
+            break;
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
             l = els.length;
@@ -654,7 +655,8 @@
               el = els[j];
               el.style.maxHeight = (100 / l) + '%';
             }
-            return fireCallbacks('update');
+            fireCallbacks('update');
+            break;
           case 'shrinkLast':
             last_el = droppable.lastElementChild;
             overflow = droppable.scrollHeight - droppable.clientHeight;
@@ -662,22 +664,35 @@
             max_height_percentage = (max_height / droppable.clientHeight) * 100;
             if (max_height_percentage > 1) {
               last_el.style.height = max_height_percentage + '%';
-              return fireCallbacks('update');
+              fireCallbacks('update');
             } else {
-              if (!_is_sorting) {
+              if (!_is_sorting && element) {
                 element.remove();
               }
-              return refuseDrop(droppable);
+              refuseDrop(droppable);
             }
             break;
           default:
-            if (!_is_sorting) {
+            if (!_is_sorting && element) {
               element.remove();
             }
-            return refuseDrop(droppable);
+            refuseDrop(droppable);
         }
       } else {
-        return fireCallbacks('update');
+        fireCallbacks('update');
+      }
+      if (check_all) {
+        droppables_on_page = parentPage(droppable).querySelectorAll('[data-drop-selector]');
+        results = [];
+        for (m = 0, len2 = droppables_on_page.length; m < len2; m++) {
+          dop = droppables_on_page[m];
+          if (dop !== droppable) {
+            results.push(checkOverflow(dop));
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
       }
     };
     refuseDrop = function(droppable) {
