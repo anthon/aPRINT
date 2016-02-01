@@ -562,6 +562,7 @@ A = (body,options)->
 	init(body,options)
 
 	return {
+		frameResize: frameResize
 		print: print
 		on: setCallback
 		get: getHTML
