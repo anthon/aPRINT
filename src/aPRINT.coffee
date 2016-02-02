@@ -413,7 +413,10 @@ A = (body,options)->
 
 	addPage = (page)->
 		section = page.parentNode
-		new_page = _body.querySelector('.page').cloneNode true
+		if page
+			new_page = page.cloneNode true
+		else
+			new_page = _body.querySelector('.page').cloneNode true
 		items = new_page.querySelectorAll '[data-item],.add_page'
 		for item in items
 			item.remove()
@@ -491,7 +494,7 @@ A = (body,options)->
 					next_page = page.nextSibling
 					if not next_page or next_page.nodeType isnt 1
 						next_page = addPage page
-					drp = next_page.querySelector '.'+droppable.className
+					drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
 					drp.insertBefore continuer, drp.firstChild
 					addFeatures last_el
 					checkOverflow drp

@@ -543,7 +543,11 @@
     addPage = function(page) {
       var i, item, items, len, new_page, section;
       section = page.parentNode;
-      new_page = _body.querySelector('.page').cloneNode(true);
+      if (page) {
+        new_page = page.cloneNode(true);
+      } else {
+        new_page = _body.querySelector('.page').cloneNode(true);
+      }
       items = new_page.querySelectorAll('[data-item],.add_page');
       for (i = 0, len = items.length; i < len; i++) {
         item = items[i];
@@ -640,7 +644,7 @@
             if (!next_page || next_page.nodeType !== 1) {
               next_page = addPage(page);
             }
-            drp = next_page.querySelector('.' + droppable.className);
+            drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
             drp.insertBefore(continuer, drp.firstChild);
             addFeatures(last_el);
             checkOverflow(drp);
