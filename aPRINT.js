@@ -640,8 +640,7 @@
             }
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
-            next_page = page.nextSibling;
-            console.log('Next Page:', next_page);
+            next_page = page.nextElementSibling;
             if (!next_page || next_page.nodeType !== 1) {
               next_page = addPage(page);
             }
