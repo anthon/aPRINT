@@ -491,10 +491,12 @@ A = (body,options)->
 						fc.innerHTML = fcHTML.join(' ')
 					continuer.insertBefore cl, continuer.firstChild
 					page = parentPage droppable
-					next_page = page.nextElementSibling
-					if not next_page or next_page.nodeType isnt 1
-						next_page = addPage page
-					drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+					drp = page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+					if not drop
+						next_page = page.nextElementSibling
+						if not next_page or next_page.nodeType isnt 1
+							next_page = addPage page
+						drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
 					drp.insertBefore continuer, drp.firstChild
 					addFeatures last_el
 					checkOverflow drp

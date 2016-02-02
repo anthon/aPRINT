@@ -640,11 +640,14 @@
             }
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
-            next_page = page.nextElementSibling;
-            if (!next_page || next_page.nodeType !== 1) {
-              next_page = addPage(page);
+            drp = page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+            if (!drop) {
+              next_page = page.nextElementSibling;
+              if (!next_page || next_page.nodeType !== 1) {
+                next_page = addPage(page);
+              }
+              drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
             }
-            drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
             drp.insertBefore(continuer, drp.firstChild);
             addFeatures(last_el);
             checkOverflow(drp);
