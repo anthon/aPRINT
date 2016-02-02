@@ -492,6 +492,7 @@ A = (body,options)->
 					continuer.insertBefore cl, continuer.firstChild
 					page = parentPage droppable
 					next_page = page.nextSibling
+					console.log 'Next Page:',next_page
 					if not next_page or next_page.nodeType isnt 1
 						next_page = addPage page
 					drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
