@@ -1,6 +1,7 @@
 body .page {
   display: flex;
   flex-direction: column;
+  padding: 6mm;
 }
 body .page.A4 #header,
 body .page.A4 #body {

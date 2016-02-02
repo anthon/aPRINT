@@ -175,7 +175,6 @@ body .add_page.active a {
   }
   body section .page {
     margin: 0;
-    padding: 0;
     border: none;
     width: 210mm;
     height: 296mm;
@@ -188,9 +187,6 @@ body .add_page.active a {
   body .add_page {
     display: none;
   }
-  body img {
-    image-resolution: from-image;
-  }
   body.A4 {
     width: 210mm;
     height: 296mm;
@@ -200,7 +196,7 @@ body .add_page.active a {
     height: 296mm;
   }
   body.A3 section .page {
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
   }
 }
