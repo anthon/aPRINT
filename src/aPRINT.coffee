@@ -448,6 +448,7 @@ A = (body,options)->
 				removeItem item
 			el.remove()
 		fireCallbacks 'remove', e
+		fireCallbacks 'update', e
 
 	removeItem = (el)->
 		set = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'

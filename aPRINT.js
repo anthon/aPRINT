@@ -593,7 +593,8 @@
         }
         el.remove();
       }
-      return fireCallbacks('remove', e);
+      fireCallbacks('remove', e);
+      return fireCallbacks('update', e);
     };
     removeItem = function(el) {
       var droppable, i, len, results, set, set_el;
