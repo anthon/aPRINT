@@ -3,16 +3,18 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_draggable, _current_drop_selector, _current_sortable_target, _frame, _is_sorting, _pages, _sections, _settings, activateContent, activateKeys, addAddPage, addDragDroppable, addEventListener, addFeatures, addPage, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _sections = null;
     _pages = null;
     _callbacks = {};
     _current_draggable = null;
-    _current_drop_selector = null;
+    _current_drag_selector = null;
     _current_sortable_target = null;
     _is_sorting = false;
+    _rules = {};
+    _current_rule = null;
     _settings = {
       styles: ['../aPRINT.css'],
       id: 'aPRINT',
@@ -236,12 +238,12 @@
       return page.appendChild(adder);
     };
     setupListeners = function() {
-      var drag, drop, ref, results;
+      var ref, results, rule, target;
       ref = _settings.rules;
       results = [];
-      for (drag in ref) {
-        drop = ref[drag];
-        results.push(addDragDroppable(drag, drop));
+      for (target in ref) {
+        rule = ref[target];
+        results.push(applyRule(target, rule));
       }
       return results;
     };
@@ -251,7 +253,7 @@
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('source', 'external');
       _current_draggable = e.target;
-      _current_drop_selector = that.dataset.dropSelector;
+      _current_drag_selector = that.dataset.selector;
       that.classList.add('drag');
       return false;
     };
@@ -260,13 +262,13 @@
       that = this;
       that.classList.remove('drag');
       _current_draggable = null;
-      _current_drop_selector = null;
+      _current_drag_selector = null;
       return false;
     };
     onDroppableDragOver = function(e) {
       var that;
       that = this;
-      if (_current_drop_selector === that.dataset.dropSelector) {
+      if (that.dataset.accept.indexOf(_current_drag_selector) !== -1) {
         if (e.preventDefault) {
           e.preventDefault();
         }
@@ -290,15 +292,16 @@
     onDroppableDragEnter = function(e) {
       var that;
       that = this;
-      if (_current_drop_selector === that.dataset.dropSelector) {
+      if (that.dataset.accept.indexOf(_current_drag_selector) !== -1) {
         that.classList.add('over');
         fireCallbacks('dragenter', e);
       }
       return false;
     };
     onDroppableDragLeave = function(e) {
-      var that;
+      var _current_drop_selector, that;
       that = this;
+      _current_drop_selector = null;
       that.classList.remove('over');
       return false;
     };
@@ -308,7 +311,7 @@
       if (e.stopPropagation) {
         e.stopPropagation();
       }
-      if (_current_drop_selector === that.dataset.dropSelector) {
+      if (that.dataset.accept.indexOf(_current_drag_selector) !== -1) {
         that.classList.remove('over');
         clone = _current_draggable.cloneNode(true);
         clone.removeAttribute('draggable');
@@ -317,7 +320,7 @@
           that.innerHTML = '';
           that.appendChild(clone);
         } else {
-          makeSortable(clone);
+          makeSortable(clone, that);
           if (e.target === that) {
             that.appendChild(clone);
           } else {
@@ -331,8 +334,8 @@
         } else {
           checkOverflow(that, clone, true);
         }
-        makeRemovable(clone);
-        makeClassable(clone);
+        makeRemovable(clone, that);
+        makeClassable(clone, that);
       } else if (_is_sorting) {
         checkOverflow(that);
       }
@@ -342,46 +345,48 @@
     itemise = function(el, sibling) {
       return el.dataset.item = sibling ? sibling.dataset.id : getID();
     };
-    addDragDroppable = function(drag, drop) {
-      var drag_selector, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, overflow_action, removable, replace_on_drop, results, sortable;
-      drag_selector = drag;
-      if (typeof drop === 'string') {
-        drop_selector = drop;
-      } else if (drop.target) {
-        drop_selector = drop.target;
+    applyRule = function(target, rule) {
+      var drag_selector, drag_selectors, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, len2, m, overflow_action, removable, replace_on_drop, results, sortable;
+      drop_selector = target;
+      drag_selectors = typeof rule.accept === 'array' ? rule.accept : [rule.accept];
+      for (i = 0, len = drag_selectors.length; i < len; i++) {
+        drag_selector = drag_selectors[i];
+        draggables = document.querySelectorAll(drag_selector);
+        for (j = 0, len1 = draggables.length; j < len1; j++) {
+          draggable = draggables[j];
+          draggable.draggable = true;
+          draggable.dataset.selector = drag_selector;
+          disableNestedImageDrag(draggable);
+          addEventListener(draggable, 'dragstart', onDraggableDragStart);
+          addEventListener(draggable, 'dragend', onDraggableDragEnd);
+        }
       }
-      replace_on_drop = typeof drop.replace === 'boolean' ? drop.replace : false;
-      removable = typeof drop.removable === 'boolean' ? drop.removable : true;
-      sortable = typeof drop.sortable === 'boolean' ? drop.sortable : true;
-      overflow_action = drop.overflow ? drop.overflow : false;
-      drop_classes = drop.classes ? drop.classes : false;
-      draggables = document.querySelectorAll(drag_selector);
       droppables = _body.querySelectorAll(drop_selector);
-      for (i = 0, len = draggables.length; i < len; i++) {
-        draggable = draggables[i];
-        draggable.draggable = true;
+      replace_on_drop = typeof rule.replace === 'boolean' ? rule.replace : false;
+      removable = typeof rule.removable === 'boolean' ? rule.removable : true;
+      sortable = typeof rule.sortable === 'boolean' ? rule.sortable : true;
+      overflow_action = rule.overflow ? rule.overflow : false;
+      drop_classes = rule.classes ? rule.classes : false;
+      results = [];
+      for (m = 0, len2 = droppables.length; m < len2; m++) {
+        droppable = droppables[m];
         if (drop_classes) {
-          draggable.dataset.classList = drop_classes;
+          droppable.dataset.classList = drop_classes;
         }
         if (removable) {
-          draggable.dataset.removable = removable;
+          droppable.dataset.removable = removable;
         }
         if (sortable) {
-          draggable.dataset.sortable = sortable;
+          droppable.dataset.sortable = sortable;
         }
-        draggable.dataset.dropSelector = drop_selector;
-        disableNestedImageDrag(draggable);
-        addEventListener(draggable, 'dragstart', onDraggableDragStart);
-        addEventListener(draggable, 'dragend', onDraggableDragEnd);
-      }
-      results = [];
-      for (j = 0, len1 = droppables.length; j < len1; j++) {
-        droppable = droppables[j];
-        droppable.dataset.dropSelector = drop_selector;
-        droppable.dataset.overflowAction = overflow_action;
         if (replace_on_drop) {
           droppable.dataset.replace = true;
         }
+        if (overflow_action) {
+          droppable.dataset.overflow = overflow_action;
+        }
+        droppable.dataset.dropSelector = drop_selector;
+        droppable.dataset.accept = drag_selectors;
         addEventListener(droppable, 'dragover', onDroppableDragOver);
         addEventListener(droppable, 'dragenter', onDroppableDragEnter);
         addEventListener(droppable, 'dragleave', onDroppableDragLeave);
@@ -407,9 +412,12 @@
       makeRemovable(el);
       return makeClassable(el);
     };
-    makeRemovable = function(el) {
+    makeRemovable = function(el, droppable) {
       var trasher;
-      if (el.dataset.removable) {
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.removable) {
         el.classList.add('removable');
         trasher = el.querySelector('.remove');
         if (!trasher) {
@@ -421,12 +429,15 @@
         return trasher.addEventListener('click', onTrashClick);
       }
     };
-    makeClassable = function(el) {
+    makeClassable = function(el, droppable) {
       var class_list, cls, container, expander, i, item, items, j, len, len1, list, results;
-      if (el.dataset.classList) {
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.classList) {
         el.classList.add('classable');
         items = el.querySelectorAll('.classes .item');
-        class_list = el.dataset.classList.split(',');
+        class_list = droppable.dataset.classList.split(',');
         if (items.length === 0) {
           container = document.createElement('div');
           container.classList.add('classes');
@@ -470,8 +481,11 @@
         return results;
       }
     };
-    makeSortable = function(el) {
-      if (el.dataset.sortable) {
+    makeSortable = function(el, droppable) {
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.sortable) {
         disableNestedImageDrag(el);
         el.draggable = true;
         el.classList.add('sortable');
@@ -600,7 +614,7 @@
         }
       }
       if (droppable.scrollHeight > droppable.clientHeight) {
-        action = droppable.dataset.overflowAction;
+        action = droppable.dataset.overflow;
         switch (action) {
           case 'continue':
             last_el = droppable.lastElementChild;
@@ -641,7 +655,7 @@
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
             drp = page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
-            if (!drop) {
+            if (!drp || drp === droppable) {
               next_page = page.nextElementSibling;
               if (!next_page || next_page.nodeType !== 1) {
                 next_page = addPage(page);

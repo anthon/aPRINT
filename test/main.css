@@ -4,6 +4,7 @@ body .page {
   padding: 6mm;
 }
 body .page.A4 #header,
+body .page.A4 #ingress,
 body .page.A4 #body {
   font-size: 13pt;
   line-height: 18pt;
@@ -28,6 +29,9 @@ body .page.A4 #header .header {
 }
 body .page.A4 #header .list {
   width: 33.333333333333336%;
+}
+body .page.A4 #ingress {
+  min-height: 1.5em;
 }
 body .page.A4 #body {
   background: rgba(255,0,0,0.24);
