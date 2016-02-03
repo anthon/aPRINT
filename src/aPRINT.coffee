@@ -444,9 +444,9 @@ A = (body,options)->
 
 	consolidate = (el)->
 		els = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
-		if els.length > 1
+		if els.length > 1 and not el.dataset.slave
 			for set_el in els
-				if set_el is el
+				if not set_el.dataset.slave
 					set_el.innerHTML = set_el.dataset.content
 					addFeatures set_el
 					delete set_el.dataset.content
@@ -458,6 +458,9 @@ A = (body,options)->
 			els = droppable.querySelectorAll '[data-item]'
 			for el in els
 				el.style.height = 'auto'
+				consolidate el
+		console.log droppable.scrollHeight
+		console.log droppable.clientHeight
 		if droppable.scrollHeight > droppable.clientHeight
 			action = droppable.dataset.overflow
 			switch action
@@ -467,6 +470,7 @@ A = (body,options)->
 					removeFeatures last_el
 					last_el.dataset.content = last_el.innerHTML
 					continuer = last_el.cloneNode()
+					continuer.dataset.slave = true
 					l = 200
 					while l-- and droppable.scrollHeight > droppable.clientHeight
 						lc = last_el.lastChild
@@ -509,7 +513,6 @@ A = (body,options)->
 					addFeatures last_el
 					checkOverflow drp
 					fireCallbacks 'update'
-						
 				when 'shrinkAll'
 					els = droppable.querySelectorAll '.removable'
 					l = els.length

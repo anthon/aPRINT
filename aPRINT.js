@@ -589,11 +589,11 @@
     consolidate = function(el) {
       var els, i, len, results, set_el;
       els = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
-      if (els.length > 1) {
+      if (els.length > 1 && !el.dataset.slave) {
         results = [];
         for (i = 0, len = els.length; i < len; i++) {
           set_el = els[i];
-          if (set_el === el) {
+          if (!set_el.dataset.slave) {
             set_el.innerHTML = set_el.dataset.content;
             addFeatures(set_el);
             results.push(delete set_el.dataset.content);
@@ -611,8 +611,11 @@
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];
           el.style.height = 'auto';
+          consolidate(el);
         }
       }
+      console.log(droppable.scrollHeight);
+      console.log(droppable.clientHeight);
       if (droppable.scrollHeight > droppable.clientHeight) {
         action = droppable.dataset.overflow;
         switch (action) {
@@ -621,6 +624,7 @@
             removeFeatures(last_el);
             last_el.dataset.content = last_el.innerHTML;
             continuer = last_el.cloneNode();
+            continuer.dataset.slave = true;
             l = 200;
             while (l-- && droppable.scrollHeight > droppable.clientHeight) {
               lc = last_el.lastChild;
