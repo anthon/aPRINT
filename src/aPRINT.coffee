@@ -196,6 +196,17 @@ A = (body,options)->
 		for target,rule of _settings.rules
 			applyRule target,rule
 
+	highlightPotentials = ->
+		droppables = _body.querySelectorAll '[data-drop-selector]'
+		for droppable in droppables
+			if droppable.dataset.accept.indexOf(_current_drag_selector) isnt -1
+				droppable.classList.add 'potential'
+
+	lowlightPotentials = ->
+		potentials = _body.querySelectorAll '.potential'
+		for potential in potentials
+			potential.classList.remove 'potential'
+
 	onDraggableDragStart = (e)->
 		that = this
 		e.dataTransfer.effectAllowed = 'move'
@@ -203,6 +214,7 @@ A = (body,options)->
 		_current_draggable = e.target
 		_current_drag_selector = that.dataset.selector
 		that.classList.add 'drag'
+		highlightPotentials()
 		return false
 
 	onDraggableDragEnd = (e)->
@@ -210,6 +222,7 @@ A = (body,options)->
 		that.classList.remove 'drag'
 		_current_draggable = null
 		_current_drag_selector = null
+		lowlightPotentials()
 		return false
 
 	onDroppableDragOver = (e)->

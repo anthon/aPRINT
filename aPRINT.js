@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _sections = null;
@@ -253,6 +253,30 @@
       }
       return results;
     };
+    highlightPotentials = function() {
+      var droppable, droppables, i, len, results;
+      droppables = _body.querySelectorAll('[data-drop-selector]');
+      results = [];
+      for (i = 0, len = droppables.length; i < len; i++) {
+        droppable = droppables[i];
+        if (droppable.dataset.accept.indexOf(_current_drag_selector) !== -1) {
+          results.push(droppable.classList.add('potential'));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    };
+    lowlightPotentials = function() {
+      var i, len, potential, potentials, results;
+      potentials = _body.querySelectorAll('.potential');
+      results = [];
+      for (i = 0, len = potentials.length; i < len; i++) {
+        potential = potentials[i];
+        results.push(potential.classList.remove('potential'));
+      }
+      return results;
+    };
     onDraggableDragStart = function(e) {
       var that;
       that = this;
@@ -261,6 +285,7 @@
       _current_draggable = e.target;
       _current_drag_selector = that.dataset.selector;
       that.classList.add('drag');
+      highlightPotentials();
       return false;
     };
     onDraggableDragEnd = function(e) {
@@ -269,6 +294,7 @@
       that.classList.remove('drag');
       _current_draggable = null;
       _current_drag_selector = null;
+      lowlightPotentials();
       return false;
     };
     onDroppableDragOver = function(e) {

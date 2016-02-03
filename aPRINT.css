@@ -15,8 +15,20 @@ body {
   background: transparent;
   font-size: 0;
 }
+body .potential {
+  position: relative;
+}
+body .potential:after {
+  content: '';
+  position: absolute;
+  top: 1mm;
+  left: 1mm;
+  right: 1mm;
+  bottom: 1mm;
+  border: 3px dotted #ddd;
+}
 body .over {
-  background: #94ff94;
+  background: #eee;
 }
 body .removable {
   position: relative;

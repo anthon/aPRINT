@@ -55,8 +55,18 @@ html
 body
 	background transparent
 	font-size 0
+	.potential
+		position relative
+		&:after
+			content ''
+			position absolute
+			top 1mm
+			left 1mm
+			right 1mm
+			bottom 1mm
+			border 3px dotted #DDD
 	.over
-		background lighten(green,72%)
+		background #EEE
 	
 	.removable
 		position relative
