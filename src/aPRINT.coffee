@@ -56,9 +56,7 @@ A = (body,options)->
 			activateContent()
 			setupListeners()
 		activateKeys()
-		setTimeout ->
-			frameResize()
-		,200
+		frameResize()
 
 	insertSizer = ->
 		sizer = document.createElement 'style'

@@ -71,9 +71,7 @@
         setupListeners();
       }
       activateKeys();
-      return setTimeout(function() {
-        return frameResize();
-      }, 200);
+      return frameResize();
     };
     insertSizer = function() {
       var sizer;
