@@ -497,7 +497,9 @@ A = (body,options)->
 						fc.innerHTML = fcHTML.join(' ')
 					continuer.insertBefore cl, continuer.firstChild
 					page = parentPage droppable
-					drp = page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+					drps = page.querySelectorAll '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+					droppable_index = Array.prototype.indexOf.call drps, droppable
+					drp = drps[droppable_index+1]
 					if not drp or drp is droppable
 						next_page = page.nextElementSibling
 						if not next_page or next_page.nodeType isnt 1

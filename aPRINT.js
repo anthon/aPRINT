@@ -605,7 +605,7 @@
       }
     };
     checkOverflow = function(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppables_on_page, drp, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, next_page, overflow, page, results;
+      var action, cl, continuer, dop, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, next_page, overflow, page, results;
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
         for (i = 0, len = els.length; i < len; i++) {
@@ -654,7 +654,9 @@
             }
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
-            drp = page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+            drps = page.querySelectorAll('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+            droppable_index = Array.prototype.indexOf.call(drps, droppable);
+            drp = drps[droppable_index + 1];
             if (!drp || drp === droppable) {
               next_page = page.nextElementSibling;
               if (!next_page || next_page.nodeType !== 1) {

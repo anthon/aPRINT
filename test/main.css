@@ -46,7 +46,10 @@ body .page.A4 #body .right_column {
 body .page.A4 #body .left_column {
   width: 33.333333333333336%;
 }
-body .page.A4 #body .left_column .texts {
+body .page.A4 #body .right_column {
+  width: 66.66666666666667%;
+}
+body .page.A4 #body .texts {
   position: absolute;
   top: 0;
   left: 0;
@@ -54,30 +57,27 @@ body .page.A4 #body .left_column .texts {
   bottom: 0;
   padding: 0 4mm 0 0;
 }
-body .page.A4 #body .right_column {
-  width: 66.66666666666667%;
-}
-body .page.A4 #body .right_column .images {
+body .page.A4 #body .images {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
-body .page.A4 #body .right_column .images .image img {
+body .page.A4 #body .images .image img {
   max-width: 100%;
   height: auto;
   max-height: 100%;
 }
-body .page.A4 #body .right_column .images .image.left img,
-body .page.A4 #body .right_column .images .image.right img,
-body .page.A4 #body .right_column .images .image.middle img {
+body .page.A4 #body .images .image.left img,
+body .page.A4 #body .images .image.right img,
+body .page.A4 #body .images .image.middle img {
   max-width: 50%;
 }
-body .page.A4 #body .right_column .images .image.right {
+body .page.A4 #body .images .image.right {
   text-align: right;
 }
-body .page.A4 #body .right_column .images .image.middle {
+body .page.A4 #body .images .image.middle {
   text-align: center;
 }
 body .page.A4.even #body {

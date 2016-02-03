@@ -63,36 +63,36 @@ body
 				.left_column
 					// background red
 					width (100/3)%
-					.texts
-						position absolute
-						top 0
-						left 0
-						right 0
-						bottom 0
-						padding 0 4mm 0 0
 				.right_column
 					// background green
 					width ((100/3)*2)%
-					.images
-						position absolute
-						top 0
-						left 0
-						right 0
-						bottom 0
-						.image
+				.texts
+					position absolute
+					top 0
+					left 0
+					right 0
+					bottom 0
+					padding 0 4mm 0 0
+				.images
+					position absolute
+					top 0
+					left 0
+					right 0
+					bottom 0
+					.image
+						img
+							max-width 100%
+							height auto
+							max-height 100%
+						&.left
+						&.right
+						&.middle
 							img
-								max-width 100%
-								height auto
-								max-height 100%
-							&.left
-							&.right
-							&.middle
-								img
-									max-width 50%
-							&.right
-								text-align right
-							&.middle
-								text-align center
+								max-width 50%
+						&.right
+							text-align right
+						&.middle
+							text-align center
 			&.even
 				#body
 					flex-direction row-reverse
