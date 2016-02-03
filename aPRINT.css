@@ -21,7 +21,7 @@ body .over {
 body .removable {
   position: relative;
 }
-body .removable .remove {
+body .remove {
   font-family: sans-serif;
   cursor: pointer;
   background-color: #fff;
@@ -36,21 +36,21 @@ body .removable .remove {
   text-align: center;
   font-weight: 100;
 }
-body .removable .remove a {
+body .remove a {
   color: #000;
 }
-body .removable .remove:hover {
+body .remove:hover {
   background-color: #c20000;
   color: #fff;
 }
-body .removable .remove:hover a {
+body .remove:hover a {
   color: #fff;
 }
-body .removable .remove.active {
+body .remove.active {
   background-color: #c20000;
   color: #fff;
 }
-body .removable .remove.active a {
+body .remove.active a {
   color: #fff;
 }
 body .nodrop {

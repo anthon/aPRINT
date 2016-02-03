@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPageNumbers, refuseDrop, removeFeatures, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, init, insertNextTo, insertSizer, insertStyle, itemise, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _sections = null;
@@ -56,7 +56,7 @@
       var i, len, ref, stylesheet;
       _frame.contentDocument.body.classList.add(_settings.format);
       _frame.contentDocument.body.appendChild(_body);
-      refreshPageNumbers();
+      refreshPages();
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
       }
@@ -207,8 +207,8 @@
       _frame.contentDocument.body.style.transformOrigin = '48px 0';
       return _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
     };
-    refreshPageNumbers = function() {
-      var i, len, page, pages, results, section, seq;
+    refreshPages = function() {
+      var i, len, page, pages, results, section, seq, trasher;
       _sections = _body.querySelectorAll('section');
       results = [];
       for (i = 0, len = _sections.length; i < len; i++) {
@@ -222,7 +222,15 @@
             page = pages[j];
             page.classList.remove('even', 'odd');
             page.classList.add(seq);
-            results1.push(seq = seq === 'odd' ? 'even' : 'odd');
+            seq = seq === 'odd' ? 'even' : 'odd';
+            trasher = page.querySelector('.remove');
+            if (!trasher) {
+              trasher = document.createElement('div');
+              trasher.innerHTML = '&times;';
+              trasher.classList.add('remove');
+              page.appendChild(trasher);
+            }
+            results1.push(trasher.addEventListener('click', onTrashClick));
           }
           return results1;
         })());
@@ -569,27 +577,42 @@
       }
       section.insertBefore(new_page, page.nextSibling);
       addAddPage(new_page);
-      refreshPageNumbers();
+      refreshPages();
       frameResize();
       setupListeners();
       return new_page;
     };
     onTrashClick = function(e) {
-      var droppable, el, i, len, set, set_el;
+      var el, i, item, items, len;
       el = e.target.parentNode;
+      if (el.dataset.item) {
+        removeItem(el);
+      } else {
+        items = el.querySelectorAll('[data-item]');
+        for (i = 0, len = items.length; i < len; i++) {
+          item = items[i];
+          removeItem(item);
+        }
+        el.remove();
+      }
+      return fireCallbacks('remove', e);
+    };
+    removeItem = function(el) {
+      var droppable, i, len, results, set, set_el;
       set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
+      results = [];
       for (i = 0, len = set.length; i < len; i++) {
         set_el = set[i];
         droppable = set_el.parentNode;
         set_el.remove();
-        checkOverflow(droppable, null, true);
+        results.push(checkOverflow(droppable, null, true));
       }
-      return fireCallbacks('remove', e);
+      return results;
     };
     consolidate = function(el) {
       var els, i, len, results, set_el;
       els = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
-      if (els.length > 1 && !el.dataset.slave) {
+      if (els.length > 1) {
         results = [];
         for (i = 0, len = els.length; i < len; i++) {
           set_el = els[i];
@@ -611,7 +634,9 @@
         for (i = 0, len = els.length; i < len; i++) {
           el = els[i];
           el.style.height = 'auto';
-          consolidate(el);
+          if (!el.dataset.slave) {
+            consolidate(el);
+          }
         }
       }
       console.log(droppable.scrollHeight);

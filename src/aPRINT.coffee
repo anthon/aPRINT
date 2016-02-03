@@ -47,7 +47,7 @@ A = (body,options)->
 	populateIframe = ->
 		_frame.contentDocument.body.classList.add _settings.format
 		_frame.contentDocument.body.appendChild _body
-		refreshPageNumbers()
+		refreshPages()
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
@@ -170,7 +170,7 @@ A = (body,options)->
 		# a4mm = ((100/a4width)*(pageWidth/100))
 		# _frame.contentDocument.querySelector('#sizer').innerHTML = 'html{font-size:'+a4mm+'px}'
 
-	refreshPageNumbers = ->
+	refreshPages = ->
 		_sections = _body.querySelectorAll 'section'
 		for section in _sections
 			pages = section.querySelectorAll '.page'
@@ -179,6 +179,13 @@ A = (body,options)->
 				page.classList.remove('even','odd')
 				page.classList.add seq
 				seq = if seq is 'odd' then 'even' else 'odd'
+				trasher = page.querySelector '.remove'
+				if not trasher
+					trasher = document.createElement 'div'
+					trasher.innerHTML = '&times;'
+					trasher.classList.add 'remove'
+					page.appendChild trasher
+				trasher.addEventListener 'click', onTrashClick
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'
@@ -428,23 +435,32 @@ A = (body,options)->
 			item.remove()
 		section.insertBefore new_page, page.nextSibling
 		addAddPage new_page
-		refreshPageNumbers()
+		refreshPages()
 		frameResize()
 		setupListeners()
 		return new_page
 
 	onTrashClick = (e)->
 		el = e.target.parentNode
+		if el.dataset.item
+			removeItem el
+		else
+			items = el.querySelectorAll '[data-item]'
+			for item in items
+				removeItem item
+			el.remove()
+		fireCallbacks 'remove', e
+
+	removeItem = (el)->
 		set = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
 		for set_el in set
 			droppable = set_el.parentNode
 			set_el.remove()
 			checkOverflow droppable, null, true
-		fireCallbacks 'remove', e
 
 	consolidate = (el)->
 		els = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
-		if els.length > 1 and not el.dataset.slave
+		if els.length > 1
 			for set_el in els
 				if not set_el.dataset.slave
 					set_el.innerHTML = set_el.dataset.content
@@ -458,7 +474,7 @@ A = (body,options)->
 			els = droppable.querySelectorAll '[data-item]'
 			for el in els
 				el.style.height = 'auto'
-				consolidate el
+				if not el.dataset.slave then consolidate el
 		console.log droppable.scrollHeight
 		console.log droppable.clientHeight
 		if droppable.scrollHeight > droppable.clientHeight
