@@ -825,6 +825,7 @@
       } else {
         clone = _body.querySelector('section').cloneNode(true);
       }
+      lowlightPotentials();
       removeFeatures(clone);
       return clone.innerHTML.trim();
     };
