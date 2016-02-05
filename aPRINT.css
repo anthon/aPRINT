@@ -141,7 +141,7 @@ body section .page {
   height: 296mm;
   background: #fff;
   margin: 4mm 4mm 52px;
-  box-shadow: 0 0 6mm 1mm rgba(0,0,0,0.2);
+  box-shadow: 0 0 6px 2px rgba(0,0,0,0.16);
 }
 body .add_page {
   cursor: pointer;
