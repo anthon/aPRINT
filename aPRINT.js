@@ -607,20 +607,24 @@
       return new_page;
     };
     onTrashClick = function(e) {
-      var el, i, item, items, len;
-      el = e.target.parentNode;
-      if (el.dataset.item) {
-        removeItem(el);
-      } else {
-        items = el.querySelectorAll('[data-item]');
-        for (i = 0, len = items.length; i < len; i++) {
-          item = items[i];
-          removeItem(item);
+      var el, i, item, items, len, sure, to_remove;
+      to_remove = el.dataset.item ? 'item' : 'page';
+      sure = confirm('Are you sure you want to remove the ' + to_remove + '?');
+      if (sure) {
+        el = e.target.parentNode;
+        if (to_remove === 'page') {
+          items = el.querySelectorAll('[data-item]');
+          for (i = 0, len = items.length; i < len; i++) {
+            item = items[i];
+            removeItem(item);
+          }
+          el.remove();
+        } else {
+          removeItem(el);
         }
-        el.remove();
+        fireCallbacks('remove', e);
+        return fireCallbacks('update', e);
       }
-      fireCallbacks('remove', e);
-      return fireCallbacks('update', e);
     };
     removeItem = function(el) {
       var droppable, i, len, results, set, set_el;
