@@ -608,10 +608,10 @@
     };
     onTrashClick = function(e) {
       var el, i, item, items, len, sure, to_remove;
+      el = e.target.parentNode;
       to_remove = el.dataset.item ? 'item' : 'page';
       sure = confirm('Are you sure you want to remove the ' + to_remove + '?');
       if (sure) {
-        el = e.target.parentNode;
         if (to_remove === 'page') {
           items = el.querySelectorAll('[data-item]');
           for (i = 0, len = items.length; i < len; i++) {

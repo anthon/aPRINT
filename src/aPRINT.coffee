@@ -452,10 +452,10 @@ A = (body,options)->
 		return new_page
 
 	onTrashClick = (e)->
+		el = e.target.parentNode
 		to_remove = if el.dataset.item then 'item' else 'page'
 		sure = confirm 'Are you sure you want to remove the '+to_remove+'?'
 		if sure
-			el = e.target.parentNode
 			if to_remove is 'page'
 				items = el.querySelectorAll '[data-item]'
 				for item in items
