@@ -114,7 +114,7 @@ A = (body,options)->
 			if not duration then duration = 200
 			section = if target.nodeName is 'SECTION' then target else target.parentNode
 			section_id = section.dataset.id
-			console.log 'section id', section_id
+			# console.log 'section id', section_id
 			body = _frame.contentDocument.body
 			start = body.scrollTop
 			target_top = Math.round(target.getBoundingClientRect().top + start)
@@ -490,8 +490,8 @@ A = (body,options)->
 			for el in els
 				el.style.height = 'auto'
 				if not el.dataset.slave then consolidate el
-		console.log droppable.scrollHeight
-		console.log droppable.clientHeight
+		# console.log droppable.scrollHeight
+		# console.log droppable.clientHeight
 		if droppable.scrollHeight > droppable.clientHeight
 			action = droppable.dataset.overflow
 			switch action

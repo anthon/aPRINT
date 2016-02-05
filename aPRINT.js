@@ -145,7 +145,6 @@
         }
         section = target.nodeName === 'SECTION' ? target : target.parentNode;
         section_id = section.dataset.id;
-        console.log('section id', section_id);
         body = _frame.contentDocument.body;
         start = body.scrollTop;
         target_top = Math.round(target.getBoundingClientRect().top + start);
@@ -668,8 +667,6 @@
           }
         }
       }
-      console.log(droppable.scrollHeight);
-      console.log(droppable.clientHeight);
       if (droppable.scrollHeight > droppable.clientHeight) {
         action = droppable.dataset.overflow;
         switch (action) {
