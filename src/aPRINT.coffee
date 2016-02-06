@@ -79,6 +79,13 @@ A = (body,options)->
 			disableNestedImageDrag page
 			# makeSortable page
 			addAddPage page
+			trasher = page.querySelector '.remove'
+			if not trasher
+				trasher = document.createElement 'div'
+				trasher.innerHTML = '&times;'
+				trasher.classList.add 'remove'
+				page.appendChild trasher
+			trasher.addEventListener 'click', onTrashClick
 		for item in items
 			addFeatures item
 
@@ -177,13 +184,6 @@ A = (body,options)->
 				page.classList.remove('even','odd')
 				page.classList.add seq
 				seq = if seq is 'odd' then 'even' else 'odd'
-				trasher = page.querySelector '.remove'
-				if not trasher
-					trasher = document.createElement 'div'
-					trasher.innerHTML = '&times;'
-					trasher.classList.add 'remove'
-					page.appendChild trasher
-				trasher.addEventListener 'click', onTrashClick
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'

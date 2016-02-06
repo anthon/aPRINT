@@ -91,12 +91,20 @@
       return el.addEventListener(evt, callback);
     };
     activateContent = function() {
-      var i, item, items, j, len, len1, page, results;
+      var i, item, items, j, len, len1, page, results, trasher;
       items = _body.querySelectorAll('[data-item]');
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
         addAddPage(page);
+        trasher = page.querySelector('.remove');
+        if (!trasher) {
+          trasher = document.createElement('div');
+          trasher.innerHTML = '&times;';
+          trasher.classList.add('remove');
+          page.appendChild(trasher);
+        }
+        trasher.addEventListener('click', onTrashClick);
       }
       results = [];
       for (j = 0, len1 = items.length; j < len1; j++) {
@@ -204,7 +212,7 @@
       return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
     };
     refreshPages = function() {
-      var i, len, page, pages, results, section, seq, trasher;
+      var i, len, page, pages, results, section, seq;
       _sections = _body.querySelectorAll('section');
       results = [];
       for (i = 0, len = _sections.length; i < len; i++) {
@@ -218,15 +226,7 @@
             page = pages[j];
             page.classList.remove('even', 'odd');
             page.classList.add(seq);
-            seq = seq === 'odd' ? 'even' : 'odd';
-            trasher = page.querySelector('.remove');
-            if (!trasher) {
-              trasher = document.createElement('div');
-              trasher.innerHTML = '&times;';
-              trasher.classList.add('remove');
-              page.appendChild(trasher);
-            }
-            results1.push(trasher.addEventListener('click', onTrashClick));
+            results1.push(seq = seq === 'odd' ? 'even' : 'odd');
           }
           return results1;
         })());
