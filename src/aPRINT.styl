@@ -62,8 +62,8 @@ body
 				45deg,
 				#FFF,
 				#FFF 3mm,
-				#DED 3mm,
-				#DED 6mm
+				#F6F6F6 3mm,
+				#F6F6F6 6mm
 			)
 			content ''
 			position absolute
@@ -72,6 +72,16 @@ body
 			right -1mm
 			bottom -1mm
 			// border 1px dotted #CCC
+		&.over
+			&:before
+				background repeating-linear-gradient(
+					45deg,
+					#FFF,
+					#FFF 3mm,
+					#DED 3mm,
+					#DED 6mm
+				)
+				content ''
 	.over
 		background #EEE
 	

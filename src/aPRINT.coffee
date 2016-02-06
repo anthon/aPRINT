@@ -259,6 +259,7 @@ A = (body,options)->
 		that = this
 		if e.stopPropagation then e.stopPropagation()
 		if that.dataset.accept.indexOf(_current_drag_selector) isnt -1
+			lowlightPotentials()
 			that.classList.remove 'over'
 			clone = _current_draggable.cloneNode(true)
 			clone.removeAttribute 'draggable'
@@ -490,8 +491,6 @@ A = (body,options)->
 			for el in els
 				el.style.height = 'auto'
 				if not el.dataset.slave then consolidate el
-		# console.log droppable.scrollHeight
-		# console.log droppable.clientHeight
 		if droppable.scrollHeight > droppable.clientHeight
 			action = droppable.dataset.overflow
 			switch action

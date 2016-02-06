@@ -19,13 +19,17 @@ body .potential {
   position: relative;
 }
 body .potential:before {
-  background: repeating-linear-gradient(45deg, #fff, #fff 3mm, #ded 3mm, #ded 6mm);
+  background: repeating-linear-gradient(45deg, #fff, #fff 3mm, #f6f6f6 3mm, #f6f6f6 6mm);
   content: '';
   position: absolute;
   top: -1mm;
   left: -1mm;
   right: -1mm;
   bottom: -1mm;
+}
+body .potential.over:before {
+  background: repeating-linear-gradient(45deg, #fff, #fff 3mm, #ded 3mm, #ded 6mm);
+  content: '';
 }
 body .over {
   background: #eee;

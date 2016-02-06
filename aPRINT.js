@@ -343,6 +343,7 @@
         e.stopPropagation();
       }
       if (that.dataset.accept.indexOf(_current_drag_selector) !== -1) {
+        lowlightPotentials();
         that.classList.remove('over');
         clone = _current_draggable.cloneNode(true);
         clone.removeAttribute('draggable');
