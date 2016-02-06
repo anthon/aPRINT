@@ -18,14 +18,6 @@ body {
   width: 218mm;
   transform-origin: 50% 0;
 }
-body .drag {
-  background: #f00;
-  position: relative;
-  width: auto;
-  height: auto;
-  max-width: 280px;
-  max-height: 280px;
-}
 body .potential {
   position: relative;
 }
