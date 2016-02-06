@@ -58,13 +58,20 @@ body
 	.potential
 		position relative
 		&:after
+			background repeating-linear-gradient(
+				45deg,
+				#FFF,
+				#FFF 3mm,
+				#DED 3mm,
+				#DED 6mm
+			)
 			content ''
 			position absolute
-			top 1mm
-			left 1mm
-			right 1mm
-			bottom 1mm
-			border 3px dotted #DDD
+			top -1mm
+			left -1mm
+			right -1mm
+			bottom -1mm
+			// border 1px dotted #CCC
 	.over
 		background #EEE
 	

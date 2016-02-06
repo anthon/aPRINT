@@ -821,12 +821,12 @@
     };
     getHTML = function(section) {
       var clone;
+      lowlightPotentials();
       if (section) {
         clone = _body.querySelector('section[data-id="' + section + '"]').cloneNode(true);
       } else {
         clone = _body.querySelector('section').cloneNode(true);
       }
-      lowlightPotentials();
       removeFeatures(clone);
       return clone.innerHTML.trim();
     };

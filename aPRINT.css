@@ -19,13 +19,13 @@ body .potential {
   position: relative;
 }
 body .potential:after {
+  background: repeating-linear-gradient(45deg, #fff, #fff 3mm, #ded 3mm, #ded 6mm);
   content: '';
   position: absolute;
-  top: 1mm;
-  left: 1mm;
-  right: 1mm;
-  bottom: 1mm;
-  border: 3px dotted #ddd;
+  top: -1mm;
+  left: -1mm;
+  right: -1mm;
+  bottom: -1mm;
 }
 body .over {
   background: #eee;
