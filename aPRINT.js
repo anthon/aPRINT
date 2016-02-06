@@ -194,15 +194,15 @@
       return frameResize();
     };
     frameResize = function() {
-      var act_widh, factor, margin, max_width, mm2px, paper_width;
+      var act_width, factor, margin, max_width, mm2px, paper_width;
       mm2px = 3.78;
       paper_width = 210;
       margin = 24;
       max_width = (paper_width + margin) * mm2px;
-      act_widh = _frame.offsetWidth;
-      factor = act_widh / max_width;
-      _frame.contentDocument.body.style.transformOrigin = '48px 0';
-      return _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
+      act_width = _frame.offsetWidth;
+      factor = act_width / max_width;
+      _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
+      return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
     };
     refreshPages = function() {
       var i, len, page, pages, results, section, seq, trasher;

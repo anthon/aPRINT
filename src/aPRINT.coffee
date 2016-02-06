@@ -156,10 +156,11 @@ A = (body,options)->
 		paper_width = 210
 		margin = 24
 		max_width = (paper_width + margin) * mm2px
-		act_widh = _frame.offsetWidth
-		factor = act_widh / max_width
-		_frame.contentDocument.body.style.transformOrigin = '48px 0'
+		act_width = _frame.offsetWidth
+		factor = act_width / max_width
+		# _frame.contentDocument.body.style.transformOrigin = ((margin*2)*factor)+'px 0'
 		_frame.contentDocument.body.style.transform = 'scale('+factor+')'
+		_frame.contentDocument.body.style.marginLeft = ((act_width - max_width)/2 + margin)+'px'
 		# _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height
 		# console.log _frame.contentDocument.body.getBoundingClientRect().height
 		# pageWidth = .9 * _body.offsetWidth

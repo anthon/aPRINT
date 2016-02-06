@@ -55,6 +55,18 @@ html
 body
 	background transparent
 	font-size 0
+	transition transform .2s
+	width (a4width+8)mm
+	transform-origin 50% 0
+	
+	.drag
+		background red
+		position relative
+		width auto
+		height auto
+		max-width 280px
+		max-height 280px
+
 	.potential
 		position relative
 		&:before
@@ -166,6 +178,7 @@ body
 	
 @media print
 	body
+		width auto
 		transform scale(1) !important
 		section
 			page-break-after always

@@ -14,6 +14,17 @@ html {
 body {
   background: transparent;
   font-size: 0;
+  transition: transform 0.2s;
+  width: 218mm;
+  transform-origin: 50% 0;
+}
+body .drag {
+  background: #f00;
+  position: relative;
+  width: auto;
+  height: auto;
+  max-width: 280px;
+  max-height: 280px;
 }
 body .potential {
   position: relative;
@@ -184,6 +195,7 @@ body .add_page.active a {
 }
 @media print {
   body {
+    width: auto;
     transform: scale(1) !important;
   }
   body section {
