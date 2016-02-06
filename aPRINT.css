@@ -18,7 +18,7 @@ body {
 body .potential {
   position: relative;
 }
-body .potential:after {
+body .potential:before {
   background: repeating-linear-gradient(45deg, #fff, #fff 3mm, #ded 3mm, #ded 6mm);
   content: '';
   position: absolute;
