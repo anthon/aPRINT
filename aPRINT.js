@@ -37,7 +37,6 @@
     createIframe = function() {
       _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
-      _frame.width = _body.offsetWidth;
       _frame.style.borderWidth = 0;
       if (_settings.transparent) {
         _frame.setAttribute('allowtransparency', true);

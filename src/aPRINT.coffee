@@ -30,7 +30,6 @@ A = (body,options)->
 	createIframe = ->
 		_pages = _body.querySelectorAll '.page'
 		_frame = document.createElement 'iframe'
-		_frame.width = _body.offsetWidth
 		_frame.style.borderWidth = 0
 		# _frame.style.overflow = 'hidden'
 		# _frame.style.resize = 'horizontal'
