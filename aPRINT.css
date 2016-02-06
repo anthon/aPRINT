@@ -188,6 +188,7 @@ body .add_page.active a {
 @media print {
   body {
     width: auto;
+    margin: 0;
     transform: scale(1) !important;
   }
   body section {
