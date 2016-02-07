@@ -70,7 +70,8 @@
         setupListeners();
       }
       activateKeys();
-      return frameResize();
+      frameResize();
+      return fireCallbacks('loaded');
     };
     insertSizer = function() {
       var sizer;
@@ -209,7 +210,8 @@
       act_width = _frame.offsetWidth;
       factor = act_width / max_width;
       _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
-      return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
+      _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
+      return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
     };
     refreshPages = function() {
       var i, len, page, pages, results, section, seq;

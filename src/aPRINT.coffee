@@ -56,6 +56,7 @@ A = (body,options)->
 			setupListeners()
 		activateKeys()
 		frameResize()
+		fireCallbacks 'loaded'
 
 	insertSizer = ->
 		sizer = document.createElement 'style'
@@ -167,7 +168,7 @@ A = (body,options)->
 		# _frame.contentDocument.body.style.transformOrigin = ((margin*2)*factor)+'px 0'
 		_frame.contentDocument.body.style.transform = 'scale('+factor+')'
 		_frame.contentDocument.body.style.marginLeft = ((act_width - max_width)/2 + margin)+'px'
-		# _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height
+		_frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height
 		# console.log _frame.contentDocument.body.getBoundingClientRect().height
 		# pageWidth = .9 * _body.offsetWidth
 		# a4width = 210
