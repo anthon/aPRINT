@@ -53,27 +53,29 @@
       }
     };
     populateIframe = function() {
-      var i, len, ref, stylesheet;
-      _frame.contentDocument.body.classList.add(_settings.format);
-      _frame.contentDocument.body.appendChild(_body);
-      refreshPages();
-      if (typeof _settings.styles === 'string') {
-        _settings.styles = [_settings.styles];
-      }
-      ref = _settings.styles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        stylesheet = ref[i];
-        insertStyle(stylesheet);
-      }
-      insertSizer();
-      if (_settings.editable) {
-        activateContent();
-        setupListeners();
-      }
-      activateKeys();
-      frameResize();
-      _body.style.opacity = 1;
-      return fireCallbacks('loaded');
+      return setTimeout(function() {
+        var i, len, ref, stylesheet;
+        _frame.contentDocument.body.classList.add(_settings.format);
+        _frame.contentDocument.body.appendChild(_body);
+        refreshPages();
+        if (typeof _settings.styles === 'string') {
+          _settings.styles = [_settings.styles];
+        }
+        ref = _settings.styles;
+        for (i = 0, len = ref.length; i < len; i++) {
+          stylesheet = ref[i];
+          insertStyle(stylesheet);
+        }
+        insertSizer();
+        if (_settings.editable) {
+          activateContent();
+          setupListeners();
+        }
+        activateKeys();
+        frameResize();
+        _body.style.opacity = 1;
+        return fireCallbacks('loaded');
+      }, 1000);
     };
     insertSizer = function() {
       var sizer;

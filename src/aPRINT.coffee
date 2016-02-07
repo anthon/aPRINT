@@ -45,20 +45,22 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
-		_frame.contentDocument.body.classList.add _settings.format
-		_frame.contentDocument.body.appendChild _body
-		refreshPages()
-		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
-		for stylesheet in _settings.styles
-			insertStyle stylesheet
-		insertSizer()
-		if _settings.editable
-			activateContent()
-			setupListeners()
-		activateKeys()
-		frameResize()
-		_body.style.opacity = 1
-		fireCallbacks 'loaded'
+		setTimeout ->
+			_frame.contentDocument.body.classList.add _settings.format
+			_frame.contentDocument.body.appendChild _body
+			refreshPages()
+			if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
+			for stylesheet in _settings.styles
+				insertStyle stylesheet
+			insertSizer()
+			if _settings.editable
+				activateContent()
+				setupListeners()
+			activateKeys()
+			frameResize()
+			_body.style.opacity = 1
+			fireCallbacks 'loaded'
+		,1000
 
 	insertSizer = ->
 		sizer = document.createElement 'style'
