@@ -28,6 +28,7 @@ A = (body,options)->
 		createIframe()
 
 	createIframe = ->
+		_body.style.opacity = 0
 		_pages = _body.querySelectorAll '.page'
 		_frame = document.createElement 'iframe'
 		_frame.style.borderWidth = 0
@@ -56,6 +57,7 @@ A = (body,options)->
 			setupListeners()
 		activateKeys()
 		frameResize()
+		_body.style.opacity = 1
 		fireCallbacks 'loaded'
 
 	insertSizer = ->

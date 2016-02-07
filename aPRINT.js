@@ -35,6 +35,7 @@
       return createIframe();
     };
     createIframe = function() {
+      _body.style.opacity = 0;
       _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
       _frame.style.borderWidth = 0;
@@ -71,6 +72,7 @@
       }
       activateKeys();
       frameResize();
+      _body.style.opacity = 1;
       return fireCallbacks('loaded');
     };
     insertSizer = function() {
