@@ -80,15 +80,7 @@ A = (body,options)->
 		for page in _pages
 			disableNestedImageDrag page
 			# makeSortable page
-			addAddPage page
-			if page.classList.contains 'removable'
-				trasher = page.querySelector '.remove'
-				if not trasher
-					trasher = document.createElement 'div'
-					trasher.innerHTML = '&times;'
-					trasher.classList.add 'remove'
-					page.appendChild trasher
-				trasher.addEventListener 'click', onTrashClick
+			addPageFeatures page
 		for item in items
 			addFeatures item
 
@@ -189,12 +181,20 @@ A = (body,options)->
 					page.classList.add seq
 					seq = if seq is 'odd' then 'even' else 'odd'
 
-	addAddPage = (page)->
+	addPageFeatures = (page)->
 		adder = document.createElement 'div'
 		adder.classList.add 'add_page'
 		adder.innerHTML = '+'
 		adder.addEventListener 'click', onAddPageClick
 		page.appendChild adder
+		if page.classList.contains 'removable'
+			trasher = page.querySelector '.remove'
+			if not trasher
+				trasher = document.createElement 'div'
+				trasher.innerHTML = '&times;'
+				trasher.classList.add 'remove'
+				page.appendChild trasher
+			trasher.addEventListener 'click', onTrashClick
 
 	setupListeners = ->
 		for target,rule of _settings.rules
@@ -451,7 +451,7 @@ A = (body,options)->
 			item.remove()
 		new_page.classList.add 'removable'
 		section.insertBefore new_page, page.nextSibling
-		addAddPage new_page
+		addPageFeatures new_page
 		refreshPages()
 		frameResize()
 		setupListeners()

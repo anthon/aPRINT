@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addAddPage, addEventListener, addFeatures, addPage, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _sections = null;
@@ -93,22 +93,12 @@
       return el.addEventListener(evt, callback);
     };
     activateContent = function() {
-      var i, item, items, j, len, len1, page, results, trasher;
+      var i, item, items, j, len, len1, page, results;
       items = _body.querySelectorAll('[data-item]');
       for (i = 0, len = _pages.length; i < len; i++) {
         page = _pages[i];
         disableNestedImageDrag(page);
-        addAddPage(page);
-        if (page.classList.contains('removable')) {
-          trasher = page.querySelector('.remove');
-          if (!trasher) {
-            trasher = document.createElement('div');
-            trasher.innerHTML = '&times;';
-            trasher.classList.add('remove');
-            page.appendChild(trasher);
-          }
-          trasher.addEventListener('click', onTrashClick);
-        }
+        addPageFeatures(page);
       }
       results = [];
       for (j = 0, len1 = items.length; j < len1; j++) {
@@ -240,13 +230,23 @@
         return results;
       }
     };
-    addAddPage = function(page) {
-      var adder;
+    addPageFeatures = function(page) {
+      var adder, trasher;
       adder = document.createElement('div');
       adder.classList.add('add_page');
       adder.innerHTML = '+';
       adder.addEventListener('click', onAddPageClick);
-      return page.appendChild(adder);
+      page.appendChild(adder);
+      if (page.classList.contains('removable')) {
+        trasher = page.querySelector('.remove');
+        if (!trasher) {
+          trasher = document.createElement('div');
+          trasher.innerHTML = '&times;';
+          trasher.classList.add('remove');
+          page.appendChild(trasher);
+        }
+        return trasher.addEventListener('click', onTrashClick);
+      }
     };
     setupListeners = function() {
       var ref, results, rule, target;
@@ -607,7 +607,7 @@
       }
       new_page.classList.add('removable');
       section.insertBefore(new_page, page.nextSibling);
-      addAddPage(new_page);
+      addPageFeatures(new_page);
       refreshPages();
       frameResize();
       setupListeners();
