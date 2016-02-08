@@ -605,6 +605,7 @@
         item = items[i];
         item.remove();
       }
+      new_page.classList.add('removable');
       section.insertBefore(new_page, page.nextSibling);
       addAddPage(new_page);
       refreshPages();

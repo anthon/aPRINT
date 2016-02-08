@@ -449,6 +449,7 @@ A = (body,options)->
 		items = new_page.querySelectorAll '[data-item],.add_page'
 		for item in items
 			item.remove()
+		new_page.classList.add 'removable'
 		section.insertBefore new_page, page.nextSibling
 		addAddPage new_page
 		refreshPages()
