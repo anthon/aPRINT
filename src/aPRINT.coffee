@@ -17,6 +17,7 @@ A = (body,options)->
 		format: 'A4'
 		transparent: false
 		editable: true
+		mirror: true
 		margins:
 			left: ''
 
@@ -44,21 +45,19 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
-		setTimeout ->
-			_frame.contentDocument.body.classList.add _settings.format
-			_frame.contentDocument.body.appendChild _body
-			refreshPages()
-			if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
-			for stylesheet in _settings.styles
-				insertStyle stylesheet
-			insertSizer()
-			if _settings.editable
-				activateContent()
-				setupListeners()
-			activateKeys()
-			frameResize()
-			fireCallbacks 'loaded'
-		,1000
+		_frame.contentDocument.body.classList.add _settings.format
+		_frame.contentDocument.body.appendChild _body
+		refreshPages()
+		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
+		for stylesheet in _settings.styles
+			insertStyle stylesheet
+		insertSizer()
+		if _settings.editable
+			activateContent()
+			setupListeners()
+		activateKeys()
+		frameResize()
+		fireCallbacks 'loaded'
 
 	insertSizer = ->
 		sizer = document.createElement 'style'
@@ -82,13 +81,14 @@ A = (body,options)->
 			disableNestedImageDrag page
 			# makeSortable page
 			addAddPage page
-			trasher = page.querySelector '.remove'
-			if not trasher
-				trasher = document.createElement 'div'
-				trasher.innerHTML = '&times;'
-				trasher.classList.add 'remove'
-				page.appendChild trasher
-			trasher.addEventListener 'click', onTrashClick
+			if page.classList.contains 'removable'
+				trasher = page.querySelector '.remove'
+				if not trasher
+					trasher = document.createElement 'div'
+					trasher.innerHTML = '&times;'
+					trasher.classList.add 'remove'
+					page.appendChild trasher
+				trasher.addEventListener 'click', onTrashClick
 		for item in items
 			addFeatures item
 
@@ -179,14 +179,15 @@ A = (body,options)->
 		# _frame.contentDocument.querySelector('#sizer').innerHTML = 'html{font-size:'+a4mm+'px}'
 
 	refreshPages = ->
-		_sections = _body.querySelectorAll 'section'
-		for section in _sections
-			pages = section.querySelectorAll '.page'
-			seq = 'odd'
-			for page in pages
-				page.classList.remove('even','odd')
-				page.classList.add seq
-				seq = if seq is 'odd' then 'even' else 'odd'
+		if _settings.mirror
+			_sections = _body.querySelectorAll 'section'
+			for section in _sections
+				pages = section.querySelectorAll '.page'
+				seq = 'odd'
+				for page in pages
+					page.classList.remove('even','odd')
+					page.classList.add seq
+					seq = if seq is 'odd' then 'even' else 'odd'
 
 	addAddPage = (page)->
 		adder = document.createElement 'div'

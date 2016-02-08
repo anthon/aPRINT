@@ -68,8 +68,7 @@ body .page.A4 #body .images .image img {
   max-height: 100%;
 }
 body .page.A4 #body .images .image.left img,
-body .page.A4 #body .images .image.right img,
-body .page.A4 #body .images .image.middle img {
+body .page.A4 #body .images .image.right img {
   max-width: 50%;
 }
 body .page.A4 #body .images .image.right {

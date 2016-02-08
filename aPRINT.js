@@ -21,6 +21,7 @@
       format: 'A4',
       transparent: false,
       editable: true,
+      mirror: true,
       margins: {
         left: ''
       }
@@ -52,28 +53,26 @@
       }
     };
     populateIframe = function() {
-      return setTimeout(function() {
-        var i, len, ref, stylesheet;
-        _frame.contentDocument.body.classList.add(_settings.format);
-        _frame.contentDocument.body.appendChild(_body);
-        refreshPages();
-        if (typeof _settings.styles === 'string') {
-          _settings.styles = [_settings.styles];
-        }
-        ref = _settings.styles;
-        for (i = 0, len = ref.length; i < len; i++) {
-          stylesheet = ref[i];
-          insertStyle(stylesheet);
-        }
-        insertSizer();
-        if (_settings.editable) {
-          activateContent();
-          setupListeners();
-        }
-        activateKeys();
-        frameResize();
-        return fireCallbacks('loaded');
-      }, 1000);
+      var i, len, ref, stylesheet;
+      _frame.contentDocument.body.classList.add(_settings.format);
+      _frame.contentDocument.body.appendChild(_body);
+      refreshPages();
+      if (typeof _settings.styles === 'string') {
+        _settings.styles = [_settings.styles];
+      }
+      ref = _settings.styles;
+      for (i = 0, len = ref.length; i < len; i++) {
+        stylesheet = ref[i];
+        insertStyle(stylesheet);
+      }
+      insertSizer();
+      if (_settings.editable) {
+        activateContent();
+        setupListeners();
+      }
+      activateKeys();
+      frameResize();
+      return fireCallbacks('loaded');
     };
     insertSizer = function() {
       var sizer;
@@ -100,14 +99,16 @@
         page = _pages[i];
         disableNestedImageDrag(page);
         addAddPage(page);
-        trasher = page.querySelector('.remove');
-        if (!trasher) {
-          trasher = document.createElement('div');
-          trasher.innerHTML = '&times;';
-          trasher.classList.add('remove');
-          page.appendChild(trasher);
+        if (page.classList.contains('removable')) {
+          trasher = page.querySelector('.remove');
+          if (!trasher) {
+            trasher = document.createElement('div');
+            trasher.innerHTML = '&times;';
+            trasher.classList.add('remove');
+            page.appendChild(trasher);
+          }
+          trasher.addEventListener('click', onTrashClick);
         }
-        trasher.addEventListener('click', onTrashClick);
       }
       results = [];
       for (j = 0, len1 = items.length; j < len1; j++) {
@@ -217,25 +218,27 @@
     };
     refreshPages = function() {
       var i, len, page, pages, results, section, seq;
-      _sections = _body.querySelectorAll('section');
-      results = [];
-      for (i = 0, len = _sections.length; i < len; i++) {
-        section = _sections[i];
-        pages = section.querySelectorAll('.page');
-        seq = 'odd';
-        results.push((function() {
-          var j, len1, results1;
-          results1 = [];
-          for (j = 0, len1 = pages.length; j < len1; j++) {
-            page = pages[j];
-            page.classList.remove('even', 'odd');
-            page.classList.add(seq);
-            results1.push(seq = seq === 'odd' ? 'even' : 'odd');
-          }
-          return results1;
-        })());
+      if (_settings.mirror) {
+        _sections = _body.querySelectorAll('section');
+        results = [];
+        for (i = 0, len = _sections.length; i < len; i++) {
+          section = _sections[i];
+          pages = section.querySelectorAll('.page');
+          seq = 'odd';
+          results.push((function() {
+            var j, len1, results1;
+            results1 = [];
+            for (j = 0, len1 = pages.length; j < len1; j++) {
+              page = pages[j];
+              page.classList.remove('even', 'odd');
+              page.classList.add(seq);
+              results1.push(seq = seq === 'odd' ? 'even' : 'odd');
+            }
+            return results1;
+          })());
+        }
+        return results;
       }
-      return results;
     };
     addAddPage = function(page) {
       var adder;
