@@ -807,6 +807,7 @@
     };
     fireCallbacks = function(key, e) {
       var callback, i, k, keys, len, results;
+      console.log('Firing "' + key + '"');
       keys = key.split(' ');
       results = [];
       for (i = 0, len = keys.length; i < len; i++) {

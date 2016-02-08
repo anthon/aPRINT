@@ -600,6 +600,7 @@ A = (body,options)->
 		return Math.random().toString(36).substring 8
 
 	fireCallbacks = (key,e)->
+		console.log 'Firing "'+key+'"'
 		keys = key.split ' '
 		for k in keys
 			if _callbacks[k]
