@@ -187,11 +187,15 @@ body
 				margin 0
 				// padding 0
 				border none
-				width (a4width)mm
-				height (a4height)mm
 				box-shadow none
 				page-break-inside avoid
 				overflow hidden
+				&.A4
+					width (a4width)mm
+					height (a4height)mm
+				&.A3
+					width (a4width*2)mm
+					height (a4height)mm
 		.remove
 		.classes
 		.add_page

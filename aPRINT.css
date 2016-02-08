@@ -197,11 +197,17 @@ body .add_page.active a {
   body section .page {
     margin: 0;
     border: none;
-    width: 210mm;
-    height: 296mm;
     box-shadow: none;
     page-break-inside: avoid;
     overflow: hidden;
+  }
+  body section .page.A4 {
+    width: 210mm;
+    height: 296mm;
+  }
+  body section .page.A3 {
+    width: 420mm;
+    height: 296mm;
   }
   body .remove,
   body .classes,
