@@ -467,6 +467,7 @@ A = (body,options)->
 				for item in items
 					removeItem item
 				el.remove()
+				refreshPages()
 			else
 				removeItem el
 			fireCallbacks 'remove', e

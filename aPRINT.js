@@ -626,6 +626,7 @@
             removeItem(item);
           }
           el.remove();
+          refreshPages();
         } else {
           removeItem(el);
         }
