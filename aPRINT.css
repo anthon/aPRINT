@@ -54,6 +54,7 @@ body .remove {
   line-height: 24px;
   text-align: center;
   font-weight: 100;
+  border: 1px solid #000;
 }
 body .remove a {
   color: #000;
@@ -92,6 +93,7 @@ body .classable .classes .expander {
   height: 25px;
   line-height: 28px;
   text-align: center;
+  border: 1px solid #000;
 }
 body .classable .classes .expander a {
   color: #000;
