@@ -294,13 +294,14 @@ A = (body,options)->
 
 	applyRule = (target,rule)->
 		drop_selector = target
-		drag_selectors = if typeof rule.accept is 'array' then rule.accept else [rule.accept]
+		drag_selectors = if typeof rule.accept is 'string' then [rule.accept] else rule.accept
 
 		for drag_selector in drag_selectors
 			draggables = document.querySelectorAll drag_selector		
 			for draggable in draggables
 				draggable.draggable = true
 				draggable.dataset.selector = drag_selector
+				console.log draggable.dataset.selector = drag_selector
 				# if not draggable.dataset.dropSelectors then draggable.dataset.dropSelectors = []
 				# draggable.dataset.dropSelectors.push drop_selector
 				disableNestedImageDrag(draggable)

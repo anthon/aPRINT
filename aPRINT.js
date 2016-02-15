@@ -386,7 +386,7 @@
     applyRule = function(target, rule) {
       var drag_selector, drag_selectors, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, len2, m, overflow_action, removable, replace_on_drop, results, sortable;
       drop_selector = target;
-      drag_selectors = typeof rule.accept === 'array' ? rule.accept : [rule.accept];
+      drag_selectors = typeof rule.accept === 'string' ? [rule.accept] : rule.accept;
       for (i = 0, len = drag_selectors.length; i < len; i++) {
         drag_selector = drag_selectors[i];
         draggables = document.querySelectorAll(drag_selector);
@@ -394,6 +394,7 @@
           draggable = draggables[j];
           draggable.draggable = true;
           draggable.dataset.selector = drag_selector;
+          console.log(draggable.dataset.selector = drag_selector);
           disableNestedImageDrag(draggable);
           addEventListener(draggable, 'dragstart', onDraggableDragStart);
           addEventListener(draggable, 'dragend', onDraggableDragEnd);
