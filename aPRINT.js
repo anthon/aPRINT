@@ -686,7 +686,7 @@
             last_el.dataset.content = last_el.innerHTML;
             continuer = last_el.cloneNode();
             continuer.dataset.slave = true;
-            l = 200;
+            l = 20000;
             while (l-- && droppable.scrollHeight > droppable.clientHeight) {
               lc = last_el.lastChild;
               if (!lc) {
@@ -711,12 +711,14 @@
             cl = fc.cloneNode();
             last_el.appendChild(fc);
             cl.innerHTML = '';
-            l = 200;
+            l = 20000;
             while (l-- && droppable.scrollHeight > droppable.clientHeight) {
               fcHTML = fc.innerHTML.split(' ');
               cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
               fc.innerHTML = fcHTML.join(' ');
             }
+            console.log('scrollHeight:', droppable.scrollHeight);
+            console.log('clientHeight:', droppable.clientHeight);
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
             drps = page.querySelectorAll('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
