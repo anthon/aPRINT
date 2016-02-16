@@ -394,7 +394,6 @@
           draggable = draggables[j];
           draggable.draggable = true;
           draggable.dataset.selector = drag_selector;
-          console.log(draggable.dataset.selector = drag_selector);
           disableNestedImageDrag(draggable);
           addEventListener(draggable, 'dragstart', onDraggableDragStart);
           addEventListener(draggable, 'dragend', onDraggableDragEnd);
@@ -683,7 +682,9 @@
           case 'continue':
             last_el = droppable.lastElementChild;
             removeFeatures(last_el);
-            last_el.dataset.content = last_el.innerHTML;
+            if (!last_el.dataset.slave) {
+              last_el.dataset.content = last_el.innerHTML;
+            }
             continuer = last_el.cloneNode();
             continuer.dataset.slave = true;
             l = 20000;
@@ -717,8 +718,6 @@
               cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
               fc.innerHTML = fcHTML.join(' ');
             }
-            console.log('scrollHeight:', droppable.scrollHeight);
-            console.log('clientHeight:', droppable.clientHeight);
             continuer.insertBefore(cl, continuer.firstChild);
             page = parentPage(droppable);
             drps = page.querySelectorAll('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
@@ -732,7 +731,9 @@
               drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
             }
             drp.insertBefore(continuer, drp.firstChild);
-            addFeatures(last_el);
+            if (!last_el.dataset.slave) {
+              addFeatures(last_el);
+            }
             checkOverflow(drp);
             fireCallbacks('update');
             break;
@@ -810,7 +811,6 @@
     };
     fireCallbacks = function(key, e) {
       var callback, i, k, keys, len, results;
-      console.log('Firing "' + key + '"');
       keys = key.split(' ');
       results = [];
       for (i = 0, len = keys.length; i < len; i++) {

@@ -301,7 +301,7 @@ A = (body,options)->
 			for draggable in draggables
 				draggable.draggable = true
 				draggable.dataset.selector = drag_selector
-				console.log draggable.dataset.selector = drag_selector
+				# console.log draggable.dataset.selector = drag_selector
 				# if not draggable.dataset.dropSelectors then draggable.dataset.dropSelectors = []
 				# draggable.dataset.dropSelectors.push drop_selector
 				disableNestedImageDrag(draggable)
@@ -505,7 +505,7 @@ A = (body,options)->
 					# This only applies to texts for now
 					last_el = droppable.lastElementChild
 					removeFeatures last_el
-					last_el.dataset.content = last_el.innerHTML
+					if not last_el.dataset.slave then last_el.dataset.content = last_el.innerHTML
 					continuer = last_el.cloneNode()
 					continuer.dataset.slave = true
 					l = 20000
@@ -536,8 +536,6 @@ A = (body,options)->
 						fcHTML = fc.innerHTML.split(' ')
 						cl.innerHTML = fcHTML.pop()+' '+cl.innerHTML
 						fc.innerHTML = fcHTML.join(' ')
-					console.log 'scrollHeight:',droppable.scrollHeight
-					console.log 'clientHeight:',droppable.clientHeight
 					continuer.insertBefore cl, continuer.firstChild
 					page = parentPage droppable
 					drps = page.querySelectorAll '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
@@ -549,7 +547,7 @@ A = (body,options)->
 							next_page = addPage page
 						drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
 					drp.insertBefore continuer, drp.firstChild
-					addFeatures last_el
+					if not last_el.dataset.slave then addFeatures last_el
 					checkOverflow drp
 					fireCallbacks 'update'
 				when 'shrinkAll'
@@ -603,7 +601,7 @@ A = (body,options)->
 		return Math.random().toString(36).substring 8
 
 	fireCallbacks = (key,e)->
-		console.log 'Firing "'+key+'"'
+		# console.log 'Firing "'+key+'"'
 		keys = key.split ' '
 		for k in keys
 			if _callbacks[k]
