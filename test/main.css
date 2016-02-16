@@ -62,10 +62,16 @@ body .page.A4 #body .images {
   right: 0;
   bottom: 0;
 }
+body .page.A4 #body .images .image {
+  margin-bottom: 3mm;
+}
 body .page.A4 #body .images .image img {
   max-width: 100%;
   height: auto;
   max-height: 100%;
+}
+body .page.A4 #body .images .image:last-child {
+  margin-bottom: 0;
 }
 body .page.A4 #body .images .image.left img,
 body .page.A4 #body .images .image.right img {

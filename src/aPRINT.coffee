@@ -619,6 +619,7 @@ A = (body,options)->
 
 	print = ->
 		_frame.contentWindow.print()
+		return false
 
 	init(body,options)
 

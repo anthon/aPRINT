@@ -844,7 +844,8 @@
       return clone.innerHTML.trim();
     };
     print = function() {
-      return _frame.contentWindow.print();
+      _frame.contentWindow.print();
+      return false;
     };
     init(body, options);
     return {
