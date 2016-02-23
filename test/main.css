@@ -83,6 +83,15 @@ body .page.A4 #body .images .image.right {
 body .page.A4 #body .images .image.middle {
   text-align: center;
 }
+body .page.A4 #body .images .image:before {
+  content: attr(data-image-number);
+  background: #f00;
+  position: absolute;
+  top: 0;
+  left: -1em;
+  padding: 7px;
+  cursor: pointer;
+}
 body .page.A4.even #body {
   flex-direction: row-reverse;
 }

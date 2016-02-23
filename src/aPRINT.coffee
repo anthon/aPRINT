@@ -280,6 +280,7 @@ A = (body,options)->
 			if clone_img = clone.querySelector 'img'
 				clone_img.onload = ->
 					checkOverflow(that,clone,true)
+				assignImageNumbers parentSection that
 			else
 				checkOverflow(that,clone,true)
 			makeRemovable clone, that
@@ -417,6 +418,13 @@ A = (body,options)->
 		to_removes = el.querySelectorAll '.add_page, .classes, .remove'
 		for to_remove in to_removes
 			to_remove.remove()
+
+	assignImageNumbers = (section)->
+		console.log section
+		imgs = section.querySelectorAll 'img'
+		for img, i in imgs
+			item = parentItem img
+			item.dataset.imageNumber = i+1
 
 	insertNextTo = (el,sibling)->
 		parent = sibling.parentNode
@@ -594,6 +602,16 @@ A = (body,options)->
 
 	parentPage = (el)->
 		while not el.classList.contains 'page'
+			el = el.parentNode
+		return el
+
+	parentSection = (el)->
+		while el.nodeName isnt 'SECTION'
+			el = el.parentNode
+		return el
+
+	parentItem = (el)->
+		while not el.dataset.item
 			el = el.parentNode
 		return el
 

@@ -95,6 +95,14 @@ body
 							text-align right
 						&.middle
 							text-align center
+						&:before
+							content attr(data-image-number)
+							background red
+							position absolute
+							top 0
+							left -1em
+							padding 7px
+							cursor pointer
 			&.even
 				#body
 					flex-direction row-reverse

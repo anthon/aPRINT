@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentPage, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
     _frame = null;
     _body = null;
     _sections = null;
@@ -53,7 +53,7 @@
       }
     };
     populateIframe = function() {
-      var i, len, ref, stylesheet;
+      var j, len, ref, stylesheet;
       _frame.contentDocument.body.classList.add(_settings.format);
       _frame.contentDocument.body.appendChild(_body);
       refreshPages();
@@ -61,8 +61,8 @@
         _settings.styles = [_settings.styles];
       }
       ref = _settings.styles;
-      for (i = 0, len = ref.length; i < len; i++) {
-        stylesheet = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        stylesheet = ref[j];
         insertStyle(stylesheet);
       }
       insertSizer();
@@ -93,16 +93,16 @@
       return el.addEventListener(evt, callback);
     };
     activateContent = function() {
-      var i, item, items, j, len, len1, page, results;
+      var item, items, j, len, len1, m, page, results;
       items = _body.querySelectorAll('[data-item]');
-      for (i = 0, len = _pages.length; i < len; i++) {
-        page = _pages[i];
+      for (j = 0, len = _pages.length; j < len; j++) {
+        page = _pages[j];
         disableNestedImageDrag(page);
         addPageFeatures(page);
       }
       results = [];
-      for (j = 0, len1 = items.length; j < len1; j++) {
-        item = items[j];
+      for (m = 0, len1 = items.length; m < len1; m++) {
+        item = items[m];
         results.push(addFeatures(item));
       }
       return results;
@@ -166,10 +166,10 @@
       }
     };
     scrollToEl = function(selector, reverse) {
-      var el, els, i, index, len, r, r_bottom, r_top, wb;
+      var el, els, index, j, len, r, r_bottom, r_top, wb;
       els = _body.querySelectorAll(selector);
       wb = _frame.contentWindow.innerHeight;
-      for (index = i = 0, len = els.length; i < len; index = ++i) {
+      for (index = j = 0, len = els.length; j < len; index = ++j) {
         el = els[index];
         r = el.getBoundingClientRect();
         r_top = Math.round(r.top);
@@ -207,19 +207,19 @@
       return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
     };
     refreshPages = function() {
-      var i, len, page, pages, results, section, seq;
+      var j, len, page, pages, results, section, seq;
       if (_settings.mirror) {
         _sections = _body.querySelectorAll('section');
         results = [];
-        for (i = 0, len = _sections.length; i < len; i++) {
-          section = _sections[i];
+        for (j = 0, len = _sections.length; j < len; j++) {
+          section = _sections[j];
           pages = section.querySelectorAll('.page');
           seq = 'odd';
           results.push((function() {
-            var j, len1, results1;
+            var len1, m, results1;
             results1 = [];
-            for (j = 0, len1 = pages.length; j < len1; j++) {
-              page = pages[j];
+            for (m = 0, len1 = pages.length; m < len1; m++) {
+              page = pages[m];
               page.classList.remove('even', 'odd');
               page.classList.add(seq);
               results1.push(seq = seq === 'odd' ? 'even' : 'odd');
@@ -259,11 +259,11 @@
       return results;
     };
     highlightPotentials = function() {
-      var droppable, droppables, i, len, results;
+      var droppable, droppables, j, len, results;
       droppables = _body.querySelectorAll('[data-drop-selector]');
       results = [];
-      for (i = 0, len = droppables.length; i < len; i++) {
-        droppable = droppables[i];
+      for (j = 0, len = droppables.length; j < len; j++) {
+        droppable = droppables[j];
         if (droppable.dataset.accept.indexOf(_current_drag_selector) !== -1) {
           results.push(droppable.classList.add('potential'));
         } else {
@@ -273,11 +273,11 @@
       return results;
     };
     lowlightPotentials = function() {
-      var i, len, potential, potentials, results;
+      var j, len, potential, potentials, results;
       potentials = _body.querySelectorAll('.potential');
       results = [];
-      for (i = 0, len = potentials.length; i < len; i++) {
-        potential = potentials[i];
+      for (j = 0, len = potentials.length; j < len; j++) {
+        potential = potentials[j];
         results.push(potential.classList.remove('potential'));
       }
       return results;
@@ -369,6 +369,7 @@
           clone_img.onload = function() {
             return checkOverflow(that, clone, true);
           };
+          assignImageNumbers(parentSection(that));
         } else {
           checkOverflow(that, clone, true);
         }
@@ -384,14 +385,14 @@
       return el.dataset.item = sibling ? sibling.dataset.id : getID();
     };
     applyRule = function(target, rule) {
-      var drag_selector, drag_selectors, draggable, draggables, drop_classes, drop_selector, droppable, droppables, i, j, len, len1, len2, m, overflow_action, removable, replace_on_drop, results, sortable;
+      var drag_selector, drag_selectors, draggable, draggables, drop_classes, drop_selector, droppable, droppables, j, len, len1, len2, m, n, overflow_action, removable, replace_on_drop, results, sortable;
       drop_selector = target;
       drag_selectors = typeof rule.accept === 'string' ? [rule.accept] : rule.accept;
-      for (i = 0, len = drag_selectors.length; i < len; i++) {
-        drag_selector = drag_selectors[i];
+      for (j = 0, len = drag_selectors.length; j < len; j++) {
+        drag_selector = drag_selectors[j];
         draggables = document.querySelectorAll(drag_selector);
-        for (j = 0, len1 = draggables.length; j < len1; j++) {
-          draggable = draggables[j];
+        for (m = 0, len1 = draggables.length; m < len1; m++) {
+          draggable = draggables[m];
           draggable.draggable = true;
           draggable.dataset.selector = drag_selector;
           disableNestedImageDrag(draggable);
@@ -406,8 +407,8 @@
       overflow_action = rule.overflow ? rule.overflow : false;
       drop_classes = rule.classes ? rule.classes : false;
       results = [];
-      for (m = 0, len2 = droppables.length; m < len2; m++) {
-        droppable = droppables[m];
+      for (n = 0, len2 = droppables.length; n < len2; n++) {
+        droppable = droppables[n];
         if (drop_classes) {
           droppable.dataset.classList = drop_classes;
         }
@@ -433,11 +434,11 @@
       return results;
     };
     disableNestedImageDrag = function(el) {
-      var i, image, images_in_draggable, len, results;
+      var image, images_in_draggable, j, len, results;
       images_in_draggable = el.querySelectorAll('img');
       results = [];
-      for (i = 0, len = images_in_draggable.length; i < len; i++) {
-        image = images_in_draggable[i];
+      for (j = 0, len = images_in_draggable.length; j < len; j++) {
+        image = images_in_draggable[j];
         image.draggable = false;
         image.style['user-drag'] = 'none';
         image.style['-moz-user-select'] = 'none';
@@ -468,7 +469,7 @@
       }
     };
     makeClassable = function(el, droppable) {
-      var class_list, cls, container, expander, i, item, items, j, len, len1, list, results;
+      var class_list, cls, container, expander, item, items, j, len, len1, list, m, results;
       if (!droppable) {
         droppable = el.parentNode;
       }
@@ -486,8 +487,8 @@
           list = document.createElement('div');
           list.classList.add('list');
           class_list.unshift('none');
-          for (i = 0, len = class_list.length; i < len; i++) {
-            cls = class_list[i];
+          for (j = 0, len = class_list.length; j < len; j++) {
+            cls = class_list[j];
             item = document.createElement('div');
             item.classList.add('item');
             item.innerHTML = cls;
@@ -498,16 +499,16 @@
           el.appendChild(container);
         }
         results = [];
-        for (j = 0, len1 = items.length; j < len1; j++) {
-          item = items[j];
+        for (m = 0, len1 = items.length; m < len1; m++) {
+          item = items[m];
           results.push(item.addEventListener('click', function(e) {
-            var len2, len3, m, n, results1, set, set_el;
+            var len2, len3, n, o, results1, set, set_el;
             set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
             results1 = [];
-            for (m = 0, len2 = set.length; m < len2; m++) {
-              set_el = set[m];
-              for (n = 0, len3 = class_list.length; n < len3; n++) {
-                cls = class_list[n];
+            for (n = 0, len2 = set.length; n < len2; n++) {
+              set_el = set[n];
+              for (o = 0, len3 = class_list.length; o < len3; o++) {
+                cls = class_list[o];
                 set_el.classList.remove(cls);
               }
               set_el.classList.add(this.innerHTML);
@@ -553,12 +554,24 @@
       }
     };
     removeFeatures = function(el) {
-      var i, len, results, to_remove, to_removes;
+      var j, len, results, to_remove, to_removes;
       to_removes = el.querySelectorAll('.add_page, .classes, .remove');
       results = [];
-      for (i = 0, len = to_removes.length; i < len; i++) {
-        to_remove = to_removes[i];
+      for (j = 0, len = to_removes.length; j < len; j++) {
+        to_remove = to_removes[j];
         results.push(to_remove.remove());
+      }
+      return results;
+    };
+    assignImageNumbers = function(section) {
+      var i, img, imgs, item, j, len, results;
+      console.log(section);
+      imgs = section.querySelectorAll('img');
+      results = [];
+      for (i = j = 0, len = imgs.length; j < len; i = ++j) {
+        img = imgs[i];
+        item = parentItem(img);
+        results.push(item.dataset.imageNumber = i + 1);
       }
       return results;
     };
@@ -593,7 +606,7 @@
       return addPage(e.target.parentNode);
     };
     addPage = function(page) {
-      var i, item, items, len, new_page, section;
+      var item, items, j, len, new_page, section;
       section = page.parentNode;
       if (page) {
         new_page = page.cloneNode(true);
@@ -601,8 +614,8 @@
         new_page = _body.querySelector('.page').cloneNode(true);
       }
       items = new_page.querySelectorAll('[data-item],.add_page');
-      for (i = 0, len = items.length; i < len; i++) {
-        item = items[i];
+      for (j = 0, len = items.length; j < len; j++) {
+        item = items[j];
         item.remove();
       }
       new_page.classList.add('removable');
@@ -614,15 +627,15 @@
       return new_page;
     };
     onTrashClick = function(e) {
-      var el, i, item, items, len, sure, to_remove;
+      var el, item, items, j, len, sure, to_remove;
       el = e.target.parentNode;
       to_remove = el.dataset.item ? 'item' : 'page';
       sure = confirm('Are you sure you want to remove the ' + to_remove + '?');
       if (sure) {
         if (to_remove === 'page') {
           items = el.querySelectorAll('[data-item]');
-          for (i = 0, len = items.length; i < len; i++) {
-            item = items[i];
+          for (j = 0, len = items.length; j < len; j++) {
+            item = items[j];
             removeItem(item);
           }
           el.remove();
@@ -635,11 +648,11 @@
       }
     };
     removeItem = function(el) {
-      var droppable, i, len, results, set, set_el;
+      var droppable, j, len, results, set, set_el;
       set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
       results = [];
-      for (i = 0, len = set.length; i < len; i++) {
-        set_el = set[i];
+      for (j = 0, len = set.length; j < len; j++) {
+        set_el = set[j];
         droppable = set_el.parentNode;
         set_el.remove();
         results.push(checkOverflow(droppable, null, true));
@@ -647,12 +660,12 @@
       return results;
     };
     consolidate = function(el) {
-      var els, i, len, results, set_el;
+      var els, j, len, results, set_el;
       els = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
       if (els.length > 1) {
         results = [];
-        for (i = 0, len = els.length; i < len; i++) {
-          set_el = els[i];
+        for (j = 0, len = els.length; j < len; j++) {
+          set_el = els[j];
           if (!set_el.dataset.slave) {
             set_el.innerHTML = set_el.dataset.content;
             addFeatures(set_el);
@@ -665,11 +678,11 @@
       }
     };
     checkOverflow = function(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, i, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, next_page, overflow, page, results;
+      var action, cl, continuer, dop, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, n, next_page, overflow, page, results;
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
-        for (i = 0, len = els.length; i < len; i++) {
-          el = els[i];
+        for (j = 0, len = els.length; j < len; j++) {
+          el = els[j];
           el.style.height = 'auto';
           if (!el.dataset.slave) {
             consolidate(el);
@@ -740,8 +753,8 @@
           case 'shrinkAll':
             els = droppable.querySelectorAll('.removable');
             l = els.length;
-            for (j = 0, len1 = els.length; j < len1; j++) {
-              el = els[j];
+            for (m = 0, len1 = els.length; m < len1; m++) {
+              el = els[m];
               el.style.maxHeight = (100 / l) + '%';
             }
             fireCallbacks('update');
@@ -773,8 +786,8 @@
       if (check_all) {
         droppables_on_page = parentPage(droppable).querySelectorAll('[data-drop-selector]');
         results = [];
-        for (m = 0, len2 = droppables_on_page.length; m < len2; m++) {
-          dop = droppables_on_page[m];
+        for (n = 0, len2 = droppables_on_page.length; n < len2; n++) {
+          dop = droppables_on_page[n];
           if (dop !== droppable) {
             results.push(checkOverflow(dop));
           } else {
@@ -806,22 +819,34 @@
       }
       return el;
     };
+    parentSection = function(el) {
+      while (el.nodeName !== 'SECTION') {
+        el = el.parentNode;
+      }
+      return el;
+    };
+    parentItem = function(el) {
+      while (!el.dataset.item) {
+        el = el.parentNode;
+      }
+      return el;
+    };
     getID = function() {
       return Math.random().toString(36).substring(8);
     };
     fireCallbacks = function(key, e) {
-      var callback, i, k, keys, len, results;
+      var callback, j, k, keys, len, results;
       keys = key.split(' ');
       results = [];
-      for (i = 0, len = keys.length; i < len; i++) {
-        k = keys[i];
+      for (j = 0, len = keys.length; j < len; j++) {
+        k = keys[j];
         if (_callbacks[k]) {
           results.push((function() {
-            var j, len1, ref, results1;
+            var len1, m, ref, results1;
             ref = _callbacks[k];
             results1 = [];
-            for (j = 0, len1 = ref.length; j < len1; j++) {
-              callback = ref[j];
+            for (m = 0, len1 = ref.length; m < len1; m++) {
+              callback = ref[m];
               results1.push(callback(e));
             }
             return results1;
