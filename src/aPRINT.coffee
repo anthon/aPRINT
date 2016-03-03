@@ -182,11 +182,14 @@ A = (body,options)->
 					seq = if seq is 'odd' then 'even' else 'odd'
 
 	addPageFeatures = (page)->
-		adder = document.createElement 'div'
-		adder.classList.add 'add_page'
-		adder.innerHTML = '+'
-		adder.addEventListener 'click', onAddPageClick
-		page.appendChild adder
+		if page.classList.contains 'addable'
+			adder = page.querySelector '.add_page'
+			if not adder
+				adder = document.createElement 'div'
+				adder.classList.add 'add_page'
+				adder.innerHTML = '+'
+				page.appendChild adder
+			adder.addEventListener 'click', onAddPageClick
 		if page.classList.contains 'removable'
 			trasher = page.querySelector '.remove'
 			if not trasher
@@ -458,6 +461,7 @@ A = (body,options)->
 		items = new_page.querySelectorAll '[data-item],.add_page'
 		for item in items
 			item.remove()
+		new_page.classList.add 'addable'
 		new_page.classList.add 'removable'
 		section.insertBefore new_page, page.nextSibling
 		addPageFeatures new_page
