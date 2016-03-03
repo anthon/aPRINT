@@ -232,11 +232,16 @@
     };
     addPageFeatures = function(page) {
       var adder, trasher;
-      adder = document.createElement('div');
-      adder.classList.add('add_page');
-      adder.innerHTML = '+';
-      adder.addEventListener('click', onAddPageClick);
-      page.appendChild(adder);
+      if (page.classList.contains('addable')) {
+        adder = page.querySelector('.add_page');
+        if (!adder) {
+          adder = document.createElement('div');
+          adder.classList.add('add_page');
+          adder.innerHTML = '+';
+          page.appendChild(adder);
+        }
+        adder.addEventListener('click', onAddPageClick);
+      }
       if (page.classList.contains('removable')) {
         trasher = page.querySelector('.remove');
         if (!trasher) {
@@ -618,6 +623,7 @@
         item = items[j];
         item.remove();
       }
+      new_page.classList.add('addable');
       new_page.classList.add('removable');
       section.insertBefore(new_page, page.nextSibling);
       addPageFeatures(new_page);
