@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback, setupListeners;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback;
     _frame = null;
     _body = null;
     _sections = null;
@@ -67,8 +67,8 @@
       }
       insertSizer();
       if (_settings.editable) {
+        applyRules();
         activateContent();
-        setupListeners();
       }
       activateKeys();
       frameResize();
@@ -232,7 +232,7 @@
     };
     addPageFeatures = function(page) {
       var adder, trasher;
-      if (page.classList.contains('addable')) {
+      if (page.dataset.addable) {
         adder = page.querySelector('.add_page');
         if (!adder) {
           adder = document.createElement('div');
@@ -242,7 +242,7 @@
         }
         adder.addEventListener('click', onAddPageClick);
       }
-      if (page.classList.contains('removable')) {
+      if (page.dataset.removable) {
         trasher = page.querySelector('.remove');
         if (!trasher) {
           trasher = document.createElement('div');
@@ -253,13 +253,215 @@
         return trasher.addEventListener('click', onTrashClick);
       }
     };
-    setupListeners = function() {
+    itemise = function(el, sibling) {
+      delete el.dataset.selector;
+      return el.dataset.item = sibling ? sibling.dataset.id : getID();
+    };
+    applyRules = function() {
       var ref, results, rule, target;
       ref = _settings.rules;
       results = [];
       for (target in ref) {
         rule = ref[target];
         results.push(applyRule(target, rule));
+      }
+      return results;
+    };
+    applyRule = function(target, rule) {
+      var drag_selector, drag_selectors, draggable, draggables, drop_classes, droppable, j, len, len1, len2, m, n, overflow_action, removable, replaceable, results, sortable, target_selector, targets;
+      target_selector = target;
+      targets = _body.querySelectorAll(target_selector);
+      removable = typeof rule.removable === 'boolean' ? rule.removable : false;
+      for (j = 0, len = targets.length; j < len; j++) {
+        target = targets[j];
+        if (removable) {
+          target.dataset.removable = removable;
+        }
+      }
+      if (rule.accept) {
+        drag_selectors = typeof rule.accept === 'string' ? [rule.accept] : rule.accept;
+        replaceable = typeof rule.replaceable === 'boolean' ? rule.replaceable : false;
+        sortable = typeof rule.sortable === 'boolean' ? rule.sortable : false;
+        overflow_action = rule.overflow ? rule.overflow : false;
+        drop_classes = rule.classes ? rule.classes : false;
+        for (m = 0, len1 = targets.length; m < len1; m++) {
+          droppable = targets[m];
+          if (drop_classes) {
+            droppable.dataset.classList = drop_classes;
+          }
+          if (sortable) {
+            droppable.dataset.sortable = sortable;
+          }
+          if (replaceable) {
+            droppable.dataset.replaceable = replaceable;
+          }
+          if (overflow_action) {
+            droppable.dataset.overflow = overflow_action;
+          }
+          droppable.dataset.dropSelector = target_selector;
+          droppable.dataset.accept = drag_selectors;
+          addEventListener(droppable, 'dragover', onDroppableDragOver);
+          addEventListener(droppable, 'dragenter', onDroppableDragEnter);
+          addEventListener(droppable, 'dragleave', onDroppableDragLeave);
+          addEventListener(droppable, 'drop', onDroppableDrop);
+        }
+        results = [];
+        for (n = 0, len2 = drag_selectors.length; n < len2; n++) {
+          drag_selector = drag_selectors[n];
+          draggables = document.querySelectorAll(drag_selector);
+          results.push((function() {
+            var len3, o, results1;
+            results1 = [];
+            for (o = 0, len3 = draggables.length; o < len3; o++) {
+              draggable = draggables[o];
+              draggable.draggable = true;
+              draggable.dataset.selector = drag_selector;
+              disableNestedImageDrag(draggable);
+              addEventListener(draggable, 'dragstart', onDraggableDragStart);
+              results1.push(addEventListener(draggable, 'dragend', onDraggableDragEnd));
+            }
+            return results1;
+          })());
+        }
+        return results;
+      }
+    };
+    disableNestedImageDrag = function(el) {
+      var image, images_in_draggable, j, len, results;
+      images_in_draggable = el.querySelectorAll('img');
+      results = [];
+      for (j = 0, len = images_in_draggable.length; j < len; j++) {
+        image = images_in_draggable[j];
+        image.draggable = false;
+        image.style['user-drag'] = 'none';
+        image.style['-moz-user-select'] = 'none';
+        results.push(image.style['-webkit-user-drag'] = 'none');
+      }
+      return results;
+    };
+    addFeatures = function(el) {
+      makeSortable(el);
+      makeRemovable(el);
+      return makeClassable(el);
+    };
+    makeRemovable = function(el, droppable) {
+      var trasher;
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.removable) {
+        trasher = el.querySelector('.remove');
+        if (!trasher) {
+          trasher = document.createElement('div');
+          trasher.innerHTML = '&times;';
+          trasher.classList.add('remove');
+          el.appendChild(trasher);
+        }
+        return trasher.addEventListener('click', onTrashClick);
+      }
+    };
+    makeClassable = function(el, droppable) {
+      var class_list, cls, container, expander, item, items, j, len, len1, list, m, results;
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.classList) {
+        items = el.querySelectorAll('.classes .item');
+        class_list = droppable.dataset.classList.split(',');
+        if (items.length === 0) {
+          container = document.createElement('div');
+          container.classList.add('classes');
+          expander = document.createElement('div');
+          expander.classList.add('expander');
+          expander.innerHTML = '&bull;';
+          container.appendChild(expander);
+          list = document.createElement('div');
+          list.classList.add('list');
+          class_list.unshift('none');
+          for (j = 0, len = class_list.length; j < len; j++) {
+            cls = class_list[j];
+            item = document.createElement('div');
+            item.classList.add('item');
+            item.innerHTML = cls;
+            list.appendChild(item);
+          }
+          items = list.querySelectorAll('.item');
+          container.appendChild(list);
+          el.appendChild(container);
+        }
+        results = [];
+        for (m = 0, len1 = items.length; m < len1; m++) {
+          item = items[m];
+          results.push(item.addEventListener('click', function(e) {
+            var len2, len3, n, o, results1, set, set_el;
+            set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
+            results1 = [];
+            for (n = 0, len2 = set.length; n < len2; n++) {
+              set_el = set[n];
+              for (o = 0, len3 = class_list.length; o < len3; o++) {
+                cls = class_list[o];
+                set_el.classList.remove(cls);
+              }
+              set_el.classList.add(this.innerHTML);
+              results1.push(checkOverflow(set_el.parentNode));
+            }
+            return results1;
+          }));
+        }
+        return results;
+      }
+    };
+    makeSortable = function(el, droppable) {
+      if (!droppable) {
+        droppable = el.parentNode;
+      }
+      if (droppable.dataset.sortable) {
+        disableNestedImageDrag(el);
+        el.draggable = true;
+        el.addEventListener('dragstart', function(e) {
+          e.dataTransfer.dropEffect = 'move';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('source', 'internal');
+          _current_draggable = e.target;
+          _current_draggable.classList.add('drag');
+          _is_sorting = true;
+          return false;
+        });
+        el.addEventListener('dragend', function(e) {
+          if (_current_draggable) {
+            _current_draggable.classList.remove('drag');
+            _current_draggable.style.opacity = 1;
+            checkOverflow(e.target.parentNode);
+            _current_draggable = null;
+            _is_sorting = false;
+            return false;
+          }
+        });
+        return el.addEventListener('dragover', function(e) {
+          _current_sortable_target = el;
+          return consolidate(_current_sortable_target);
+        });
+      }
+    };
+    removeFeatures = function(el) {
+      var j, len, results, to_remove, to_removes;
+      to_removes = el.querySelectorAll('.add_page, .classes, .remove');
+      results = [];
+      for (j = 0, len = to_removes.length; j < len; j++) {
+        to_remove = to_removes[j];
+        results.push(to_remove.remove());
+      }
+      return results;
+    };
+    assignImageNumbers = function(section) {
+      var i, img, imgs, item, j, len, results;
+      console.log(section);
+      imgs = section.querySelectorAll('img');
+      results = [];
+      for (i = j = 0, len = imgs.length; j < len; i = ++j) {
+        img = imgs[i];
+        item = parentItem(img);
+        results.push(item.dataset.imageNumber = i + 1);
       }
       return results;
     };
@@ -358,8 +560,9 @@
         that.classList.remove('over');
         clone = _current_draggable.cloneNode(true);
         clone.removeAttribute('draggable');
+        clone.classList.remove('drag');
         itemise(clone);
-        if (that.dataset.replace) {
+        if (that.dataset.replaceable) {
           that.innerHTML = '';
           that.appendChild(clone);
         } else {
@@ -385,200 +588,6 @@
       }
       fireCallbacks('drop');
       return false;
-    };
-    itemise = function(el, sibling) {
-      return el.dataset.item = sibling ? sibling.dataset.id : getID();
-    };
-    applyRule = function(target, rule) {
-      var drag_selector, drag_selectors, draggable, draggables, drop_classes, drop_selector, droppable, droppables, j, len, len1, len2, m, n, overflow_action, removable, replace_on_drop, results, sortable;
-      drop_selector = target;
-      drag_selectors = typeof rule.accept === 'string' ? [rule.accept] : rule.accept;
-      for (j = 0, len = drag_selectors.length; j < len; j++) {
-        drag_selector = drag_selectors[j];
-        draggables = document.querySelectorAll(drag_selector);
-        for (m = 0, len1 = draggables.length; m < len1; m++) {
-          draggable = draggables[m];
-          draggable.draggable = true;
-          draggable.dataset.selector = drag_selector;
-          disableNestedImageDrag(draggable);
-          addEventListener(draggable, 'dragstart', onDraggableDragStart);
-          addEventListener(draggable, 'dragend', onDraggableDragEnd);
-        }
-      }
-      droppables = _body.querySelectorAll(drop_selector);
-      replace_on_drop = typeof rule.replace === 'boolean' ? rule.replace : false;
-      removable = typeof rule.removable === 'boolean' ? rule.removable : true;
-      sortable = typeof rule.sortable === 'boolean' ? rule.sortable : true;
-      overflow_action = rule.overflow ? rule.overflow : false;
-      drop_classes = rule.classes ? rule.classes : false;
-      results = [];
-      for (n = 0, len2 = droppables.length; n < len2; n++) {
-        droppable = droppables[n];
-        if (drop_classes) {
-          droppable.dataset.classList = drop_classes;
-        }
-        if (removable) {
-          droppable.dataset.removable = removable;
-        }
-        if (sortable) {
-          droppable.dataset.sortable = sortable;
-        }
-        if (replace_on_drop) {
-          droppable.dataset.replace = true;
-        }
-        if (overflow_action) {
-          droppable.dataset.overflow = overflow_action;
-        }
-        droppable.dataset.dropSelector = drop_selector;
-        droppable.dataset.accept = drag_selectors;
-        addEventListener(droppable, 'dragover', onDroppableDragOver);
-        addEventListener(droppable, 'dragenter', onDroppableDragEnter);
-        addEventListener(droppable, 'dragleave', onDroppableDragLeave);
-        results.push(addEventListener(droppable, 'drop', onDroppableDrop));
-      }
-      return results;
-    };
-    disableNestedImageDrag = function(el) {
-      var image, images_in_draggable, j, len, results;
-      images_in_draggable = el.querySelectorAll('img');
-      results = [];
-      for (j = 0, len = images_in_draggable.length; j < len; j++) {
-        image = images_in_draggable[j];
-        image.draggable = false;
-        image.style['user-drag'] = 'none';
-        image.style['-moz-user-select'] = 'none';
-        results.push(image.style['-webkit-user-drag'] = 'none');
-      }
-      return results;
-    };
-    addFeatures = function(el) {
-      makeSortable(el);
-      makeRemovable(el);
-      return makeClassable(el);
-    };
-    makeRemovable = function(el, droppable) {
-      var trasher;
-      if (!droppable) {
-        droppable = el.parentNode;
-      }
-      if (droppable.dataset.removable) {
-        el.classList.add('removable');
-        trasher = el.querySelector('.remove');
-        if (!trasher) {
-          trasher = document.createElement('div');
-          trasher.innerHTML = '&times;';
-          trasher.classList.add('remove');
-          el.appendChild(trasher);
-        }
-        return trasher.addEventListener('click', onTrashClick);
-      }
-    };
-    makeClassable = function(el, droppable) {
-      var class_list, cls, container, expander, item, items, j, len, len1, list, m, results;
-      if (!droppable) {
-        droppable = el.parentNode;
-      }
-      if (droppable.dataset.classList) {
-        el.classList.add('classable');
-        items = el.querySelectorAll('.classes .item');
-        class_list = droppable.dataset.classList.split(',');
-        if (items.length === 0) {
-          container = document.createElement('div');
-          container.classList.add('classes');
-          expander = document.createElement('div');
-          expander.classList.add('expander');
-          expander.innerHTML = '&bull;';
-          container.appendChild(expander);
-          list = document.createElement('div');
-          list.classList.add('list');
-          class_list.unshift('none');
-          for (j = 0, len = class_list.length; j < len; j++) {
-            cls = class_list[j];
-            item = document.createElement('div');
-            item.classList.add('item');
-            item.innerHTML = cls;
-            list.appendChild(item);
-          }
-          items = list.querySelectorAll('.item');
-          container.appendChild(list);
-          el.appendChild(container);
-        }
-        results = [];
-        for (m = 0, len1 = items.length; m < len1; m++) {
-          item = items[m];
-          results.push(item.addEventListener('click', function(e) {
-            var len2, len3, n, o, results1, set, set_el;
-            set = _body.querySelectorAll('[data-item="' + el.dataset.item + '"]');
-            results1 = [];
-            for (n = 0, len2 = set.length; n < len2; n++) {
-              set_el = set[n];
-              for (o = 0, len3 = class_list.length; o < len3; o++) {
-                cls = class_list[o];
-                set_el.classList.remove(cls);
-              }
-              set_el.classList.add(this.innerHTML);
-              results1.push(checkOverflow(set_el.parentNode));
-            }
-            return results1;
-          }));
-        }
-        return results;
-      }
-    };
-    makeSortable = function(el, droppable) {
-      if (!droppable) {
-        droppable = el.parentNode;
-      }
-      if (droppable.dataset.sortable) {
-        disableNestedImageDrag(el);
-        el.draggable = true;
-        el.classList.add('sortable');
-        el.addEventListener('dragstart', function(e) {
-          e.dataTransfer.dropEffect = 'move';
-          e.dataTransfer.effectAllowed = 'move';
-          e.dataTransfer.setData('source', 'internal');
-          _current_draggable = e.target;
-          _current_draggable.classList.add('drag');
-          _is_sorting = true;
-          return false;
-        });
-        el.addEventListener('dragend', function(e) {
-          if (_current_draggable) {
-            _current_draggable.classList.remove('drag');
-            _current_draggable.style.opacity = 1;
-            checkOverflow(e.target.parentNode);
-            _current_draggable = null;
-            _is_sorting = false;
-            return false;
-          }
-        });
-        return el.addEventListener('dragover', function(e) {
-          _current_sortable_target = el;
-          return consolidate(_current_sortable_target);
-        });
-      }
-    };
-    removeFeatures = function(el) {
-      var j, len, results, to_remove, to_removes;
-      to_removes = el.querySelectorAll('.add_page, .classes, .remove');
-      results = [];
-      for (j = 0, len = to_removes.length; j < len; j++) {
-        to_remove = to_removes[j];
-        results.push(to_remove.remove());
-      }
-      return results;
-    };
-    assignImageNumbers = function(section) {
-      var i, img, imgs, item, j, len, results;
-      console.log(section);
-      imgs = section.querySelectorAll('img');
-      results = [];
-      for (i = j = 0, len = imgs.length; j < len; i = ++j) {
-        img = imgs[i];
-        item = parentItem(img);
-        results.push(item.dataset.imageNumber = i + 1);
-      }
-      return results;
     };
     insertNextTo = function(el, sibling) {
       var el_index, parent, sibling_index, siblings;
@@ -629,7 +638,7 @@
       addPageFeatures(new_page);
       refreshPages();
       frameResize();
-      setupListeners();
+      applyRules();
       return new_page;
     };
     onTrashClick = function(e) {
@@ -700,60 +709,62 @@
         switch (action) {
           case 'continue':
             last_el = droppable.lastElementChild;
-            removeFeatures(last_el);
-            if (!last_el.dataset.slave) {
-              last_el.dataset.content = last_el.innerHTML;
-            }
-            continuer = last_el.cloneNode();
-            continuer.dataset.slave = true;
-            l = 20000;
-            while (l-- && droppable.scrollHeight > droppable.clientHeight) {
-              lc = last_el.lastChild;
-              if (!lc) {
-                last_el.remove();
-                refuseDrop(droppable);
-                return false;
+            if (last_el) {
+              removeFeatures(last_el);
+              if (!last_el.dataset.slave) {
+                last_el.dataset.content = last_el.innerHTML;
               }
-              switch (lc.nodeType) {
-                case 1:
-                  continuer.insertBefore(lc, continuer.firstChild);
-                  break;
-                case 3:
-                  if (/\S/.test(lc.nodeValue)) {
+              continuer = last_el.cloneNode();
+              continuer.dataset.slave = true;
+              l = 20000;
+              while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+                lc = last_el.lastChild;
+                if (!lc) {
+                  last_el.remove();
+                  refuseDrop(droppable);
+                  return false;
+                }
+                switch (lc.nodeType) {
+                  case 1:
+                    continuer.insertBefore(lc, continuer.firstChild);
+                    break;
+                  case 3:
+                    if (/\S/.test(lc.nodeValue)) {
 
-                  } else {
-                    lc.remove();
-                  }
-                  break;
+                    } else {
+                      lc.remove();
+                    }
+                    break;
+                }
               }
-            }
-            fc = continuer.firstChild;
-            cl = fc.cloneNode();
-            last_el.appendChild(fc);
-            cl.innerHTML = '';
-            l = 20000;
-            while (l-- && droppable.scrollHeight > droppable.clientHeight) {
-              fcHTML = fc.innerHTML.split(' ');
-              cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
-              fc.innerHTML = fcHTML.join(' ');
-            }
-            continuer.insertBefore(cl, continuer.firstChild);
-            page = parentPage(droppable);
-            drps = page.querySelectorAll('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
-            droppable_index = Array.prototype.indexOf.call(drps, droppable);
-            drp = drps[droppable_index + 1];
-            if (!drp || drp === droppable) {
-              next_page = page.nextElementSibling;
-              if (!next_page || next_page.nodeType !== 1) {
-                next_page = addPage(page);
+              fc = continuer.firstChild;
+              cl = fc.cloneNode();
+              last_el.appendChild(fc);
+              cl.innerHTML = '';
+              l = 20000;
+              while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+                fcHTML = fc.innerHTML.split(' ');
+                cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
+                fc.innerHTML = fcHTML.join(' ');
               }
-              drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+              continuer.insertBefore(cl, continuer.firstChild);
+              page = parentPage(droppable);
+              drps = page.querySelectorAll('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+              droppable_index = Array.prototype.indexOf.call(drps, droppable);
+              drp = drps[droppable_index + 1];
+              if (!drp || drp === droppable) {
+                next_page = page.nextElementSibling;
+                if (!next_page || next_page.nodeType !== 1) {
+                  next_page = addPage(page);
+                }
+                drp = next_page.querySelector('[data-drop-selector="' + droppable.dataset.dropSelector + '"]');
+              }
+              drp.insertBefore(continuer, drp.firstChild);
+              if (!last_el.dataset.slave) {
+                addFeatures(last_el);
+              }
+              checkOverflow(drp);
             }
-            drp.insertBefore(continuer, drp.firstChild);
-            if (!last_el.dataset.slave) {
-              addFeatures(last_el);
-            }
-            checkOverflow(drp);
             fireCallbacks('update');
             break;
           case 'shrinkAll':

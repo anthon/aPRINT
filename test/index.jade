@@ -43,7 +43,12 @@ html(lang="en")
 				width: 100%;
 				height: 100%;
 			}
+			#template {
+				width: 100%;
+				height: 100%;
+			}
 			#print {
+				display: none;
 				width: 100%;
 				height: 100%;
 			}
@@ -95,57 +100,59 @@ html(lang="en")
 						|Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec varius dui at blandit feugiat. Mauris sed sapien porttitor, auctor tellus at, congue arcu. Aliquam erat volutpat. Vivamus eget diam vestibulum, mollis urna ut, rhoncus eros. Aliquam semper lectus molestie, laoreet diam ac, venenatis neque. Phasellus pharetra mauris eget fermentum tempus. Sed id tempor augue. Maecenas ut vestibulum elit, id dignissim ipsum. Duis pellentesque dolor at maximus placerat. Sed iaculis tortor nec leo scelerisque, eget ultricies nibh interdum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 			#right
+				#template
+					section
 				#print
 					section(data-id="1")
-						.page.A4
+						.page.A4.first
 							#header
-								.header(data-removable="true")
+								.header()
 									.title(data-item="kjhgkj")
 										| Hejhej title
 								.list
 							#ingress
 							#body
 								.left_column
-									.potential.texts(data-removable="true")
+									.texts()
 										.text(data-item="lacopacs")
 											p
 												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 								.right_column
-									.texts(data-removable="true")
-						.page.A4.removable
+									.texts()
+						.page.A4
 							#header
-								.header(data-removable="true")
+								.header()
 									.title(data-item="iuggvhjbkl")
 										| Hejhej title
 								.list
 							#body
 								.left_column
-									.texts(data-removable="true")
+									.texts()
 										.text(data-item="lacopaugilhjcs")
 											p
 												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 								.right_column
-									.images(data-sortable="true",data-removable="true",data-class-list="left,right,middle")
+									.images
 										.image(data-item="56d654f654fdg")
 											img(src="http://placehold.it/2420x1400/FF0/000")
 										.image(data-item="56kj5d65")
 											img(src="http://placehold.it/1420x1240/0FF/FFF")
 										.image(data-item="asffaior8",style="opacity: 1; height: 24.0909%;")
 											img(src="http://placehold.it/1240x1620/F00/FFF")
-						.page.A4.removable
+						.page.A4
 							#header
-								.header(data-removable="true")
+								.header()
 									.title(data-item="iugg54vhjbkl")
 										| Hejhej title
 								.list
 							#body
 								.left_column
-									.texts(data-removable="true")
+									.texts()
 										.text(data-item="lacop5augilhjcs")
 											p
 												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 								.right_column
-									.images(data-sortable="true",data-removable="true",data-class-list="left,right,middle")
+									.images
 										.image(data-item="56d654f6654fdg")
 											img(src="http://placehold.it/2420x1400/FF0/000")
 										.image(data-item="5658kj5d65")
@@ -153,40 +160,40 @@ html(lang="en")
 										.image(data-item="asffai64or8",style="opacity: 1; height: 24.0909%;")
 											img(src="http://placehold.it/1240x1620/F00/FFF")
 					section(data-id="2")
-						.page.A4.removable
+						.page.A4
 							#header
-								.header(data-removable="true")
+								.header()
 									.title(data-item="krjhgkj")
 										| Hejhej title
 								.list
 							#body
 								.left_column
-									.texts(data-removable="true")
+									.texts()
 										.text(data-item="lacoppacs")
 											p
 												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 								.right_column
-									.images(data-sortable="true",data-removable="true",data-class-list="left,right,middle")
+									.images
 										.image(data-item="565645d65")
 											img(src="http://placehold.it/1420x1240/0FF/FFF")
 										.image(data-item="56rdtdf654fdg")
 											img(src="http://placehold.it/2420x1400/FF0/000")
 										.image(data-item="asffakkr8",style="opacity: 1; height: 24.0909%;")
 											img(src="http://placehold.it/1240x1620/F00/FFF")
-						.page.A4.removable
+						.page.A4
 							#header
-								.header(data-removable="true")
+								.header()
 									.title(data-item="kjhhhjgkj")
 										| Hejhej title
 								.list
 							#body
 								.left_column
-									.texts(data-removable="true")
+									.texts()
 										.text(data-item="lacfgcopacs")
 											p
 												| Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
 								.right_column
-									.images(data-sortable="true",data-removable="true",data-class-list="left,right,middle")
+									.images
 										.image(data-item="56dfgh5d65")
 											img(src="http://placehold.it/1420x1240/0FF/FFF")
 										.image(data-item="5dfh6df654fdg")
@@ -197,27 +204,99 @@ html(lang="en")
 	//- script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
 	script(src="../aPRINT.js")
 	script.
-		var print = aPRINT('#print',{
+		var print = aPRINT('#template',{
 			format: 'A3',
 			//- editable: false,
 			styles: ['../aPRINT.css','main.css'],
+			template: {
+				'first_page': {
+					classes: ['page','A4','first'],
+					children: {
+						'header_container': {
+							classes: ['header_container'],
+							children: {
+								'header': {
+									classes: ['header','uppercase','border']
+								},
+								'list': {
+									classes: ['list','border']
+								}
+							}
+						},
+						'ingress': {
+							classes: ['ingress']
+						},
+						'body': {
+							classes: ['body'],
+							children: {
+								'text_column': {
+									classes: ['column','one_third'],
+									children: {
+										'texts': {
+											classes: ['texts']
+										},
+										'images': {
+											classes: ['texts']
+										}
+									}
+								},
+								'image_column': {
+									classes: ['column','two_thirds']
+								}
+							}
+						}
+					}
+				},
+				'page': {
+					classes: ['page','A4'],
+					children: {
+						'ingress': {
+							classes: ['ingress']
+						},
+						'body': {
+							classes: ['body'],
+							children: {
+								'text_column': {
+									classes: ['column','one_third'],
+									children: {
+										'texts': {
+											classes: ['texts']
+										},
+										'images': {
+											classes: ['texts']
+										}
+									}
+								},
+								'image_column': {
+									classes: ['column','two_thirds']
+								}
+							}
+						}
+					}
+				}
+			},
 			rules: {
+				'.page:not(.first)': {
+					removable: true
+				},
 				'.header': {
 					accept: '#left .title',
-					replace: true
+					replaceable: true,
+					removable: true
 				},
 				'.list': {
 					accept: '#left .list',
-					replace: true
+					replaceable: true,
+					removable: true
 				},
 				'.texts': {
 					accept: '#left .text',
 					overflow: 'continue',
-					sortable: false
+					removable: true
 				},
 				'#ingress': {
 					accept: '#left .text',
-					sortable: false
+					removable: true
 				},
 				'.images': {
 					accept: ['#left .image','#left .text'],

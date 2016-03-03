@@ -53,8 +53,8 @@ A = (body,options)->
 			insertStyle stylesheet
 		insertSizer()
 		if _settings.editable
+			applyRules()
 			activateContent()
-			setupListeners()
 		activateKeys()
 		frameResize()
 		fireCallbacks 'loaded'
@@ -182,7 +182,7 @@ A = (body,options)->
 					seq = if seq is 'odd' then 'even' else 'odd'
 
 	addPageFeatures = (page)->
-		if page.classList.contains 'addable'
+		if page.dataset.addable
 			adder = page.querySelector '.add_page'
 			if not adder
 				adder = document.createElement 'div'
@@ -190,7 +190,7 @@ A = (body,options)->
 				adder.innerHTML = '+'
 				page.appendChild adder
 			adder.addEventListener 'click', onAddPageClick
-		if page.classList.contains 'removable'
+		if page.dataset.removable
 			trasher = page.querySelector '.remove'
 			if not trasher
 				trasher = document.createElement 'div'
@@ -199,9 +199,146 @@ A = (body,options)->
 				page.appendChild trasher
 			trasher.addEventListener 'click', onTrashClick
 
-	setupListeners = ->
+	itemise = (el,sibling)->
+		delete el.dataset.selector
+		el.dataset.item = if sibling then sibling.dataset.id else getID()
+
+	applyRules = ->
 		for target,rule of _settings.rules
 			applyRule target,rule
+
+	applyRule = (target,rule)->
+		target_selector = target
+		targets = _body.querySelectorAll target_selector
+
+		removable = if typeof rule.removable is 'boolean' then rule.removable else false
+
+		for target in targets
+			if removable then target.dataset.removable = removable
+		
+		if rule.accept
+			drag_selectors = if typeof rule.accept is 'string' then [rule.accept] else rule.accept
+
+			replaceable = if typeof rule.replaceable is 'boolean' then rule.replaceable else false
+			sortable = if typeof rule.sortable is 'boolean' then rule.sortable else false
+			overflow_action = if rule.overflow then rule.overflow else false
+			drop_classes = if rule.classes then rule.classes else false
+
+			for droppable in targets
+				if drop_classes then droppable.dataset.classList = drop_classes
+				if sortable then droppable.dataset.sortable = sortable
+				if replaceable then droppable.dataset.replaceable = replaceable
+				if overflow_action then droppable.dataset.overflow = overflow_action
+				droppable.dataset.dropSelector = target_selector
+				droppable.dataset.accept = drag_selectors
+
+				addEventListener droppable, 'dragover', onDroppableDragOver
+				addEventListener droppable, 'dragenter', onDroppableDragEnter
+				addEventListener droppable, 'dragleave', onDroppableDragLeave
+				addEventListener droppable, 'drop', onDroppableDrop
+
+			for drag_selector in drag_selectors
+				draggables = document.querySelectorAll drag_selector		
+				for draggable in draggables
+					draggable.draggable = true
+					draggable.dataset.selector = drag_selector
+					disableNestedImageDrag(draggable)
+					addEventListener draggable, 'dragstart', onDraggableDragStart
+					addEventListener draggable, 'dragend', onDraggableDragEnd
+
+	disableNestedImageDrag = (el)->
+		images_in_draggable = el.querySelectorAll 'img'
+		for image in images_in_draggable
+			image.draggable = false
+			image.style['user-drag'] = 'none'
+			image.style['-moz-user-select'] = 'none'
+			image.style['-webkit-user-drag'] = 'none'
+
+	addFeatures = (el)->
+		makeSortable el	
+		makeRemovable el
+		makeClassable el
+
+	makeRemovable = (el,droppable)->
+		if not droppable then droppable = el.parentNode
+		if droppable.dataset.removable
+			trasher = el.querySelector '.remove'
+			if not trasher
+				trasher = document.createElement 'div'
+				trasher.innerHTML = '&times;'
+				trasher.classList.add 'remove'
+				el.appendChild trasher
+			trasher.addEventListener 'click', onTrashClick
+
+	makeClassable = (el,droppable)->
+		if not droppable then droppable = el.parentNode
+		if droppable.dataset.classList
+			items = el.querySelectorAll '.classes .item'
+			class_list = droppable.dataset.classList.split ','
+			if items.length is 0
+				container = document.createElement 'div'
+				container.classList.add 'classes'
+				expander = document.createElement 'div'
+				expander.classList.add 'expander'
+				expander.innerHTML = '&bull;'
+				container.appendChild expander
+				list = document.createElement 'div'
+				list.classList.add 'list'
+				class_list.unshift 'none'
+				for cls in class_list
+					item = document.createElement 'div'
+					item.classList.add 'item'
+					item.innerHTML = cls
+					list.appendChild item
+				items = list.querySelectorAll '.item'
+				container.appendChild list
+				el.appendChild container
+			for item in items
+				item.addEventListener 'click', (e)->
+					set = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
+					for set_el in set
+						for cls in class_list
+							set_el.classList.remove cls
+						set_el.classList.add this.innerHTML
+						checkOverflow set_el.parentNode
+
+	makeSortable = (el,droppable)->
+		if not droppable then droppable = el.parentNode
+		if droppable.dataset.sortable
+			disableNestedImageDrag el
+			el.draggable = true
+			el.addEventListener 'dragstart', (e)->
+				e.dataTransfer.dropEffect = 'move'
+				e.dataTransfer.effectAllowed = 'move'
+				e.dataTransfer.setData 'source','internal'
+				_current_draggable = e.target
+				_current_draggable.classList.add 'drag'
+				_is_sorting = true
+				return false
+			el.addEventListener 'dragend', (e)->
+				# Dirty hack in case of no _current_draggable
+				if _current_draggable
+					_current_draggable.classList.remove 'drag'
+					_current_draggable.style.opacity = 1
+					checkOverflow e.target.parentNode
+					_current_draggable = null
+					_is_sorting = false
+					return false
+			el.addEventListener 'dragover', (e)->
+				_current_sortable_target = el
+				consolidate _current_sortable_target
+
+	removeFeatures = (el)->
+		to_removes = el.querySelectorAll '.add_page, .classes, .remove'
+		for to_remove in to_removes
+			to_remove.remove()
+
+	assignImageNumbers = (section)->
+		console.log section
+		imgs = section.querySelectorAll 'img'
+		for img, i in imgs
+			item = parentItem img
+			item.dataset.imageNumber = i+1
 
 	highlightPotentials = ->
 		droppables = _body.querySelectorAll '[data-drop-selector]'
@@ -270,8 +407,9 @@ A = (body,options)->
 			that.classList.remove 'over'
 			clone = _current_draggable.cloneNode(true)
 			clone.removeAttribute 'draggable'
+			clone.classList.remove 'drag'
 			itemise clone
-			if that.dataset.replace
+			if that.dataset.replaceable
 				that.innerHTML = ''
 				that.appendChild clone
 			else
@@ -292,142 +430,6 @@ A = (body,options)->
 			checkOverflow that
 		fireCallbacks 'drop'
 		return false
-
-	itemise = (el,sibling)->
-		el.dataset.item = if sibling then sibling.dataset.id else getID()
-
-	applyRule = (target,rule)->
-		drop_selector = target
-		drag_selectors = if typeof rule.accept is 'string' then [rule.accept] else rule.accept
-
-		for drag_selector in drag_selectors
-			draggables = document.querySelectorAll drag_selector		
-			for draggable in draggables
-				draggable.draggable = true
-				draggable.dataset.selector = drag_selector
-				# console.log draggable.dataset.selector = drag_selector
-				# if not draggable.dataset.dropSelectors then draggable.dataset.dropSelectors = []
-				# draggable.dataset.dropSelectors.push drop_selector
-				disableNestedImageDrag(draggable)
-				addEventListener draggable, 'dragstart', onDraggableDragStart
-				addEventListener draggable, 'dragend', onDraggableDragEnd
-		
-		droppables = _body.querySelectorAll drop_selector
-		replace_on_drop = if typeof rule.replace is 'boolean' then rule.replace else false
-		removable = if typeof rule.removable is 'boolean' then rule.removable else true
-		sortable = if typeof rule.sortable is 'boolean' then rule.sortable else true
-		overflow_action = if rule.overflow then rule.overflow else false
-		drop_classes = if rule.classes then rule.classes else false
-		for droppable in droppables
-			if drop_classes then droppable.dataset.classList = drop_classes
-			if removable then droppable.dataset.removable = removable
-			if sortable then droppable.dataset.sortable = sortable
-			if replace_on_drop then droppable.dataset.replace = true
-			if overflow_action then droppable.dataset.overflow = overflow_action
-			droppable.dataset.dropSelector = drop_selector
-			droppable.dataset.accept = drag_selectors
-
-			addEventListener droppable, 'dragover', onDroppableDragOver
-			addEventListener droppable, 'dragenter', onDroppableDragEnter
-			addEventListener droppable, 'dragleave', onDroppableDragLeave
-			addEventListener droppable, 'drop', onDroppableDrop
-
-	disableNestedImageDrag = (el)->
-		images_in_draggable = el.querySelectorAll 'img'
-		for image in images_in_draggable
-			image.draggable = false
-			image.style['user-drag'] = 'none'
-			image.style['-moz-user-select'] = 'none'
-			image.style['-webkit-user-drag'] = 'none'
-
-	addFeatures = (el)->
-		makeSortable el	
-		makeRemovable el
-		makeClassable el
-
-	makeRemovable = (el,droppable)->
-		if not droppable then droppable = el.parentNode
-		if droppable.dataset.removable
-			el.classList.add 'removable'
-			trasher = el.querySelector '.remove'
-			if not trasher
-				trasher = document.createElement 'div'
-				trasher.innerHTML = '&times;'
-				trasher.classList.add 'remove'
-				el.appendChild trasher
-			trasher.addEventListener 'click', onTrashClick
-
-	makeClassable = (el,droppable)->
-		if not droppable then droppable = el.parentNode
-		if droppable.dataset.classList
-			el.classList.add 'classable'
-			items = el.querySelectorAll '.classes .item'
-			class_list = droppable.dataset.classList.split ','
-			if items.length is 0
-				container = document.createElement 'div'
-				container.classList.add 'classes'
-				expander = document.createElement 'div'
-				expander.classList.add 'expander'
-				expander.innerHTML = '&bull;'
-				container.appendChild expander
-				list = document.createElement 'div'
-				list.classList.add 'list'
-				class_list.unshift 'none'
-				for cls in class_list
-					item = document.createElement 'div'
-					item.classList.add 'item'
-					item.innerHTML = cls
-					list.appendChild item
-				items = list.querySelectorAll '.item'
-				container.appendChild list
-				el.appendChild container
-			for item in items
-				item.addEventListener 'click', (e)->
-					set = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
-					for set_el in set
-						for cls in class_list
-							set_el.classList.remove cls
-						set_el.classList.add this.innerHTML
-						checkOverflow set_el.parentNode
-
-	makeSortable = (el,droppable)->
-		if not droppable then droppable = el.parentNode
-		if droppable.dataset.sortable
-			disableNestedImageDrag el
-			el.draggable = true
-			el.classList.add 'sortable'
-			el.addEventListener 'dragstart', (e)->
-				e.dataTransfer.dropEffect = 'move'
-				e.dataTransfer.effectAllowed = 'move'
-				e.dataTransfer.setData 'source','internal'
-				_current_draggable = e.target
-				_current_draggable.classList.add 'drag'
-				_is_sorting = true
-				return false
-			el.addEventListener 'dragend', (e)->
-				# Dirty hack in case of no _current_draggable
-				if _current_draggable
-					_current_draggable.classList.remove 'drag'
-					_current_draggable.style.opacity = 1
-					checkOverflow e.target.parentNode
-					_current_draggable = null
-					_is_sorting = false
-					return false
-			el.addEventListener 'dragover', (e)->
-				_current_sortable_target = el
-				consolidate _current_sortable_target
-
-	removeFeatures = (el)->
-		to_removes = el.querySelectorAll '.add_page, .classes, .remove'
-		for to_remove in to_removes
-			to_remove.remove()
-
-	assignImageNumbers = (section)->
-		console.log section
-		imgs = section.querySelectorAll 'img'
-		for img, i in imgs
-			item = parentItem img
-			item.dataset.imageNumber = i+1
 
 	insertNextTo = (el,sibling)->
 		parent = sibling.parentNode
@@ -467,7 +469,7 @@ A = (body,options)->
 		addPageFeatures new_page
 		refreshPages()
 		frameResize()
-		setupListeners()
+		applyRules()
 		return new_page
 
 	onTrashClick = (e)->
@@ -516,51 +518,52 @@ A = (body,options)->
 				when 'continue'
 					# This only applies to texts for now
 					last_el = droppable.lastElementChild
-					removeFeatures last_el
-					if not last_el.dataset.slave then last_el.dataset.content = last_el.innerHTML
-					continuer = last_el.cloneNode()
-					continuer.dataset.slave = true
-					l = 20000
-					while l-- and droppable.scrollHeight > droppable.clientHeight
-						lc = last_el.lastChild
-						if not lc
-							last_el.remove()
-							refuseDrop droppable
-							return false
-						switch lc.nodeType
-							when 1
-								# Is element
-								continuer.insertBefore lc, continuer.firstChild
-							when 3
-								# Is text node
-								if /\S/.test lc.nodeValue
-									# should split up
+					if last_el
+						removeFeatures last_el
+						if not last_el.dataset.slave then last_el.dataset.content = last_el.innerHTML
+						continuer = last_el.cloneNode()
+						continuer.dataset.slave = true
+						l = 20000
+						while l-- and droppable.scrollHeight > droppable.clientHeight
+							lc = last_el.lastChild
+							if not lc
+								last_el.remove()
+								refuseDrop droppable
+								return false
+							switch lc.nodeType
+								when 1
+									# Is element
+									continuer.insertBefore lc, continuer.firstChild
+								when 3
+									# Is text node
+									if /\S/.test lc.nodeValue
+										# should split up
+									else
+										lc.remove()
 								else
-									lc.remove()
-							else
-								# No idea
-					fc = continuer.firstChild
-					cl = fc.cloneNode()
-					last_el.appendChild fc
-					cl.innerHTML = ''
-					l = 20000
-					while l-- and droppable.scrollHeight > droppable.clientHeight
-						fcHTML = fc.innerHTML.split(' ')
-						cl.innerHTML = fcHTML.pop()+' '+cl.innerHTML
-						fc.innerHTML = fcHTML.join(' ')
-					continuer.insertBefore cl, continuer.firstChild
-					page = parentPage droppable
-					drps = page.querySelectorAll '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
-					droppable_index = Array.prototype.indexOf.call drps, droppable
-					drp = drps[droppable_index+1]
-					if not drp or drp is droppable
-						next_page = page.nextElementSibling
-						if not next_page or next_page.nodeType isnt 1
-							next_page = addPage page
-						drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
-					drp.insertBefore continuer, drp.firstChild
-					if not last_el.dataset.slave then addFeatures last_el
-					checkOverflow drp
+									# No idea
+						fc = continuer.firstChild
+						cl = fc.cloneNode()
+						last_el.appendChild fc
+						cl.innerHTML = ''
+						l = 20000
+						while l-- and droppable.scrollHeight > droppable.clientHeight
+							fcHTML = fc.innerHTML.split(' ')
+							cl.innerHTML = fcHTML.pop()+' '+cl.innerHTML
+							fc.innerHTML = fcHTML.join(' ')
+						continuer.insertBefore cl, continuer.firstChild
+						page = parentPage droppable
+						drps = page.querySelectorAll '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+						droppable_index = Array.prototype.indexOf.call drps, droppable
+						drp = drps[droppable_index+1]
+						if not drp or drp is droppable
+							next_page = page.nextElementSibling
+							if not next_page or next_page.nodeType isnt 1
+								next_page = addPage page
+							drp = next_page.querySelector '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
+						drp.insertBefore continuer, drp.firstChild
+						if not last_el.dataset.slave then addFeatures last_el
+						checkOverflow drp
 					fireCallbacks 'update'
 				when 'shrinkAll'
 					els = droppable.querySelectorAll '.removable'

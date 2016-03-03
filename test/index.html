@@ -40,7 +40,12 @@
       	width: 100%;
       	height: 100%;
       }
+      #template {
+      	width: 100%;
+      	height: 100%;
+      }
       #print {
+      	display: none;
       	width: 100%;
       	height: 100%;
       }
@@ -83,11 +88,14 @@
         </div>
       </div>
       <div id="right">
+        <div id="template">
+          <section></section>
+        </div>
         <div id="print">
           <section data-id="1">
-            <div class="page A4">
+            <div class="page A4 first">
               <div id="header">
-                <div data-removable="true" class="header">
+                <div class="header">
                   <div data-item="kjhgkj" class="title">Hejhej title</div>
                 </div>
                 <div class="list"></div>
@@ -95,34 +103,34 @@
               <div id="ingress"></div>
               <div id="body">
                 <div class="left_column">
-                  <div data-removable="true" class="potential texts">
+                  <div class="texts">
                     <div data-item="lacopacs" class="text">
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
                     </div>
                   </div>
                 </div>
                 <div class="right_column">
-                  <div data-removable="true" class="texts"></div>
+                  <div class="texts"></div>
                 </div>
               </div>
             </div>
-            <div class="page A4 removable">
+            <div class="page A4">
               <div id="header">
-                <div data-removable="true" class="header">
+                <div class="header">
                   <div data-item="iuggvhjbkl" class="title">Hejhej title</div>
                 </div>
                 <div class="list"></div>
               </div>
               <div id="body">
                 <div class="left_column">
-                  <div data-removable="true" class="texts">
+                  <div class="texts">
                     <div data-item="lacopaugilhjcs" class="text">
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
                     </div>
                   </div>
                 </div>
                 <div class="right_column">
-                  <div data-sortable="true" data-removable="true" data-class-list="left,right,middle" class="images">
+                  <div class="images">
                     <div data-item="56d654f654fdg" class="image"><img src="http://placehold.it/2420x1400/FF0/000"></div>
                     <div data-item="56kj5d65" class="image"><img src="http://placehold.it/1420x1240/0FF/FFF"></div>
                     <div data-item="asffaior8" style="opacity: 1; height: 24.0909%;" class="image"><img src="http://placehold.it/1240x1620/F00/FFF"></div>
@@ -130,23 +138,23 @@
                 </div>
               </div>
             </div>
-            <div class="page A4 removable">
+            <div class="page A4">
               <div id="header">
-                <div data-removable="true" class="header">
+                <div class="header">
                   <div data-item="iugg54vhjbkl" class="title">Hejhej title</div>
                 </div>
                 <div class="list"></div>
               </div>
               <div id="body">
                 <div class="left_column">
-                  <div data-removable="true" class="texts">
+                  <div class="texts">
                     <div data-item="lacop5augilhjcs" class="text">
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
                     </div>
                   </div>
                 </div>
                 <div class="right_column">
-                  <div data-sortable="true" data-removable="true" data-class-list="left,right,middle" class="images">
+                  <div class="images">
                     <div data-item="56d654f6654fdg" class="image"><img src="http://placehold.it/2420x1400/FF0/000"></div>
                     <div data-item="5658kj5d65" class="image"><img src="http://placehold.it/1420x1240/0FF/FFF"></div>
                     <div data-item="asffai64or8" style="opacity: 1; height: 24.0909%;" class="image"><img src="http://placehold.it/1240x1620/F00/FFF"></div>
@@ -156,23 +164,23 @@
             </div>
           </section>
           <section data-id="2">
-            <div class="page A4 removable">
+            <div class="page A4">
               <div id="header">
-                <div data-removable="true" class="header">
+                <div class="header">
                   <div data-item="krjhgkj" class="title">Hejhej title</div>
                 </div>
                 <div class="list"></div>
               </div>
               <div id="body">
                 <div class="left_column">
-                  <div data-removable="true" class="texts">
+                  <div class="texts">
                     <div data-item="lacoppacs" class="text">
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
                     </div>
                   </div>
                 </div>
                 <div class="right_column">
-                  <div data-sortable="true" data-removable="true" data-class-list="left,right,middle" class="images">
+                  <div class="images">
                     <div data-item="565645d65" class="image"><img src="http://placehold.it/1420x1240/0FF/FFF"></div>
                     <div data-item="56rdtdf654fdg" class="image"><img src="http://placehold.it/2420x1400/FF0/000"></div>
                     <div data-item="asffakkr8" style="opacity: 1; height: 24.0909%;" class="image"><img src="http://placehold.it/1240x1620/F00/FFF"></div>
@@ -180,23 +188,23 @@
                 </div>
               </div>
             </div>
-            <div class="page A4 removable">
+            <div class="page A4">
               <div id="header">
-                <div data-removable="true" class="header">
+                <div class="header">
                   <div data-item="kjhhhjgkj" class="title">Hejhej title</div>
                 </div>
                 <div class="list"></div>
               </div>
               <div id="body">
                 <div class="left_column">
-                  <div data-removable="true" class="texts">
+                  <div class="texts">
                     <div data-item="lacfgcopacs" class="text">
                       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur. Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit. Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor. Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in. Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis. Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</p>
                     </div>
                   </div>
                 </div>
                 <div class="right_column">
-                  <div data-sortable="true" data-removable="true" data-class-list="left,right,middle" class="images">
+                  <div class="images">
                     <div data-item="56dfgh5d65" class="image"><img src="http://placehold.it/1420x1240/0FF/FFF"></div>
                     <div data-item="5dfh6df654fdg" class="image"><img src="http://placehold.it/2420x1400/FF0/000"></div>
                     <div data-item="a54sffar8" style="opacity: 1; height: 24.0909%;" class="image"><img src="http://placehold.it/1240x1620/F00/FFF"></div>
@@ -211,27 +219,99 @@
   </body>
   <script src="../aPRINT.js"></script>
   <script>
-    var print = aPRINT('#print',{
+    var print = aPRINT('#template',{
     	format: 'A3',
     	//- editable: false,
     	styles: ['../aPRINT.css','main.css'],
+    	template: {
+    		'first_page': {
+    			classes: ['page','A4','first'],
+    			children: {
+    				'header_container': {
+    					classes: ['header_container'],
+    					children: {
+    						'header': {
+    							classes: ['header','uppercase','border']
+    						},
+    						'list': {
+    							classes: ['list','border']
+    						}
+    					}
+    				},
+    				'ingress': {
+    					classes: ['ingress']
+    				},
+    				'body': {
+    					classes: ['body'],
+    					children: {
+    						'text_column': {
+    							classes: ['column','one_third'],
+    							children: {
+    								'texts': {
+    									classes: ['texts']
+    								},
+    								'images': {
+    									classes: ['texts']
+    								}
+    							}
+    						},
+    						'image_column': {
+    							classes: ['column','two_thirds']
+    						}
+    					}
+    				}
+    			}
+    		},
+    		'page': {
+    			classes: ['page','A4'],
+    			children: {
+    				'ingress': {
+    					classes: ['ingress']
+    				},
+    				'body': {
+    					classes: ['body'],
+    					children: {
+    						'text_column': {
+    							classes: ['column','one_third'],
+    							children: {
+    								'texts': {
+    									classes: ['texts']
+    								},
+    								'images': {
+    									classes: ['texts']
+    								}
+    							}
+    						},
+    						'image_column': {
+    							classes: ['column','two_thirds']
+    						}
+    					}
+    				}
+    			}
+    		}
+    	},
     	rules: {
+    		'.page:not(.first)': {
+    			removable: true
+    		},
     		'.header': {
     			accept: '#left .title',
-    			replace: true
+    			replaceable: true,
+    			removable: true
     		},
     		'.list': {
     			accept: '#left .list',
-    			replace: true
+    			replaceable: true,
+    			removable: true
     		},
     		'.texts': {
     			accept: '#left .text',
     			overflow: 'continue',
-    			sortable: false
+    			removable: true
     		},
     		'#ingress': {
     			accept: '#left .text',
-    			sortable: false
+    			removable: true
     		},
     		'.images': {
     			accept: ['#left .image','#left .text'],

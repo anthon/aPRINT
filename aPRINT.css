@@ -37,7 +37,7 @@ body .potential.over:before {
 body .over {
   background: #eee;
 }
-body .removable {
+body [data-item] {
   position: relative;
 }
 body .remove {
@@ -79,13 +79,13 @@ body .nodrop {
 body .fade {
   transition: background 0.8s;
 }
-body .classable .classes {
+body [data-class-list] .classes {
   position: absolute;
   top: 6px;
   left: 6px;
   text-align: left;
 }
-body .classable .classes .expander {
+body [data-class-list] .classes .expander {
   cursor: pointer;
   background-color: #fff;
   color: #000;
@@ -95,53 +95,53 @@ body .classable .classes .expander {
   text-align: center;
   border: 1px solid #000;
 }
-body .classable .classes .expander a {
+body [data-class-list] .classes .expander a {
   color: #000;
 }
-body .classable .classes .expander:hover {
+body [data-class-list] .classes .expander:hover {
   background-color: #c20000;
   color: #fff;
 }
-body .classable .classes .expander:hover a {
+body [data-class-list] .classes .expander:hover a {
   color: #fff;
 }
-body .classable .classes .expander.active {
+body [data-class-list] .classes .expander.active {
   background-color: #c20000;
   color: #fff;
 }
-body .classable .classes .expander.active a {
+body [data-class-list] .classes .expander.active a {
   color: #fff;
 }
-body .classable .classes .list {
+body [data-class-list] .classes .list {
   display: none;
 }
-body .classable .classes .list .item {
+body [data-class-list] .classes .list .item {
   cursor: pointer;
   background-color: #fff;
   color: #000;
   padding: 6px 8px;
 }
-body .classable .classes .list .item a {
+body [data-class-list] .classes .list .item a {
   color: #000;
 }
-body .classable .classes .list .item:hover {
+body [data-class-list] .classes .list .item:hover {
   background-color: #000;
   color: #fff;
 }
-body .classable .classes .list .item:hover a {
+body [data-class-list] .classes .list .item:hover a {
   color: #fff;
 }
-body .classable .classes .list .item.active {
+body [data-class-list] .classes .list .item.active {
   background-color: #000;
   color: #fff;
 }
-body .classable .classes .list .item.active a {
+body [data-class-list] .classes .list .item.active a {
   color: #fff;
 }
-body .classable .classes:hover .expander {
+body [data-class-list] .classes:hover .expander {
   display: none;
 }
-body .classable .classes:hover .list {
+body [data-class-list] .classes:hover .list {
   display: block;
 }
 body section .page {
