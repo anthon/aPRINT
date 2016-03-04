@@ -495,8 +495,8 @@ A = (body,options)->
 		items = new_page.querySelectorAll '[data-item],.add_page'
 		for item in items
 			item.remove()
-		new_page.classList.add 'addable'
-		new_page.classList.add 'removable'
+		new_page.dataset.repeatable = true
+		new_page.dataset.removable = true
 		section.insertBefore new_page, page.nextSibling
 		addPageFeatures new_page
 		refreshPages()

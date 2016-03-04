@@ -679,8 +679,8 @@
         item = items[j];
         item.remove();
       }
-      new_page.classList.add('addable');
-      new_page.classList.add('removable');
+      new_page.dataset.repeatable = true;
+      new_page.dataset.removable = true;
       section.insertBefore(new_page, page.nextSibling);
       addPageFeatures(new_page);
       refreshPages();
