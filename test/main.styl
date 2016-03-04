@@ -27,12 +27,12 @@ body
 		flex-direction column
 		padding 6mm
 		&.A4
-			#header
-			#ingress
-			#body
+			.header_container
+			.ingress
+			.body
 				font-size 13pt
 				line-height 18pt
-			#header
+			.header_container
 				sans-serif()
 				// height 10%
 				// background green
@@ -43,29 +43,29 @@ body
 				.header
 				.list
 					min-height 1.5em
-					font-size 20pt
 					line-height 1.5em
 					font-weight 700
 				.header
 					width ((100/3)*2)%
+					font-size 20pt
 				.list
 					width (100/3)%
-			#ingress
+					font-size 11pt
+			.ingress
 				min-height 1.5em
-			#body
+			.body
 				// background rgba(255,0,0,.24)
 				flex 1
 				display flex
 				flex-direction row
-				.left_column
-				.right_column
+				.column
 					position relative
-				.left_column
-					// background red
-					width (100/3)%
-				.right_column
-					// background green
-					width ((100/3)*2)%
+					&.one_third
+						// background red
+						width (100/3)%
+					&.two_thirds
+						// background green
+						width ((100/3)*2)%
 				.texts
 					position absolute
 					top 0
@@ -104,5 +104,5 @@ body
 							padding 7px
 							cursor pointer
 			&.even
-				#body
+				.body
 					flex-direction row-reverse

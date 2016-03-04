@@ -88,9 +88,7 @@
         </div>
       </div>
       <div id="right">
-        <div id="template">
-          <section></section>
-        </div>
+        <div id="template"></div>
         <div id="print">
           <section data-id="1">
             <div class="page A4 first">
@@ -223,6 +221,7 @@
     	format: 'A3',
     	//- editable: false,
     	styles: ['../aPRINT.css','main.css'],
+    	mirror: true,
     	template: {
     		'first_page': {
     			classes: ['page','A4','first'],
@@ -249,14 +248,16 @@
     							children: {
     								'texts': {
     									classes: ['texts']
-    								},
-    								'images': {
-    									classes: ['texts']
     								}
     							}
     						},
     						'image_column': {
-    							classes: ['column','two_thirds']
+    							classes: ['column','two_thirds'],
+    							children: {
+    								'images': {
+    									classes: ['images']
+    								}
+    							}
     						}
     					}
     				}
@@ -276,14 +277,16 @@
     							children: {
     								'texts': {
     									classes: ['texts']
-    								},
-    								'images': {
-    									classes: ['texts']
     								}
     							}
     						},
     						'image_column': {
-    							classes: ['column','two_thirds']
+    							classes: ['column','two_thirds'],
+    							children: {
+    								'images': {
+    									classes: ['images']
+    								}
+    							}
     						}
     					}
     				}
@@ -292,7 +295,7 @@
     	},
     	rules: {
     		'.page:not(.first)': {
-    			removable: true
+    			repeatable: true
     		},
     		'.header': {
     			accept: '#left .title',
@@ -309,14 +312,15 @@
     			overflow: 'continue',
     			removable: true
     		},
-    		'#ingress': {
+    		'.ingress': {
     			accept: '#left .text',
     			removable: true
     		},
     		'.images': {
     			accept: ['#left .image','#left .text'],
     			overflow: 'shrinkLast',
-    			classes: ['left','middle','right']
+    			classes: ['left','middle','right'],
+    			removable: true
     		}
     	}
     });

@@ -3,7 +3,6 @@ A = (body,options)->
 	_frame = null
 	_body = null
 	_sections = null
-	_pages = null
 	_callbacks = {}
 	_current_draggable = null
 	_current_drag_selector = null
@@ -29,7 +28,6 @@ A = (body,options)->
 		createIframe()
 
 	createIframe = ->
-		_pages = _body.querySelectorAll '.page'
 		_frame = document.createElement 'iframe'
 		_frame.style.borderWidth = 0
 		# _frame.style.overflow = 'hidden'
@@ -47,22 +45,23 @@ A = (body,options)->
 	populateIframe = ->
 		_frame.contentDocument.body.classList.add _settings.format
 		_frame.contentDocument.body.appendChild _body
-		refreshPages()
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
-		insertSizer()
+		# insertSizer()
+		if _settings.template then renderTemplate()
 		if _settings.editable
 			applyRules()
 			activateContent()
 		activateKeys()
 		frameResize()
+		refreshPages()
 		fireCallbacks 'loaded'
 
-	insertSizer = ->
-		sizer = document.createElement 'style'
-		sizer.id = 'sizer'
-		_frame.contentDocument.head.appendChild sizer
+	# insertSizer = ->
+	# 	sizer = document.createElement 'style'
+	# 	sizer.id = 'sizer'
+	# 	_frame.contentDocument.head.appendChild sizer
 
 	insertStyle = (style)->
 		styleLink = document.createElement 'link'
@@ -76,11 +75,12 @@ A = (body,options)->
 		el.addEventListener evt, callback
 
 	activateContent = ->
-		items = _body.querySelectorAll '[data-item]'
-		for page in _pages
+		pages = _body.querySelectorAll '.page'
+		for page in pages
 			disableNestedImageDrag page
 			# makeSortable page
 			addPageFeatures page
+		items = _body.querySelectorAll '[data-item]'
 		for item in items
 			addFeatures item
 
@@ -170,6 +170,36 @@ A = (body,options)->
 		# a4mm = ((100/a4width)*(pageWidth/100))
 		# _frame.contentDocument.querySelector('#sizer').innerHTML = 'html{font-size:'+a4mm+'px}'
 
+	renderTemplate = ->
+		placeholder = document.createElement 'section'
+		for key,element of _settings.template
+			walkTemplate placeholder, key, element, (parent,identifier,element)->
+				node = document.createElement 'div'
+				node.dataset.templateIdentifier = identifier
+				if element.classes
+					for cls in element.classes
+						node.classList.add cls
+				parent.appendChild node
+				return node
+		_body.appendChild placeholder
+
+	walkTemplate = (parent_node,identifier,element,func)->
+		node = func parent_node, identifier, element
+		children = if element.children then element.children else {}
+		for key,child of children
+			walkTemplate node, key, child, func
+
+	updateDOM = ->
+		walkDOM _body, (node)->
+			# Do stuff here
+
+	walkDOM = (node,func)->
+		func node
+		node = node.firstChild
+		while node
+			walkTemplate node, func
+			node = node.nextSibling
+
 	refreshPages = ->
 		if _settings.mirror
 			_sections = _body.querySelectorAll 'section'
@@ -182,7 +212,7 @@ A = (body,options)->
 					seq = if seq is 'odd' then 'even' else 'odd'
 
 	addPageFeatures = (page)->
-		if page.dataset.addable
+		if page.dataset.repeatable
 			adder = page.querySelector '.add_page'
 			if not adder
 				adder = document.createElement 'div'
@@ -212,9 +242,11 @@ A = (body,options)->
 		targets = _body.querySelectorAll target_selector
 
 		removable = if typeof rule.removable is 'boolean' then rule.removable else false
+		repeatable = if typeof rule.repeatable is 'boolean' then rule.repeatable else false
 
 		for target in targets
 			if removable then target.dataset.removable = removable
+			if repeatable then target.dataset.repeatable = repeatable
 		
 		if rule.accept
 			drag_selectors = if typeof rule.accept is 'string' then [rule.accept] else rule.accept

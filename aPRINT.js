@@ -3,11 +3,10 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _pages, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertSizer, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, scrollTo, scrollToEl, setCallback;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
     _frame = null;
     _body = null;
     _sections = null;
-    _pages = null;
     _callbacks = {};
     _current_draggable = null;
     _current_drag_selector = null;
@@ -36,7 +35,6 @@
       return createIframe();
     };
     createIframe = function() {
-      _pages = _body.querySelectorAll('.page');
       _frame = document.createElement('iframe');
       _frame.style.borderWidth = 0;
       if (_settings.transparent) {
@@ -56,7 +54,6 @@
       var j, len, ref, stylesheet;
       _frame.contentDocument.body.classList.add(_settings.format);
       _frame.contentDocument.body.appendChild(_body);
-      refreshPages();
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
       }
@@ -65,20 +62,17 @@
         stylesheet = ref[j];
         insertStyle(stylesheet);
       }
-      insertSizer();
+      if (_settings.template) {
+        renderTemplate();
+      }
       if (_settings.editable) {
         applyRules();
         activateContent();
       }
       activateKeys();
       frameResize();
+      refreshPages();
       return fireCallbacks('loaded');
-    };
-    insertSizer = function() {
-      var sizer;
-      sizer = document.createElement('style');
-      sizer.id = 'sizer';
-      return _frame.contentDocument.head.appendChild(sizer);
     };
     insertStyle = function(style) {
       var styleLink;
@@ -93,13 +87,14 @@
       return el.addEventListener(evt, callback);
     };
     activateContent = function() {
-      var item, items, j, len, len1, m, page, results;
-      items = _body.querySelectorAll('[data-item]');
-      for (j = 0, len = _pages.length; j < len; j++) {
-        page = _pages[j];
+      var item, items, j, len, len1, m, page, pages, results;
+      pages = _body.querySelectorAll('.page');
+      for (j = 0, len = pages.length; j < len; j++) {
+        page = pages[j];
         disableNestedImageDrag(page);
         addPageFeatures(page);
       }
+      items = _body.querySelectorAll('[data-item]');
       results = [];
       for (m = 0, len1 = items.length; m < len1; m++) {
         item = items[m];
@@ -206,6 +201,54 @@
       _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
       return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
     };
+    renderTemplate = function() {
+      var element, key, placeholder, ref;
+      placeholder = document.createElement('section');
+      ref = _settings.template;
+      for (key in ref) {
+        element = ref[key];
+        walkTemplate(placeholder, key, element, function(parent, identifier, element) {
+          var cls, j, len, node, ref1;
+          node = document.createElement('div');
+          node.dataset.templateIdentifier = identifier;
+          if (element.classes) {
+            ref1 = element.classes;
+            for (j = 0, len = ref1.length; j < len; j++) {
+              cls = ref1[j];
+              node.classList.add(cls);
+            }
+          }
+          parent.appendChild(node);
+          return node;
+        });
+      }
+      return _body.appendChild(placeholder);
+    };
+    walkTemplate = function(parent_node, identifier, element, func) {
+      var child, children, key, node, results;
+      node = func(parent_node, identifier, element);
+      children = element.children ? element.children : {};
+      results = [];
+      for (key in children) {
+        child = children[key];
+        results.push(walkTemplate(node, key, child, func));
+      }
+      return results;
+    };
+    updateDOM = function() {
+      return walkDOM(_body, function(node) {});
+    };
+    walkDOM = function(node, func) {
+      var results;
+      func(node);
+      node = node.firstChild;
+      results = [];
+      while (node) {
+        walkTemplate(node, func);
+        results.push(node = node.nextSibling);
+      }
+      return results;
+    };
     refreshPages = function() {
       var j, len, page, pages, results, section, seq;
       if (_settings.mirror) {
@@ -232,7 +275,7 @@
     };
     addPageFeatures = function(page) {
       var adder, trasher;
-      if (page.dataset.addable) {
+      if (page.dataset.repeatable) {
         adder = page.querySelector('.add_page');
         if (!adder) {
           adder = document.createElement('div');
@@ -268,14 +311,18 @@
       return results;
     };
     applyRule = function(target, rule) {
-      var drag_selector, drag_selectors, draggable, draggables, drop_classes, droppable, j, len, len1, len2, m, n, overflow_action, removable, replaceable, results, sortable, target_selector, targets;
+      var drag_selector, drag_selectors, draggable, draggables, drop_classes, droppable, j, len, len1, len2, m, n, overflow_action, removable, repeatable, replaceable, results, sortable, target_selector, targets;
       target_selector = target;
       targets = _body.querySelectorAll(target_selector);
       removable = typeof rule.removable === 'boolean' ? rule.removable : false;
+      repeatable = typeof rule.repeatable === 'boolean' ? rule.repeatable : false;
       for (j = 0, len = targets.length; j < len; j++) {
         target = targets[j];
         if (removable) {
           target.dataset.removable = removable;
+        }
+        if (repeatable) {
+          target.dataset.repeatable = repeatable;
         }
       }
       if (rule.accept) {

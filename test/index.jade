@@ -101,7 +101,6 @@ html(lang="en")
 
 			#right
 				#template
-					section
 				#print
 					section(data-id="1")
 						.page.A4.first
@@ -208,6 +207,7 @@ html(lang="en")
 			format: 'A3',
 			//- editable: false,
 			styles: ['../aPRINT.css','main.css'],
+			mirror: true,
 			template: {
 				'first_page': {
 					classes: ['page','A4','first'],
@@ -234,14 +234,16 @@ html(lang="en")
 									children: {
 										'texts': {
 											classes: ['texts']
-										},
-										'images': {
-											classes: ['texts']
 										}
 									}
 								},
 								'image_column': {
-									classes: ['column','two_thirds']
+									classes: ['column','two_thirds'],
+									children: {
+										'images': {
+											classes: ['images']
+										}
+									}
 								}
 							}
 						}
@@ -261,14 +263,16 @@ html(lang="en")
 									children: {
 										'texts': {
 											classes: ['texts']
-										},
-										'images': {
-											classes: ['texts']
 										}
 									}
 								},
 								'image_column': {
-									classes: ['column','two_thirds']
+									classes: ['column','two_thirds'],
+									children: {
+										'images': {
+											classes: ['images']
+										}
+									}
 								}
 							}
 						}
@@ -277,7 +281,7 @@ html(lang="en")
 			},
 			rules: {
 				'.page:not(.first)': {
-					removable: true
+					repeatable: true
 				},
 				'.header': {
 					accept: '#left .title',
@@ -294,14 +298,15 @@ html(lang="en")
 					overflow: 'continue',
 					removable: true
 				},
-				'#ingress': {
+				'.ingress': {
 					accept: '#left .text',
 					removable: true
 				},
 				'.images': {
 					accept: ['#left .image','#left .text'],
 					overflow: 'shrinkLast',
-					classes: ['left','middle','right']
+					classes: ['left','middle','right'],
+					removable: true
 				}
 			}
 		});
