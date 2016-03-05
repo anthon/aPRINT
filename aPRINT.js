@@ -740,7 +740,7 @@
       }
     };
     checkOverflow = function(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, n, next_page, overflow, page, results;
+      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, n, next_page, overflow, page, results;
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
         for (j = 0, len = els.length; j < len; j++) {
@@ -751,7 +751,8 @@
           }
         }
       }
-      if (droppable.scrollHeight > droppable.clientHeight) {
+      droppable_height = parseInt(window.getComputedStyle(droppable).getPropertyValue('height').replace('px', ''));
+      if (droppable.scrollHeight > droppable_height) {
         action = droppable.dataset.overflow;
         switch (action) {
           case 'continue':
@@ -764,7 +765,7 @@
               continuer = last_el.cloneNode();
               continuer.dataset.slave = true;
               l = 20000;
-              while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+              while (l-- && droppable.scrollHeight > droppable_height) {
                 lc = last_el.lastChild;
                 if (!lc) {
                   last_el.remove();
@@ -789,7 +790,7 @@
               last_el.appendChild(fc);
               cl.innerHTML = '';
               l = 20000;
-              while (l-- && droppable.scrollHeight > droppable.clientHeight) {
+              while (l-- && droppable.scrollHeight > droppable_height) {
                 fcHTML = fc.innerHTML.split(' ');
                 cl.innerHTML = fcHTML.pop() + ' ' + cl.innerHTML;
                 fc.innerHTML = fcHTML.join(' ');
@@ -825,9 +826,9 @@
             break;
           case 'shrinkLast':
             last_el = droppable.lastElementChild;
-            overflow = droppable.scrollHeight - droppable.clientHeight;
+            overflow = droppable.scrollHeight - droppable_height;
             max_height = last_el.clientHeight - overflow;
-            max_height_percentage = (max_height / droppable.clientHeight) * 100;
+            max_height_percentage = (max_height / droppable_height) * 100;
             if (max_height_percentage > 1) {
               last_el.style.height = max_height_percentage + '%';
               fireCallbacks('update');

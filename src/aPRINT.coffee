@@ -544,7 +544,8 @@ A = (body,options)->
 			for el in els
 				el.style.height = 'auto'
 				if not el.dataset.slave then consolidate el
-		if droppable.scrollHeight > droppable.clientHeight
+		droppable_height = parseInt window.getComputedStyle(droppable).getPropertyValue('height').replace('px','')
+		if droppable.scrollHeight > droppable_height
 			action = droppable.dataset.overflow
 			switch action
 				when 'continue'
@@ -556,7 +557,7 @@ A = (body,options)->
 						continuer = last_el.cloneNode()
 						continuer.dataset.slave = true
 						l = 20000
-						while l-- and droppable.scrollHeight > droppable.clientHeight
+						while l-- and droppable.scrollHeight > droppable_height
 							lc = last_el.lastChild
 							if not lc
 								last_el.remove()
@@ -579,7 +580,7 @@ A = (body,options)->
 						last_el.appendChild fc
 						cl.innerHTML = ''
 						l = 20000
-						while l-- and droppable.scrollHeight > droppable.clientHeight
+						while l-- and droppable.scrollHeight > droppable_height
 							fcHTML = fc.innerHTML.split(' ')
 							cl.innerHTML = fcHTML.pop()+' '+cl.innerHTML
 							fc.innerHTML = fcHTML.join(' ')
@@ -605,9 +606,9 @@ A = (body,options)->
 					fireCallbacks 'update'
 				when 'shrinkLast'
 					last_el = droppable.lastElementChild
-					overflow = droppable.scrollHeight - droppable.clientHeight
+					overflow = droppable.scrollHeight - droppable_height
 					max_height = last_el.clientHeight - overflow
-					max_height_percentage = (max_height/droppable.clientHeight)*100
+					max_height_percentage = (max_height/droppable_height)*100
 					if max_height_percentage > 1
 						last_el.style.height = max_height_percentage+'%'
 						fireCallbacks 'update'
