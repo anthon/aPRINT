@@ -826,17 +826,19 @@
             break;
           case 'shrinkLast':
             last_el = droppable.lastElementChild;
-            overflow = droppable.scrollHeight - droppable_height;
-            max_height = last_el.clientHeight - overflow;
-            max_height_percentage = (max_height / droppable_height) * 100;
-            if (max_height_percentage > 1) {
-              last_el.style.height = max_height_percentage + '%';
-              fireCallbacks('update');
-            } else {
-              if (!_is_sorting && element) {
-                element.remove();
+            if (last_el) {
+              overflow = droppable.scrollHeight - droppable_height;
+              max_height = last_el.clientHeight - overflow;
+              max_height_percentage = (max_height / droppable_height) * 100;
+              if (max_height_percentage > 1) {
+                last_el.style.height = max_height_percentage + '%';
+                fireCallbacks('update');
+              } else {
+                if (!_is_sorting && element) {
+                  element.remove();
+                }
+                refuseDrop(droppable);
               }
-              refuseDrop(droppable);
             }
             break;
           default:

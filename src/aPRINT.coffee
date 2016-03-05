@@ -606,15 +606,16 @@ A = (body,options)->
 					fireCallbacks 'update'
 				when 'shrinkLast'
 					last_el = droppable.lastElementChild
-					overflow = droppable.scrollHeight - droppable_height
-					max_height = last_el.clientHeight - overflow
-					max_height_percentage = (max_height/droppable_height)*100
-					if max_height_percentage > 1
-						last_el.style.height = max_height_percentage+'%'
-						fireCallbacks 'update'
-					else
-						if not _is_sorting and element then element.remove()
-						refuseDrop droppable
+					if last_el
+						overflow = droppable.scrollHeight - droppable_height
+						max_height = last_el.clientHeight - overflow
+						max_height_percentage = (max_height/droppable_height)*100
+						if max_height_percentage > 1
+							last_el.style.height = max_height_percentage+'%'
+							fireCallbacks 'update'
+						else
+							if not _is_sorting and element then element.remove()
+							refuseDrop droppable
 				else
 					if not _is_sorting and element then element.remove()
 					refuseDrop droppable
