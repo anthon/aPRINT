@@ -609,7 +609,7 @@ A = (body,options)->
 					if last_el
 						overflow = droppable.scrollHeight - droppable_height
 						max_height = last_el.clientHeight - overflow
-						max_height_percentage = (max_height/droppable_height)*100
+						max_height_percentage = (max_height/parentPage(droppable).clientHeight)*100
 						if max_height_percentage > 1
 							last_el.style.height = max_height_percentage+'%'
 							fireCallbacks 'update'
