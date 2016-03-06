@@ -1,5 +1,10 @@
 A = (body,options)->
 	
+	# Constants
+	_mm2px = 3.78
+	_paper_width = 210
+
+	# Globals
 	_frame = null
 	_body = null
 	_sections = null
@@ -153,10 +158,8 @@ A = (body,options)->
 		frameResize()
 
 	frameResize = ->
-		mm2px = 3.78
-		paper_width = 210
 		margin = 24
-		max_width = (paper_width + margin) * mm2px
+		max_width = (_paper_width + margin) * _mm2px
 		act_width = _frame.offsetWidth
 		factor = act_width / max_width
 		# _frame.contentDocument.body.style.transformOrigin = ((margin*2)*factor)+'px 0'
@@ -609,9 +612,11 @@ A = (body,options)->
 					if last_el
 						overflow = droppable.scrollHeight - droppable_height
 						max_height = last_el.clientHeight - overflow
-						max_height_percentage = (max_height/parentPage(droppable).clientHeight)*100
-						if max_height_percentage > 1
-							last_el.style.height = max_height_percentage+'%'
+						if max_height > 0
+							max_height_factor = max_height/droppable_height
+							max_height_percentage = max_height_factor*100
+							# last_el.style.height = max_height_percentage+'%'
+							last_el.style.height = (max_height / _mm2px)+'mm'
 							fireCallbacks 'update'
 						else
 							if not _is_sorting and element then element.remove()

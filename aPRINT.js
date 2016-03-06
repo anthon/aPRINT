@@ -3,7 +3,9 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    _mm2px = 3.78;
+    _paper_width = 210;
     _frame = null;
     _body = null;
     _sections = null;
@@ -190,11 +192,9 @@
       return frameResize();
     };
     frameResize = function() {
-      var act_width, factor, margin, max_width, mm2px, paper_width;
-      mm2px = 3.78;
-      paper_width = 210;
+      var act_width, factor, margin, max_width;
       margin = 24;
-      max_width = (paper_width + margin) * mm2px;
+      max_width = (_paper_width + margin) * _mm2px;
       act_width = _frame.offsetWidth;
       factor = act_width / max_width;
       _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
@@ -740,7 +740,7 @@
       }
     };
     checkOverflow = function(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_percentage, n, next_page, overflow, page, results;
+      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcHTML, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_factor, max_height_percentage, n, next_page, overflow, page, results;
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
         for (j = 0, len = els.length; j < len; j++) {
@@ -829,9 +829,10 @@
             if (last_el) {
               overflow = droppable.scrollHeight - droppable_height;
               max_height = last_el.clientHeight - overflow;
-              max_height_percentage = (max_height / parentPage(droppable).clientHeight) * 100;
-              if (max_height_percentage > 1) {
-                last_el.style.height = max_height_percentage + '%';
+              if (max_height > 0) {
+                max_height_factor = max_height / droppable_height;
+                max_height_percentage = max_height_factor * 100;
+                last_el.style.height = (max_height / _mm2px) + 'mm';
                 fireCallbacks('update');
               } else {
                 if (!_is_sorting && element) {
