@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
     _mm2px = 3.78;
     _paper_width = 210;
     _frame = null;
@@ -13,6 +13,7 @@
     _current_draggable = null;
     _current_drag_selector = null;
     _current_sortable_target = null;
+    _drag_image = null;
     _is_sorting = false;
     _rules = {};
     _current_rule = null;
@@ -39,6 +40,12 @@
     createIframe = function() {
       _frame = document.createElement('iframe');
       _frame.style.borderWidth = 0;
+      _drag_image = document.createElement('div');
+      _drag_image.style.width = '124px';
+      _drag_image.style.height = '124px';
+      _drag_image.style.backgroundPosition = 'center center';
+      _drag_image.style.backgroundSize = 'contain';
+      document.body.appendChild(_drag_image);
       if (_settings.transparent) {
         _frame.setAttribute('allowtransparency', true);
       }
@@ -537,12 +544,20 @@
       return results;
     };
     onDraggableDragStart = function(e) {
-      var that;
+      var dt, img, that;
       that = this;
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('source', 'external');
+      dt = e.dataTransfer;
       _current_draggable = e.target;
       _current_drag_selector = that.dataset.selector;
+      dt.effectAllowed = 'move';
+      dt.setData('source', 'external');
+      if (dt.setDragImage) {
+        img = _current_draggable.querySelector('img');
+        if (img) {
+          _drag_image.style.backgroundImage = 'url(' + img.src + ')';
+          dt.setDragImage(_drag_image, 62, 62);
+        }
+      }
       that.classList.add('drag');
       highlightPotentials();
       return false;

@@ -12,6 +12,7 @@ A = (body,options)->
 	_current_draggable = null
 	_current_drag_selector = null
 	_current_sortable_target = null
+	_drag_image = null
 	_is_sorting = false
 	_rules = {}
 	_current_rule = null
@@ -37,6 +38,15 @@ A = (body,options)->
 		_frame.style.borderWidth = 0
 		# _frame.style.overflow = 'hidden'
 		# _frame.style.resize = 'horizontal'
+
+		# Creating drag image container
+		_drag_image = document.createElement 'div'
+		_drag_image.style.width = '124px'
+		_drag_image.style.height = '124px'
+		_drag_image.style.backgroundPosition = 'center center'
+		_drag_image.style.backgroundSize = 'contain'
+		document.body.appendChild _drag_image
+
 		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
 		# _frame.src = 'about:blank'
 		_body.parentNode.insertBefore _frame, _body
@@ -273,7 +283,7 @@ A = (body,options)->
 				addEventListener droppable, 'drop', onDroppableDrop
 
 			for drag_selector in drag_selectors
-				draggables = document.querySelectorAll drag_selector		
+				draggables = document.querySelectorAll drag_selector
 				for draggable in draggables
 					draggable.draggable = true
 					draggable.dataset.selector = drag_selector
@@ -388,10 +398,16 @@ A = (body,options)->
 
 	onDraggableDragStart = (e)->
 		that = this
-		e.dataTransfer.effectAllowed = 'move'
-		e.dataTransfer.setData 'source','external'
+		dt = e.dataTransfer
 		_current_draggable = e.target
 		_current_drag_selector = that.dataset.selector
+		dt.effectAllowed = 'move'
+		dt.setData 'source','external'
+		if dt.setDragImage
+			img = _current_draggable.querySelector 'img'
+			if img
+				_drag_image.style.backgroundImage = 'url('+img.src+')'
+				dt.setDragImage _drag_image,62,62
 		that.classList.add 'drag'
 		highlightPotentials()
 		return false
