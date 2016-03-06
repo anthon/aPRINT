@@ -766,7 +766,7 @@
           }
         }
       }
-      droppable_height = parseInt(window.getComputedStyle(droppable).getPropertyValue('height').replace('px', ''));
+      droppable_height = droppable.clientHeight;
       if (droppable.scrollHeight > droppable_height) {
         action = droppable.dataset.overflow;
         switch (action) {

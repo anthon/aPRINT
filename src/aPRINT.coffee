@@ -563,7 +563,8 @@ A = (body,options)->
 			for el in els
 				el.style.height = 'auto'
 				if not el.dataset.slave then consolidate el
-		droppable_height = parseInt window.getComputedStyle(droppable).getPropertyValue('height').replace('px','')
+		# droppable_height = parseInt window.getComputedStyle(droppable).getPropertyValue('height').replace('px','')
+		droppable_height = droppable.clientHeight
 		if droppable.scrollHeight > droppable_height
 			action = droppable.dataset.overflow
 			switch action
