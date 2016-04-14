@@ -101,6 +101,7 @@ html(lang="en")
 
 			#right
 				#template
+					<section><div data-template-identifier="first_page" class="page A4 first test odd"><div data-template-identifier="header_container" class="header_container"><div data-template-identifier="header" class="header uppercase border" data-removable="true" data-replaceable="true" data-drop-selector=".header" data-accept="#left .title"></div><div data-template-identifier="list" class="list border" data-removable="true" data-replaceable="true" data-drop-selector=".list" data-accept="#left .list"></div></div><div data-template-identifier="first_body" class="body"><div data-template-identifier="first_text_column" class="column one_third"><div data-template-identifier="first_texts" class="texts" data-removable="true" data-overflow="continue" data-drop-selector=".texts" data-accept="#left .text"></div></div><div data-template-identifier="first_image_column" class="column two_thirds"><div data-template-identifier="first_images" class="images" data-removable="true" data-class-list="left,middle,right" data-overflow="shrinkLast" data-drop-selector=".images" data-accept="#left .image,#left .text"><div class="image" data-item="ihsbls4tw50bms7cik9" data-image-number="1"><img src="http://placehold.it/1240x1620/F0F/FFF" draggable="false" style="-webkit-user-drag: none;"><div class="remove">&times;</div><div class="classes"><div class="expander">&bull;</div><div class="list" data-removable="true" data-replaceable="true" data-drop-selector=".list" data-accept="#left .list"><div class="item">none</div><div class="item">left</div><div class="item">middle</div><div class="item">right</div></div></div></div></div></div></div></div><div data-template-identifier="page" class="page A4 second even" data-repeatable="true"><div data-template-identifier="second_body" class="body seond"><div data-template-identifier="second_text_column" class="column one_third"><div data-template-identifier="second_texts" class="texts" data-removable="true" data-overflow="continue" data-drop-selector=".texts" data-accept="#left .text"></div></div><div data-template-identifier="second_image_column" class="column two_thirds"><div data-template-identifier="second_images" class="images" data-removable="true" data-class-list="left,middle,right" data-overflow="shrinkLast" data-drop-selector=".images" data-accept="#left .image,#left .text"><div class="text" data-item="otc6la6orb694sa714i"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.</span><span>Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit.</span><span>Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor.</span><span>Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in.</span><span>Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis.</span><span>Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</span><div class="remove">&times;</div><div class="classes"><div class="expander">&bull;</div><div class="list" data-removable="true" data-replaceable="true" data-drop-selector=".list" data-accept="#left .list"><div class="item">none</div><div class="item">left</div><div class="item">middle</div><div class="item">right</div></div></div></div></div></div></div><div class="add_page">+</div></div><div data-template-identifier="page" class="page A4 second odd" data-repeatable="true" data-removable="true"><div data-template-identifier="second_body" class="body seond"><div data-template-identifier="second_text_column" class="column one_third"><div data-template-identifier="second_texts" class="texts" data-removable="true" data-overflow="continue" data-drop-selector=".texts" data-accept="#left .text"></div></div><div data-template-identifier="second_image_column" class="column two_thirds"><div data-template-identifier="second_images" class="images" data-removable="true" data-class-list="left,middle,right" data-overflow="shrinkLast" data-drop-selector=".images" data-accept="#left .image,#left .text"><div class="image" data-item="5r4opnua9moaqt1emi" data-image-number="2"><img src="http://placehold.it/1420x1240/00F/FFF" draggable="false" style="-webkit-user-drag: none;"><div class="remove">&times;</div><div class="classes"><div class="expander">&bull;</div><div class="list" data-removable="true" data-replaceable="true" data-drop-selector=".list" data-accept="#left .list"><div class="item">none</div><div class="item">left</div><div class="item">middle</div><div class="item">right</div></div></div></div></div></div></div><div class="add_page">+</div><div class="remove">&times;</div></div></section>
 				#print
 					section(data-id="1")
 						.page.A4.first
@@ -226,24 +227,24 @@ html(lang="en")
 								}
 							}
 						},
-						'ingress': {
+						'first_ingress': {
 							classes: ['ingress']
 						},
-						'body': {
+						'first_body': {
 							classes: ['body'],
 							children: {
-								'text_column': {
+								'first_text_column': {
 									classes: ['column','one_third'],
 									children: {
-										'texts': {
+										'first_texts': {
 											classes: ['texts']
 										}
 									}
 								},
-								'image_column': {
+								'first_image_column': {
 									classes: ['column','two_thirds'],
 									children: {
-										'images': {
+										'first_images': {
 											classes: ['images']
 										}
 									}
@@ -253,26 +254,26 @@ html(lang="en")
 					}
 				},
 				'page': {
-					classes: ['page','A4'],
+					classes: ['page','A4','second'],
 					children: {
-						'ingress': {
+						'second_ingress': {
 							classes: ['ingress']
 						},
-						'body': {
-							classes: ['body'],
+						'second_body': {
+							classes: ['body','seond'],
 							children: {
-								'text_column': {
+								'second_text_column': {
 									classes: ['column','one_third'],
 									children: {
-										'texts': {
+										'second_texts': {
 											classes: ['texts']
 										}
 									}
 								},
-								'image_column': {
+								'second_image_column': {
 									classes: ['column','two_thirds'],
 									children: {
-										'images': {
+										'second_images': {
 											classes: ['images']
 										}
 									}
@@ -309,7 +310,8 @@ html(lang="en")
 					accept: ['#left .image','#left .text'],
 					overflow: 'shrinkLast',
 					classes: ['left','middle','right'],
-					removable: true
+					removable: true,
+					sortable: true
 				}
 			}
 		});

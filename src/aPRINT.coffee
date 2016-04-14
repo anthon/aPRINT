@@ -64,7 +64,7 @@ A = (body,options)->
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
 		# insertSizer()
-		if _settings.template then renderTemplate()
+		# if _settings.template then renderTemplate()
 		if _settings.editable
 			applyRules()
 			activateContent()
@@ -184,23 +184,61 @@ A = (body,options)->
 		# _frame.contentDocument.querySelector('#sizer').innerHTML = 'html{font-size:'+a4mm+'px}'
 
 	renderTemplate = ->
-		placeholder = document.createElement 'section'
+		placeholder = _body.querySelector 'section'
+		if not placeholder
+			from_scratch = true
+			placeholder = document.createElement 'section'
+		else
+			from_scratch = false
+		placeholders = [placeholder]
 		for key,element of _settings.template
-			walkTemplate placeholder, key, element, (parent,identifier,element)->
-				node = document.createElement 'div'
-				node.dataset.templateIdentifier = identifier
-				if element.classes
-					for cls in element.classes
-						node.classList.add cls
-				parent.appendChild node
-				return node
-		_body.appendChild placeholder
+			walkTemplate placeholders, key, element, (parent,identifier,element)->
+				nodes = _body.querySelectorAll '[data-template-identifier='+identifier+']'
+				if nodes.length is 0
+					node = createNode identifier
+					parent.appendChild node
+					nodes = [node]
+				for node in nodes
+					if element.children
+						for id,child of element.children
+							child_node = getNode id, node
+							if not child_node
+								child_node = createNode id
+								node.appendChild child_node
+						# child_identifiers = Object.keys element.children
+						# child_nodes = node.children
+						# for child_node in child_nodes
+						# 	if child_node and
+						# 		child_node.dataset.templateIdentifier and
+						# 		child_identifiers.indexOf(child_node.dataset.templateIdentifier) is -1
+						# 			child_node.remove()
 
-	walkTemplate = (parent_node,identifier,element,func)->
-		node = func parent_node, identifier, element
-		children = if element.children then element.children else {}
-		for key,child of children
-			walkTemplate node, key, child, func
+					if element.classes
+						node.classList.remove()
+						for cls in element.classes
+							node.classList.add cls
+				return nodes
+		if from_scratch then _body.appendChild placeholder
+
+	getNode = (identifier,parent)->
+		parent = parent || _body
+		parent.querySelector '[data-template-identifier='+identifier+']'
+
+	getNodes = (identifier,parent)->
+		parent = parent || _body
+		parent.querySelectorAll '[data-template-identifier='+identifier+']'
+
+	createNode = (identifier)->
+		node = document.createElement 'div'
+		node.dataset.templateIdentifier = identifier
+		return node
+
+	walkTemplate = (parent_nodes,identifier,element,func)->
+		for parent_node in parent_nodes
+			nodes = func parent_node, identifier, element
+			children = if element.children then element.children else {}
+			for key,child of children
+				walkTemplate nodes, key, child, func
 
 	updateDOM = ->
 		walkDOM _body, (node)->
@@ -479,6 +517,7 @@ A = (body,options)->
 			makeClassable clone, that
 		else if _is_sorting
 			checkOverflow that
+			assignImageNumbers parentSection that
 		fireCallbacks 'drop'
 		return false
 

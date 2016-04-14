@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, createNode, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getNode, getNodes, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
     _mm2px = 3.78;
     _paper_width = 210;
     _frame = null;
@@ -70,9 +70,6 @@
       for (j = 0, len = ref.length; j < len; j++) {
         stylesheet = ref[j];
         insertStyle(stylesheet);
-      }
-      if (_settings.template) {
-        renderTemplate();
       }
       if (_settings.editable) {
         applyRules();
@@ -209,36 +206,85 @@
       return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
     };
     renderTemplate = function() {
-      var element, key, placeholder, ref;
-      placeholder = document.createElement('section');
+      var element, from_scratch, key, placeholder, placeholders, ref;
+      placeholder = _body.querySelector('section');
+      if (!placeholder) {
+        from_scratch = true;
+        placeholder = document.createElement('section');
+      } else {
+        from_scratch = false;
+      }
+      placeholders = [placeholder];
       ref = _settings.template;
       for (key in ref) {
         element = ref[key];
-        walkTemplate(placeholder, key, element, function(parent, identifier, element) {
-          var cls, j, len, node, ref1;
-          node = document.createElement('div');
-          node.dataset.templateIdentifier = identifier;
-          if (element.classes) {
-            ref1 = element.classes;
-            for (j = 0, len = ref1.length; j < len; j++) {
-              cls = ref1[j];
-              node.classList.add(cls);
+        walkTemplate(placeholders, key, element, function(parent, identifier, element) {
+          var child, child_node, cls, id, j, len, len1, m, node, nodes, ref1, ref2;
+          nodes = _body.querySelectorAll('[data-template-identifier=' + identifier + ']');
+          if (nodes.length === 0) {
+            node = createNode(identifier);
+            parent.appendChild(node);
+            nodes = [node];
+          }
+          for (j = 0, len = nodes.length; j < len; j++) {
+            node = nodes[j];
+            if (element.children) {
+              ref1 = element.children;
+              for (id in ref1) {
+                child = ref1[id];
+                child_node = getNode(id, node);
+                if (!child_node) {
+                  child_node = createNode(id);
+                  node.appendChild(child_node);
+                }
+              }
+            }
+            if (element.classes) {
+              node.classList.remove();
+              ref2 = element.classes;
+              for (m = 0, len1 = ref2.length; m < len1; m++) {
+                cls = ref2[m];
+                node.classList.add(cls);
+              }
             }
           }
-          parent.appendChild(node);
-          return node;
+          return nodes;
         });
       }
-      return _body.appendChild(placeholder);
+      if (from_scratch) {
+        return _body.appendChild(placeholder);
+      }
     };
-    walkTemplate = function(parent_node, identifier, element, func) {
-      var child, children, key, node, results;
-      node = func(parent_node, identifier, element);
-      children = element.children ? element.children : {};
+    getNode = function(identifier, parent) {
+      parent = parent || _body;
+      return parent.querySelector('[data-template-identifier=' + identifier + ']');
+    };
+    getNodes = function(identifier, parent) {
+      parent = parent || _body;
+      return parent.querySelectorAll('[data-template-identifier=' + identifier + ']');
+    };
+    createNode = function(identifier) {
+      var node;
+      node = document.createElement('div');
+      node.dataset.templateIdentifier = identifier;
+      return node;
+    };
+    walkTemplate = function(parent_nodes, identifier, element, func) {
+      var child, children, j, key, len, nodes, parent_node, results;
       results = [];
-      for (key in children) {
-        child = children[key];
-        results.push(walkTemplate(node, key, child, func));
+      for (j = 0, len = parent_nodes.length; j < len; j++) {
+        parent_node = parent_nodes[j];
+        nodes = func(parent_node, identifier, element);
+        children = element.children ? element.children : {};
+        results.push((function() {
+          var results1;
+          results1 = [];
+          for (key in children) {
+            child = children[key];
+            results1.push(walkTemplate(nodes, key, child, func));
+          }
+          return results1;
+        })());
       }
       return results;
     };
@@ -647,6 +693,7 @@
         makeClassable(clone, that);
       } else if (_is_sorting) {
         checkOverflow(that);
+        assignImageNumbers(parentSection(that));
       }
       fireCallbacks('drop');
       return false;
