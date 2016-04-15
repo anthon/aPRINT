@@ -206,8 +206,6 @@ A = (body,options)->
 							if not child_node
 								child_node = createNode id
 							_node.appendChild child_node
-						console.log 'parent',parent
-						console.log 'node',node
 						node.innerHTML = _node.innerHTML
 						# child_identifiers = Object.keys element.children
 						# child_nodes = node.children

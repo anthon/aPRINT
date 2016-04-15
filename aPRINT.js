@@ -242,8 +242,6 @@
                 }
                 _node.appendChild(child_node);
               }
-              console.log('parent', parent);
-              console.log('node', node);
               node.innerHTML = _node.innerHTML;
             }
             if (element.classes) {
