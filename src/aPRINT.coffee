@@ -64,7 +64,7 @@ A = (body,options)->
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
 		# insertSizer()
-		# if _settings.template then renderTemplate()
+		if _settings.template then renderTemplate()
 		if _settings.editable
 			applyRules()
 			activateContent()
@@ -200,11 +200,15 @@ A = (body,options)->
 					nodes = [node]
 				for node in nodes
 					if element.children
+						_node = node.cloneNode false
 						for id,child of element.children
 							child_node = getNode id, node
 							if not child_node
 								child_node = createNode id
-								node.appendChild child_node
+							_node.appendChild child_node
+						console.log 'parent',parent
+						console.log 'node',node
+						node.innerHTML = _node.innerHTML
 						# child_identifiers = Object.keys element.children
 						# child_nodes = node.children
 						# for child_node in child_nodes

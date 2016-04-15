@@ -71,6 +71,9 @@
         stylesheet = ref[j];
         insertStyle(stylesheet);
       }
+      if (_settings.template) {
+        renderTemplate();
+      }
       if (_settings.editable) {
         applyRules();
         activateContent();
@@ -219,7 +222,7 @@
       for (key in ref) {
         element = ref[key];
         walkTemplate(placeholders, key, element, function(parent, identifier, element) {
-          var child, child_node, cls, id, j, len, len1, m, node, nodes, ref1, ref2;
+          var _node, child, child_node, cls, id, j, len, len1, m, node, nodes, ref1, ref2;
           nodes = _body.querySelectorAll('[data-template-identifier=' + identifier + ']');
           if (nodes.length === 0) {
             node = createNode(identifier);
@@ -229,15 +232,19 @@
           for (j = 0, len = nodes.length; j < len; j++) {
             node = nodes[j];
             if (element.children) {
+              _node = node.cloneNode(false);
               ref1 = element.children;
               for (id in ref1) {
                 child = ref1[id];
                 child_node = getNode(id, node);
                 if (!child_node) {
                   child_node = createNode(id);
-                  node.appendChild(child_node);
                 }
+                _node.appendChild(child_node);
               }
+              console.log('parent', parent);
+              console.log('node', node);
+              node.innerHTML = _node.innerHTML;
             }
             if (element.classes) {
               node.classList.remove();
