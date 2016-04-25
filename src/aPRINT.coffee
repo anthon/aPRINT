@@ -40,12 +40,15 @@ A = (body,options)->
 		# _frame.style.resize = 'horizontal'
 
 		# Creating drag image container
-		_drag_image = document.createElement 'div'
-		_drag_image.style.width = '124px'
-		_drag_image.style.height = '124px'
-		_drag_image.style.backgroundPosition = 'center center'
-		_drag_image.style.backgroundSize = 'contain'
-		document.body.appendChild _drag_image
+		_drag_image = document.querySelector '#aPRINT-image-drag'
+		if not _drag_image
+			_drag_image = document.createElement 'div'
+			_drag_image.id = 'aPRINT-image-drag'
+			_drag_image.style.width = '124px'
+			_drag_image.style.height = '124px'
+			_drag_image.style.backgroundPosition = 'center center'
+			_drag_image.style.backgroundSize = 'contain'
+			document.body.appendChild _drag_image
 
 		if _settings.transparent then _frame.setAttribute 'allowtransparency', true
 		# _frame.src = 'about:blank'

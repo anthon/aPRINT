@@ -40,12 +40,16 @@
     createIframe = function() {
       _frame = document.createElement('iframe');
       _frame.style.borderWidth = 0;
-      _drag_image = document.createElement('div');
-      _drag_image.style.width = '124px';
-      _drag_image.style.height = '124px';
-      _drag_image.style.backgroundPosition = 'center center';
-      _drag_image.style.backgroundSize = 'contain';
-      document.body.appendChild(_drag_image);
+      _drag_image = document.querySelector('#aPRINT-image-drag');
+      if (!_drag_image) {
+        _drag_image = document.createElement('div');
+        _drag_image.id = 'aPRINT-image-drag';
+        _drag_image.style.width = '124px';
+        _drag_image.style.height = '124px';
+        _drag_image.style.backgroundPosition = 'center center';
+        _drag_image.style.backgroundSize = 'contain';
+        document.body.appendChild(_drag_image);
+      }
       if (_settings.transparent) {
         _frame.setAttribute('allowtransparency', true);
       }
