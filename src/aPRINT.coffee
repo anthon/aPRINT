@@ -589,6 +589,7 @@ A = (body,options)->
 			droppable = set_el.parentNode
 			set_el.remove()
 			checkOverflow droppable, null, true
+			assignImageNumbers parentSection droppable
 
 	consolidate = (el)->
 		els = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'

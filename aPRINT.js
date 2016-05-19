@@ -788,7 +788,8 @@
         set_el = set[j];
         droppable = set_el.parentNode;
         set_el.remove();
-        results.push(checkOverflow(droppable, null, true));
+        checkOverflow(droppable, null, true);
+        results.push(assignImageNumbers(parentSection(droppable)));
       }
       return results;
     };
