@@ -3,7 +3,7 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, createNode, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getNode, getNodes, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, createNode, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getNode, getNodes, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onAfterPrint, onBeforePrint, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
     _mm2px = 3.78;
     _paper_width = 210;
     _frame = null;
@@ -34,6 +34,10 @@
         value = options[key];
         _settings[key] = value;
       }
+      _settings.format = {
+        screen: _settings.format.screen || _settings.format,
+        print: _settings.format.print || _settings.format
+      };
       _body = body;
       return createIframe();
     };
@@ -65,7 +69,9 @@
     };
     populateIframe = function() {
       var j, len, ref, stylesheet;
-      _frame.contentDocument.body.classList.add(_settings.format);
+      _frame.contentWindow.onbeforeprint = onBeforePrint;
+      _frame.contentWindow.onafterprint = onAfterPrint;
+      _frame.contentDocument.body.classList.add(_settings.format.screen);
       _frame.contentDocument.body.appendChild(_body);
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
@@ -1010,6 +1016,14 @@
     print = function() {
       _frame.contentWindow.print();
       return false;
+    };
+    onBeforePrint = function() {
+      _frame.contentDocument.body.classList.remove(_settings.format.screen);
+      return _frame.contentDocument.body.classList.add(_settings.format.print);
+    };
+    onAfterPrint = function() {
+      _frame.contentDocument.body.classList.remove(_settings.format.print);
+      return _frame.contentDocument.body.classList.add(_settings.format.screen);
     };
     init(body, options);
     return {

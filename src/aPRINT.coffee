@@ -30,6 +30,10 @@ A = (body,options)->
 		# Update _settings
 		for key,value of options
 			_settings[key] = value
+		_settings.format = {
+			screen: _settings.format.screen || _settings.format,
+			print: _settings.format.print || _settings.format
+		}
 		_body = body
 		createIframe()
 
@@ -61,7 +65,9 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
-		_frame.contentDocument.body.classList.add _settings.format
+		_frame.contentWindow.onbeforeprint = onBeforePrint
+		_frame.contentWindow.onafterprint = onAfterPrint
+		_frame.contentDocument.body.classList.add _settings.format.screen
 		_frame.contentDocument.body.appendChild _body
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
@@ -746,6 +752,14 @@ A = (body,options)->
 	print = ->
 		_frame.contentWindow.print()
 		return false
+
+	onBeforePrint = ->
+		_frame.contentDocument.body.classList.remove _settings.format.screen
+		_frame.contentDocument.body.classList.add _settings.format.print
+
+	onAfterPrint = ->
+		_frame.contentDocument.body.classList.remove _settings.format.print
+		_frame.contentDocument.body.classList.add _settings.format.screen
 
 	init(body,options)
 
