@@ -171,6 +171,18 @@ body
 		font-size 18px
 		line-height 1.4
 		text-align center
+	&.A4
+		width (a4width+8)mm
+		// height (a4height)mm
+	&.A3
+		width (a4width*2+24)mm
+		// height (a4height)mm
+		section
+			display flex
+			flex-wrap wrap
+			.page
+				flex-shrink 0
+				vertical-align top
 
 @page
 	margin 0
@@ -211,8 +223,4 @@ body
 		&.A3
 			width (a4width*2)mm
 			height (a4height)mm
-			section
-				.page
-					display inline-flex
-					vertical-align top
 

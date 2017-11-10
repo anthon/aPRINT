@@ -3,9 +3,9 @@
   var A;
 
   A = function(body, options) {
-    var _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _paper_width, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, createNode, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getNode, getNodes, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onAfterPrint, onBeforePrint, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
+    var _A4_width, _body, _callbacks, _current_drag_selector, _current_draggable, _current_rule, _current_sortable_target, _drag_image, _frame, _is_sorting, _mm2px, _rules, _sections, _settings, activateContent, activateKeys, addEventListener, addFeatures, addPage, addPageFeatures, applyRule, applyRules, assignImageNumbers, checkOverflow, consolidate, createIframe, createNode, disableNestedImageDrag, fireCallbacks, frameResize, getHTML, getID, getNode, getNodes, getSortable, highlightPotentials, init, insertNextTo, insertStyle, itemise, lowlightPotentials, makeClassable, makeRemovable, makeSortable, onAddPageClick, onAfterPrint, onBeforePrint, onDraggableDragEnd, onDraggableDragStart, onDroppableDragEnter, onDroppableDragLeave, onDroppableDragOver, onDroppableDrop, onKeyDown, onTrashClick, onWindowResize, parentItem, parentPage, parentSection, populateIframe, print, refreshPages, refuseDrop, removeFeatures, removeItem, renderTemplate, scrollTo, scrollToEl, setCallback, updateDOM, walkDOM, walkTemplate;
     _mm2px = 3.78;
-    _paper_width = 210;
+    _A4_width = 210;
     _frame = null;
     _body = null;
     _sections = null;
@@ -69,8 +69,6 @@
     };
     populateIframe = function() {
       var j, len, ref, stylesheet;
-      _frame.contentWindow.onbeforeprint = onBeforePrint;
-      _frame.contentWindow.onafterprint = onAfterPrint;
       _frame.contentDocument.body.classList.add(_settings.format.screen);
       _frame.contentDocument.body.appendChild(_body);
       if (typeof _settings.styles === 'string') {
@@ -209,13 +207,14 @@
       return frameResize();
     };
     frameResize = function() {
-      var act_width, factor, margin, max_width;
-      margin = 24;
-      max_width = (_paper_width + margin) * _mm2px;
+      var act_width, factor, margin, max_width, paper_width;
+      margin = 12;
+      paper_width = _settings.format.screen === 'A4' ? _A4_width : _A4_width * 2 + margin;
+      max_width = (paper_width + margin * 2) * _mm2px;
       act_width = _frame.offsetWidth;
       factor = act_width / max_width;
       _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
-      return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
+      return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin * 2) + 'px';
     };
     renderTemplate = function() {
       var element, from_scratch, key, placeholder, placeholders, ref;
@@ -1014,7 +1013,9 @@
       return clone.innerHTML.trim();
     };
     print = function() {
+      onBeforePrint();
       _frame.contentWindow.print();
+      onAfterPrint();
       return false;
     };
     onBeforePrint = function() {

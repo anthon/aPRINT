@@ -88,6 +88,7 @@
         </div>
       </div>
       <div id="right">
+        <button id="printer">Print page</button>
         <div id="template">
         </div>
         <div id="print">
@@ -219,7 +220,10 @@
   <script src="../aPRINT.js"></script>
   <script>
     var print = aPRINT('#template',{
-    	format: 'A3',
+    	format: {
+    		screen: 'A4',
+    		print: 'A4'
+    	},
     	//- editable: false,
     	styles: ['../aPRINT.css','main.css'],
     	mirror: true,
@@ -329,6 +333,9 @@
     		}
     	}
     });
+    document.querySelector('#printer').addEventListener('click',(e)=> {
+    	print.print()
+    })
     print.on('update', function(e) {
     	//- console.log(print.get());
     });

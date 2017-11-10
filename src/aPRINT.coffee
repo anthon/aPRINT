@@ -2,7 +2,7 @@ A = (body,options)->
 	
 	# Constants
 	_mm2px = 3.78
-	_paper_width = 210
+	_A4_width = 210
 
 	# Globals
 	_frame = null
@@ -65,8 +65,6 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
-		_frame.contentWindow.onbeforeprint = onBeforePrint
-		_frame.contentWindow.onafterprint = onAfterPrint
 		_frame.contentDocument.body.classList.add _settings.format.screen
 		_frame.contentDocument.body.appendChild _body
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
@@ -177,13 +175,14 @@ A = (body,options)->
 		frameResize()
 
 	frameResize = ->
-		margin = 24
-		max_width = (_paper_width + margin) * _mm2px
+		margin = 12
+		paper_width = if _settings.format.screen == 'A4' then _A4_width else _A4_width*2+margin
+		max_width = (paper_width + margin*2) * _mm2px
 		act_width = _frame.offsetWidth
 		factor = act_width / max_width
 		# _frame.contentDocument.body.style.transformOrigin = ((margin*2)*factor)+'px 0'
 		_frame.contentDocument.body.style.transform = 'scale('+factor+')'
-		_frame.contentDocument.body.style.marginLeft = ((act_width - max_width)/2 + margin)+'px'
+		_frame.contentDocument.body.style.marginLeft = ((act_width - max_width)/2 + margin*2)+'px'
 		# _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height
 		# console.log _frame.contentDocument.body.getBoundingClientRect().height
 		# pageWidth = .9 * _body.offsetWidth
@@ -750,7 +749,9 @@ A = (body,options)->
 		return clone.innerHTML.trim()
 
 	print = ->
+		onBeforePrint()
 		_frame.contentWindow.print()
+		onAfterPrint()
 		return false
 
 	onBeforePrint = ->

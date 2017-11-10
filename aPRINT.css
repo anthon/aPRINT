@@ -184,6 +184,20 @@ body .add_page.active {
 body .add_page.active a {
   color: #000;
 }
+body.A4 {
+  width: 218mm;
+}
+body.A3 {
+  width: 444mm;
+}
+body.A3 section {
+  display: flex;
+  flex-wrap: wrap;
+}
+body.A3 section .page {
+  flex-shrink: 0;
+  vertical-align: top;
+}
 @page {
   margin: 0;
 }
@@ -223,9 +237,5 @@ body .add_page.active a {
   body.A3 {
     width: 420mm;
     height: 296mm;
-  }
-  body.A3 section .page {
-    display: inline-flex;
-    vertical-align: top;
   }
 }
