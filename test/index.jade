@@ -209,7 +209,7 @@ html(lang="en")
 		var print = aPRINT('#template',{
 			format: {
 				screen: 'A4',
-				print: 'A4'
+				print: 'A3'
 			},
 			//- editable: false,
 			styles: ['../aPRINT.css','main.css'],
@@ -321,7 +321,7 @@ html(lang="en")
 			}
 		});
 		document.querySelector('#printer').addEventListener('click',(e)=> {
-			print.print()
+			print.print('A4')
 		})
 		print.on('update', function(e) {
 			//- console.log(print.get());

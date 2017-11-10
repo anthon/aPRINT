@@ -748,18 +748,19 @@ A = (body,options)->
 		removeFeatures clone
 		return clone.innerHTML.trim()
 
-	print = ->
-		onBeforePrint()
+	print = (format)->
+		print_format = format || _settings.format.print
+		onBeforePrint(print_format)
 		_frame.contentWindow.print()
-		onAfterPrint()
+		onAfterPrint(print_format)
 		return false
 
-	onBeforePrint = ->
+	onBeforePrint = (print_format)->
 		_frame.contentDocument.body.classList.remove _settings.format.screen
-		_frame.contentDocument.body.classList.add _settings.format.print
+		_frame.contentDocument.body.classList.add print_format
 
-	onAfterPrint = ->
-		_frame.contentDocument.body.classList.remove _settings.format.print
+	onAfterPrint = (print_format)->
+		_frame.contentDocument.body.classList.remove print_format
 		_frame.contentDocument.body.classList.add _settings.format.screen
 
 	init(body,options)

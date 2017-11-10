@@ -1012,18 +1012,20 @@
       removeFeatures(clone);
       return clone.innerHTML.trim();
     };
-    print = function() {
-      onBeforePrint();
+    print = function(format) {
+      var print_format;
+      print_format = format || _settings.format.print;
+      onBeforePrint(print_format);
       _frame.contentWindow.print();
-      onAfterPrint();
+      onAfterPrint(print_format);
       return false;
     };
-    onBeforePrint = function() {
+    onBeforePrint = function(print_format) {
       _frame.contentDocument.body.classList.remove(_settings.format.screen);
-      return _frame.contentDocument.body.classList.add(_settings.format.print);
+      return _frame.contentDocument.body.classList.add(print_format);
     };
-    onAfterPrint = function() {
-      _frame.contentDocument.body.classList.remove(_settings.format.print);
+    onAfterPrint = function(print_format) {
+      _frame.contentDocument.body.classList.remove(print_format);
       return _frame.contentDocument.body.classList.add(_settings.format.screen);
     };
     init(body, options);
