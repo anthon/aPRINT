@@ -209,8 +209,7 @@
       act_width = _frame.offsetWidth;
       factor = act_width / max_width;
       _frame.contentDocument.body.style.transform = 'scale(' + factor + ')';
-      _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
-      return _frame.contentDocument.body.style.height = _frame.contentDocument.body.getBoundingClientRect().height;
+      return _frame.contentDocument.body.style.marginLeft = ((act_width - max_width) / 2 + margin) + 'px';
     };
     renderTemplate = function() {
       var element, from_scratch, key, placeholder, placeholders, ref;
