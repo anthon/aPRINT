@@ -5,8 +5,17 @@ vendor(prop,args)
 	-o-{prop} args
 	{prop} args
 
+sans-serif-light()
+	font-family 'Akkurat-Web', sans-serif
+	font-weight 300
 sans-serif()
-	font-family sans-serif
+	font-family 'Akkurat-Web', sans-serif
+sans-serif-bold()
+	font-family 'Akkurat-Web', sans-serif
+	font-weight 600
+
+monospace()
+	font-family monospace
 
 // pt = .3527778
 // pageWidth = 90
@@ -15,94 +24,142 @@ sans-serif()
 	// pageWidth = 100
 
 // A4 w/h
-// a4width = 210
-// a4height = 297
+a4width = 210
+a4height = 297
 // mm = ((100/a4width)*(pageWidth/100))
 // pt = mm*pt
 
 body
-	
+	sans-serif-light()
+	ul
+		list-style-type none
+	ol
+		list-style-position inside
+	strong
+		sans-serif-bold()
 	.page
+		position relative
 		display flex
 		flex-direction column
-		padding 6mm
+		padding 11mm 18mm 8mm 18mm
+		font-size 0
+		.header_container
+		.ingress_container
+		.body_container
+			position relative
+			min-height 0
 		&.A4
-			.header_container
-			.ingress
-			.body
-				font-size 13pt
-				line-height 18pt
-			.header_container
-				sans-serif()
-				// height 10%
-				// background green
-				width 100%
-				padding 6mm
+			.image
+				display flex
+				flex-direction column
+				padding-bottom 3mm
+				font-size 8.7pt
+				line-height 12pt
+				>*
+					min-width 0
+					max-width 100%
+					min-height 0
+				img
+					max-width 100%
+					height auto
+					max-height 100%
+					width auto
+				&.medium
+					max-width 68%
+				&.slim
+					max-width 50%
+			.columns
+				flex 1 0 auto
 				display flex
 				flex-direction row
-				.header
-				.list
-					min-height 1.5em
-					line-height 1.5em
-					font-weight 700
-				.header
-					width ((100/3)*2)%
-					font-size 20pt
-				.list
-					width (100/3)%
-					font-size 11pt
-			.ingress
-				min-height 1.5em
-			.body
-				// background rgba(255,0,0,.24)
-				flex 1
-				display flex
-				flex-direction row
+				max-width 100%
 				.column
-					position relative
-					&.one_third
-						// background red
-						width (100/3)%
+					width 100%
 					&.two_thirds
-						// background green
-						width ((100/3)*2)%
-				.texts
-					position absolute
-					top 0
-					left 0
-					right 0
-					bottom 0
-					padding 0 4mm 0 0
-				.images
-					position absolute
-					top 0
-					left 0
-					right 0
-					bottom 0
+						flex-shrink 0
+						width 98mm
+					&.border
+						border-right .25pt solid black
+			.timestamp
+				monospace()
+				position absolute
+				padding 2mm 0
+				font-size 8.7pt
+				transform-origin top left
+				transform rotate(90deg)
+			.header_container
+				flex 0 0 auto
+				.header
+					display inline-block
+					min-height 16mm
+					font-size 18pt
+					line-height 19pt
+					text-transform uppercase
+			.ingress_container
+			.body_container
+				flex 1 1 auto
+				.content
+				.list
+					font-size 10.7pt
+					line-height 15pt
+			.body_container
+				display flex
+				flex 1 99 auto
+				height 100%
+		&.project
+		&.theory
+			.header_container
+				.header
+					min-width ((100/3)*2)%
+					padding 3.5mm 3.5mm 2.5mm
+					border .25pt solid black
+			.ingress_container
+			.body_container
+				.content
+				.list
+					min-height 5em
+				.content
+					p
+					ul
+						padding-bottom 1em
 					.image
-						margin-bottom 3mm
-						img
-							max-width 100%
-							height auto
-							max-height 100%
+						padding-bottom 3mm
 						&:last-child
-							margin-bottom 0
-						&.left
-						&.right
-							img
-								max-width 50%
-						&.right
-							text-align right
-						&.middle
-							text-align center
-						&:before
-							content attr(data-image-number)
-							background red
-							position absolute
-							top 0
-							left -1em
-							padding 7px
-							cursor pointer
-			&.even
-				.body
-					flex-direction row-reverse
+							padding-bottom 0 !important
+		&.project
+		&.info
+			.ingress_container
+				.content
+					max-height 80%
+		&.theory
+			// .body_container
+			// 	.content
+			// 		height 100%
+		&.info
+			.header_container
+				margin-bottom 11mm
+				.header
+					width 100%
+			.ingress_container
+				z-index 1
+				.content
+					margin-bottom -11mm
+					padding-bottom 11mm
+					.image
+					.paragraph
+						padding-bottom 6mm
+			
+
+
+@media print
+	body
+		.cover
+			.page
+				&.back
+					display inline-block
+		&.A4
+			.cover
+				width (a4width)mm
+		&.A3
+			.cover
+				width (a4width*2)mm

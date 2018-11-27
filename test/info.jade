@@ -92,7 +92,7 @@ html(lang="en")
           .description
             | Lorem ipsum dolor sit amet
         .title
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.
+          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         .image
           img(src="http://placehold.it/1420x1240/00F/FFF")
           .description
@@ -112,7 +112,6 @@ html(lang="en")
         button#printer
           | Print page
         #template
-          |<section><div data-template-identifier="first_page" class="page A4 odd"><div data-template-identifier="first_header_container" class="header_container"><div data-template-identifier="header" class="header border" data-removable="true" data-replaceable="true" data-drop-selector=".header_container .header" data-accept=".title"><div class="title" data-item="fydf" style="height: auto;">Suspendisse elementum fermentum consectetur<div class="remove">×</div></div></div></div><div data-template-identifier="first_ingress_container" class="ingress_container"><div data-template-identifier="first_ingress" class="ingress columns"><div data-template-identifier="first_text_column" class="column two_thirds"><div data-template-identifier="first_texts" class="texts" data-removable="true" data-drop-selector=".ingress .texts" data-accept=".paragraph"><div class="paragraph" data-item="9l257" style="height: auto;"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.</span><span>Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit.</span><span>Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor.</span><span>Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in.</span><span>Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis.</span><span>Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</span><div class="remove">×</div></div></div></div><div data-template-identifier="first_list_column" class="column one_third"><div data-template-identifier="list" class="list" data-removable="true" data-replaceable="true" data-drop-selector=".ingress .list" data-accept=".header_list"><div class="header_list" data-item="t75s" style="height: auto;"><ul><li>Some item</li><li>Another item</li><li>A third item</li><li>Number four</li><li>And five</li></ul><div class="remove">×</div></div></div></div></div></div><div data-template-identifier="first_body" class="body"><div data-template-identifier="first_content" class="content" data-removable="true" data-sortable="true" data-overflow="shrinkLast" data-drop-selector=".content" data-accept=".image"><div class="image" data-item="j9drd" draggable="true" data-image-number="1"><img src="http://placehold.it/1240x1620/F0F/FFF" draggable="false" style="-webkit-user-drag: none;"><div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum dolores totam molestiae accusamus est, laudantium, illum adipisci.</div><div class="remove">×</div></div></div></div></div><div data-template-identifier="page" class="page A4 even" data-repeatable="true"><div data-template-identifier="body" class="body"><div data-template-identifier="columns" class="columns"><div data-template-identifier="text_column" class="column one_third"><div data-template-identifier="first_texts" class="texts"></div></div><div data-template-identifier="image_column" class="column two_thirds"><div data-template-identifier="first_images" class="images"></div></div></div></div><div class="add_page">+</div></div></section>
         #print
           section(data-id="1")
             .page.A4.first
@@ -228,16 +227,16 @@ html(lang="en")
       },
       template: {
         "first_page": {
-          "classes": ["page","A4"],
+          "classes": ["page","A4","info"],
           "children": {
             "timestamp": {
               "classes": ["timestamp"]
             },
-            "first_header_container": {
+            "header_container": {
               "classes": ["header_container"],
               "children": {
                 "header": {
-                  "classes": ["header","border"]
+                  "classes": ["header"]
                 }
               }
             },
@@ -245,57 +244,53 @@ html(lang="en")
               "classes": ["ingress_container"],
               "children": {
                 "first_ingress": {
-                  "classes": ["ingress","columns"],
-                  "children": {
-                    "first_list_column": {
-                      "classes": ["column","one_third"],
-                      "children": {
-                        "list": {
-                          "classes": ["list"]
-                        }
-                      }
-                    },
-                    "first_text_column": {
-                      "classes": ["column","two_thirds"],
-                      "children": {
-                        "first_texts": {
-                          "classes": ["texts"]
-                        }
-                      }
-                    }
-                  }
+                  "classes": ["ingress","content"]
                 }
               }
             },
-            "first_body": {
-              "classes": ["body"],
+            "first_body_container": {
+              "classes": ["body_container"],
               "children": {
-                "first_content": {
-                  "classes": ["images"]
+                "columns": {
+                  "classes": ["columns","body"],
+                  "children": {
+                    "left_column": {
+                      "classes": ["column","content","half"]
+                    },
+                    "right_column": {
+                      "classes": ["column","content","half"]
+                    }
+                  }
                 }
               }
             }
           }
         },
         "page": {
-          "classes": ["page","A4"],
+          "classes": ["page","A4","info"],
           "children": {
             "timestamp": {
               "classes": ["timestamp"]
             },
-            "body": {
-              "classes": ["body"],
+            "ingress_container": {
+              "classes": ["ingress_container"],
+              "children": {
+                "ingress": {
+                  "classes": ["ingress","content"]
+                }
+              }
+            },
+            "body_container": {
+              "classes": ["body_container"],
               "children": {
                 "columns": {
-                  "classes": ["columns"],
+                  "classes": ["columns","body"],
                   "children": {
-                    "column": {
-                      "classes": ["column"],
-                      "children": {
-                        "images": {
-                          "classes": ["images"],
-                        }
-                      }
+                    "left_column": {
+                      "classes": ["column","content","half"]
+                    },
+                    "right_column": {
+                      "classes": ["column","content","half"]
                     }
                   }
                 }
@@ -305,28 +300,24 @@ html(lang="en")
         }
       },
       rules: {
-        ".page:not(:first-child)": {
-          "repeatable": true
+        ".page": {
+          "repeatable": true,
+          "removable": true
         },
         ".header_container .header": {
           "accept": ".title",
           "replaceable": true,
           "removable": true
         },
-        ".ingress .list": {
-          "accept": ".header_list",
+        ".ingress": {
+          "accept": [".image",".paragraph"],
+          "overflow": "shrinkLast",
           "replaceable": true,
           "removable": true
         },
-        ".ingress .texts": {
+        ".body .content": {
           "accept": ".paragraph",
-          "removable": true
-        },
-        ".images": {
-          "accept": ".image",
-          "overflow": "shrinkLastWidth",
-          "classes": ["slim","medium","wide"],
-          "sortable": true,
+          "overflow": "continue",
           "removable": true
         }
       }
@@ -348,7 +339,7 @@ html(lang="en")
       })
     });
     print.on('drop', function(el) {
-      if(el.classList.contains('title')) {
+      if(el.classList.contains('title') && el.closest('.project, .theory')) {
         const textNode = el.firstChild
         let l = textNode.textContent.length
         const range = document.createRange()

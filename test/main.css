@@ -1,97 +1,171 @@
+body {
+  font-family: 'Akkurat-Web', sans-serif;
+  font-weight: 300;
+}
+body ul {
+  list-style-type: none;
+}
+body ol {
+  list-style-position: inside;
+}
+body strong {
+  font-family: 'Akkurat-Web', sans-serif;
+  font-weight: 600;
+}
 body .page {
+  position: relative;
   display: flex;
   flex-direction: column;
-  padding: 6mm;
+  padding: 11mm 18mm 8mm 18mm;
+  font-size: 0;
 }
-body .page.A4 .header_container,
-body .page.A4 .ingress,
-body .page.A4 .body {
-  font-size: 13pt;
-  line-height: 18pt;
-}
-body .page.A4 .header_container {
-  font-family: sans-serif;
-  width: 100%;
-  padding: 6mm;
-  display: flex;
-  flex-direction: row;
-}
-body .page.A4 .header_container .header,
-body .page.A4 .header_container .list {
-  min-height: 1.5em;
-  line-height: 1.5em;
-  font-weight: 700;
-}
-body .page.A4 .header_container .header {
-  width: 66.66666666666667%;
-  font-size: 20pt;
-}
-body .page.A4 .header_container .list {
-  width: 33.333333333333336%;
-  font-size: 11pt;
-}
-body .page.A4 .ingress {
-  min-height: 1.5em;
-}
-body .page.A4 .body {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-}
-body .page.A4 .body .column {
+body .page .header_container,
+body .page .ingress_container,
+body .page .body_container {
   position: relative;
+  min-height: 0;
 }
-body .page.A4 .body .column.one_third {
-  width: 33.333333333333336%;
+body .page.A4 .image {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 3mm;
+  font-size: 8.7pt;
+  line-height: 12pt;
 }
-body .page.A4 .body .column.two_thirds {
-  width: 66.66666666666667%;
+body .page.A4 .image >* {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
 }
-body .page.A4 .body .texts {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0 4mm 0 0;
-}
-body .page.A4 .body .images {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-body .page.A4 .body .images .image {
-  margin-bottom: 3mm;
-}
-body .page.A4 .body .images .image img {
+body .page.A4 .image img {
   max-width: 100%;
   height: auto;
   max-height: 100%;
+  width: auto;
 }
-body .page.A4 .body .images .image:last-child {
-  margin-bottom: 0;
+body .page.A4 .image.medium {
+  max-width: 68%;
 }
-body .page.A4 .body .images .image.left img,
-body .page.A4 .body .images .image.right img {
+body .page.A4 .image.slim {
   max-width: 50%;
 }
-body .page.A4 .body .images .image.right {
-  text-align: right;
+body .page.A4 .columns {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
 }
-body .page.A4 .body .images .image.middle {
-  text-align: center;
+body .page.A4 .columns .column {
+  width: 100%;
 }
-body .page.A4 .body .images .image:before {
-  content: attr(data-image-number);
-  background: #f00;
+body .page.A4 .columns .column.two_thirds {
+  flex-shrink: 0;
+  width: 98mm;
+}
+body .page.A4 .columns .column.border {
+  border-right: 0.25pt solid #000;
+}
+body .page.A4 .timestamp {
+  font-family: monospace;
   position: absolute;
-  top: 0;
-  left: -1em;
-  padding: 7px;
-  cursor: pointer;
+  padding: 2mm 0;
+  font-size: 8.7pt;
+  transform-origin: top left;
+  transform: rotate(90deg);
 }
-body .page.A4.even .body {
-  flex-direction: row-reverse;
+body .page.A4 .header_container {
+  flex: 0 0 auto;
+}
+body .page.A4 .header_container .header {
+  display: inline-block;
+  min-height: 16mm;
+  font-size: 18pt;
+  line-height: 19pt;
+  text-transform: uppercase;
+}
+body .page.A4 .ingress_container,
+body .page.A4 .body_container {
+  flex: 1 1 auto;
+}
+body .page.A4 .ingress_container .content,
+body .page.A4 .body_container .content,
+body .page.A4 .ingress_container .list,
+body .page.A4 .body_container .list {
+  font-size: 10.7pt;
+  line-height: 15pt;
+}
+body .page.A4 .body_container {
+  display: flex;
+  flex: 1 99 auto;
+  height: 100%;
+}
+body .page.project .header_container .header,
+body .page.theory .header_container .header {
+  min-width: 66.66666666666667%;
+  padding: 3.5mm 3.5mm 2.5mm;
+  border: 0.25pt solid #000;
+}
+body .page.project .ingress_container .content,
+body .page.theory .ingress_container .content,
+body .page.project .body_container .content,
+body .page.theory .body_container .content,
+body .page.project .ingress_container .list,
+body .page.theory .ingress_container .list,
+body .page.project .body_container .list,
+body .page.theory .body_container .list {
+  min-height: 5em;
+}
+body .page.project .ingress_container .content p,
+body .page.theory .ingress_container .content p,
+body .page.project .body_container .content p,
+body .page.theory .body_container .content p,
+body .page.project .ingress_container .content ul,
+body .page.theory .ingress_container .content ul,
+body .page.project .body_container .content ul,
+body .page.theory .body_container .content ul {
+  padding-bottom: 1em;
+}
+body .page.project .ingress_container .content .image,
+body .page.theory .ingress_container .content .image,
+body .page.project .body_container .content .image,
+body .page.theory .body_container .content .image {
+  padding-bottom: 3mm;
+}
+body .page.project .ingress_container .content .image:last-child,
+body .page.theory .ingress_container .content .image:last-child,
+body .page.project .body_container .content .image:last-child,
+body .page.theory .body_container .content .image:last-child {
+  padding-bottom: 0 !important;
+}
+body .page.project .ingress_container .content,
+body .page.info .ingress_container .content {
+  max-height: 80%;
+}
+body .page.info .header_container {
+  margin-bottom: 11mm;
+}
+body .page.info .header_container .header {
+  width: 100%;
+}
+body .page.info .ingress_container {
+  z-index: 1;
+}
+body .page.info .ingress_container .content {
+  margin-bottom: -11mm;
+  padding-bottom: 11mm;
+}
+body .page.info .ingress_container .content .image,
+body .page.info .ingress_container .content .paragraph {
+  padding-bottom: 6mm;
+}
+@media print {
+  body .cover .page.back {
+    display: inline-block;
+  }
+  body.A4 .cover {
+    width: 210mm;
+  }
+  body.A3 .cover {
+    width: 420mm;
+  }
 }

@@ -207,14 +207,15 @@ A = (body,options)->
 					parent.appendChild node
 					nodes = [node]
 				for node in nodes
-					if element.children
-						_node = node.cloneNode false
-						for id,child of element.children
-							child_node = getNode id, node
-							if not child_node
-								child_node = createNode id
-							_node.appendChild child_node
-						node.innerHTML = _node.innerHTML
+					# if element.children
+					# 	_node = node.cloneNode false
+					# 	for id,child of element.children
+					# 		child_node = getNode id, node
+					# 		if not child_node
+					# 			console.log(id)
+					# 			child_node = createNode id
+					# 		_node.appendChild child_node
+					# 	node.innerHTML = _node.innerHTML
 						# child_identifiers = Object.keys element.children
 						# child_nodes = node.children
 						# for child_node in child_nodes
@@ -427,7 +428,6 @@ A = (body,options)->
 			to_remove.remove()
 
 	assignImageNumbers = (section)->
-		console.log section
 		imgs = section.querySelectorAll 'img'
 		for img, i in imgs
 			item = parentItem img
@@ -528,7 +528,7 @@ A = (body,options)->
 		else if _is_sorting
 			checkOverflow that
 			assignImageNumbers parentSection that
-		fireCallbacks 'drop'
+		fireCallbacks('drop',clone)
 		return false
 
 	insertNextTo = (el,sibling)->
@@ -586,7 +586,7 @@ A = (body,options)->
 			else
 				removeItem el
 			fireCallbacks 'remove', e
-			fireCallbacks 'update', e
+			fireCallbacks 'update'
 
 	removeItem = (el)->
 		set = _body.querySelectorAll '[data-item="'+el.dataset.item+'"]'
@@ -613,48 +613,52 @@ A = (body,options)->
 			for el in els
 				el.style.height = 'auto'
 				if not el.dataset.slave then consolidate el
-		# droppable_height = parseInt window.getComputedStyle(droppable).getPropertyValue('height').replace('px','')
 		droppable_height = droppable.clientHeight
+		# Uncomment the conditional if text oveflow is screwed up.
 		if droppable.scrollHeight > droppable_height
 			action = droppable.dataset.overflow
 			switch action
 				when 'continue'
 					# This only applies to texts for now
 					last_el = droppable.lastElementChild
-					if last_el
+					if last_el && droppable.scrollHeight > droppable_height
 						removeFeatures last_el
-						if not last_el.dataset.slave then last_el.dataset.content = last_el.innerHTML
-						continuer = last_el.cloneNode()
-						continuer.dataset.slave = true
-						l = 20000
-						while l-- and droppable.scrollHeight > droppable_height
-							lc = last_el.lastChild
-							if not lc
-								last_el.remove()
-								refuseDrop droppable
-								return false
-							switch lc.nodeType
-								when 1
-									# Is element
-									continuer.insertBefore lc, continuer.firstChild
-								when 3
-									# Is text node
-									if /\S/.test lc.nodeValue
-										# should split up
+						if last_el.classList.contains('image')
+							continuer = last_el
+						else
+							if not last_el.dataset.slave then last_el.dataset.content = last_el.innerHTML
+							continuer = last_el.cloneNode false
+							continuer.dataset.slave = true
+							l = 20000
+							while l-- and droppable.scrollHeight > droppable_height
+								lc = last_el.lastChild
+								if not lc
+									last_el.remove()
+									refuseDrop droppable
+									return false
+								switch lc.nodeType
+									when 1
+										# Is element
+										continuer.insertBefore lc, continuer.firstChild
+									when 3
+										# Is text node
+										if /\S/.test lc.nodeValue
+											# should split up
+										else
+											lc.remove()
 									else
-										lc.remove()
-								else
-									# No idea
-						fc = continuer.firstChild
-						cl = fc.cloneNode()
-						last_el.appendChild fc
-						cl.innerHTML = ''
-						l = 20000
-						while l-- and droppable.scrollHeight > droppable_height
-							fcHTML = fc.innerHTML.split(' ')
-							cl.innerHTML = fcHTML.pop()+' '+cl.innerHTML
-							fc.innerHTML = fcHTML.join(' ')
-						continuer.insertBefore cl, continuer.firstChild
+										# No idea
+							fc = continuer.firstChild
+							cl = fc.cloneNode false
+							last_el.appendChild fc
+							cl.textContent = ''
+							l = 20000
+							if fc.textContent.length > 0
+								while l-- and droppable.scrollHeight > droppable_height
+									fcText = fc.textContent.split(' ')
+									cl.textContent = fcText.pop()+' '+cl.textContent
+									fc.textContent = fcText.join(' ')
+							continuer.insertBefore cl, continuer.firstChild
 						page = parentPage droppable
 						drps = page.querySelectorAll '[data-drop-selector="'+droppable.dataset.dropSelector+'"]'
 						droppable_index = Array.prototype.indexOf.call drps, droppable
@@ -688,6 +692,20 @@ A = (body,options)->
 						else
 							if not _is_sorting and element then element.remove()
 							refuseDrop droppable
+				when 'shrinkLastWidth'
+					last_el = droppable.lastElementChild
+					if last_el
+						overflow = droppable.scrollHeight - droppable_height
+						max_height = last_el.clientHeight - overflow
+						l = 100
+						last_el.style.width = l+'%'
+						while l-- && droppable.scrollHeight > droppable_height
+							last_el.style.width = l+'%'
+						if l is -1
+							if not _is_sorting and element then element.remove()
+							refuseDrop droppable
+						else
+							fireCallbacks 'update'
 				else
 					if not _is_sorting and element then element.remove()
 					refuseDrop droppable
@@ -701,9 +719,9 @@ A = (body,options)->
 
 	refuseDrop = (droppable)->
 		droppable.classList.add 'nodrop'
-		droppable.offsetWidth = droppable.offsetWidth
+		droppable.width = droppable.offsetWidth
 		droppable.classList.add 'fade'
-		droppable.offsetWidth = droppable.offsetWidth
+		droppable.width = droppable.offsetWidth
 		droppable.classList.remove 'nodrop'
 		setTimeout ->
 			droppable.classList.remove 'fade'
@@ -770,6 +788,7 @@ A = (body,options)->
 		print: print
 		on: setCallback
 		get: getHTML
+		body: _body
 		scrollTo: scrollTo
 		scrollToNext: scrollToEl
 	}

@@ -112,7 +112,6 @@ html(lang="en")
         button#printer
           | Print page
         #template
-          |<section><div data-template-identifier="first_page" class="page A4 odd"><div data-template-identifier="first_header_container" class="header_container"><div data-template-identifier="header" class="header border" data-removable="true" data-replaceable="true" data-drop-selector=".header_container .header" data-accept=".title"><div class="title" data-item="fydf" style="height: auto;">Suspendisse elementum fermentum consectetur<div class="remove">×</div></div></div></div><div data-template-identifier="first_ingress_container" class="ingress_container"><div data-template-identifier="first_ingress" class="ingress columns"><div data-template-identifier="first_text_column" class="column two_thirds"><div data-template-identifier="first_texts" class="texts" data-removable="true" data-drop-selector=".ingress .texts" data-accept=".paragraph"><div class="paragraph" data-item="9l257" style="height: auto;"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse elementum fermentum consectetur.</span><span>Aliquam feugiat quam elementum dui ullamcorper fermentum. Vestibulum diam purus, aliquam ac metus nec, porttitor porttitor elit.</span><span>Aenean accumsan ut neque eu lobortis. Fusce eu risus gravida, auctor lacus quis, laoreet libero. Pellentesque eu quam ut dolor pretium semper sit amet nec tortor.</span><span>Donec tincidunt convallis leo, non interdum leo cursus vitae. Quisque pretium augue dolor, sit amet eleifend enim dignissim in.</span><span>Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis.</span><span>Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.</span><div class="remove">×</div></div></div></div><div data-template-identifier="first_list_column" class="column one_third"><div data-template-identifier="list" class="list" data-removable="true" data-replaceable="true" data-drop-selector=".ingress .list" data-accept=".header_list"><div class="header_list" data-item="t75s" style="height: auto;"><ul><li>Some item</li><li>Another item</li><li>A third item</li><li>Number four</li><li>And five</li></ul><div class="remove">×</div></div></div></div></div></div><div data-template-identifier="first_body" class="body"><div data-template-identifier="first_content" class="content" data-removable="true" data-sortable="true" data-overflow="shrinkLast" data-drop-selector=".content" data-accept=".image"><div class="image" data-item="j9drd" draggable="true" data-image-number="1"><img src="http://placehold.it/1240x1620/F0F/FFF" draggable="false" style="-webkit-user-drag: none;"><div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum dolores totam molestiae accusamus est, laudantium, illum adipisci.</div><div class="remove">×</div></div></div></div></div><div data-template-identifier="page" class="page A4 even" data-repeatable="true"><div data-template-identifier="body" class="body"><div data-template-identifier="columns" class="columns"><div data-template-identifier="text_column" class="column one_third"><div data-template-identifier="first_texts" class="texts"></div></div><div data-template-identifier="image_column" class="column two_thirds"><div data-template-identifier="first_images" class="images"></div></div></div></div><div class="add_page">+</div></div></section>
         #print
           section(data-id="1")
             .page.A4.first
@@ -228,7 +227,7 @@ html(lang="en")
       },
       template: {
         "first_page": {
-          "classes": ["page","A4"],
+          "classes": ["page","A4","project"],
           "children": {
             "timestamp": {
               "classes": ["timestamp"]
@@ -247,55 +246,45 @@ html(lang="en")
                 "first_ingress": {
                   "classes": ["ingress","columns"],
                   "children": {
-                    "first_list_column": {
-                      "classes": ["column","one_third"],
-                      "children": {
-                        "list": {
-                          "classes": ["list"]
-                        }
-                      }
+                    "first_content_column": {
+                      "classes": ["column","content","two_thirds","border"],
                     },
-                    "first_text_column": {
-                      "classes": ["column","two_thirds"],
-                      "children": {
-                        "first_texts": {
-                          "classes": ["texts"]
-                        }
-                      }
+                    "first_list_column": {
+                      "classes": ["column","list","one_third"],
                     }
                   }
                 }
               }
             },
-            "first_body": {
-              "classes": ["body"],
+            "first_body_container": {
+              "classes": ["body_container"],
               "children": {
-                "first_content": {
-                  "classes": ["images"]
+                "first_body": {
+                  "classes": ["body","columns"],
+                  "children": {
+                    "first_content_column": {
+                      "classes": ["column","content"]
+                    }
+                  }
                 }
               }
             }
           }
         },
         "page": {
-          "classes": ["page","A4"],
+          "classes": ["page","A4","project"],
           "children": {
             "timestamp": {
               "classes": ["timestamp"]
             },
-            "body": {
-              "classes": ["body"],
+            "body_container": {
+              "classes": ["body_container"],
               "children": {
                 "columns": {
-                  "classes": ["columns"],
+                  "classes": ["columns","body"],
                   "children": {
                     "column": {
-                      "classes": ["column"],
-                      "children": {
-                        "images": {
-                          "classes": ["images"],
-                        }
-                      }
+                      "classes": ["column","content"]
                     }
                   }
                 }
@@ -318,11 +307,11 @@ html(lang="en")
           "replaceable": true,
           "removable": true
         },
-        ".ingress .texts": {
+        ".ingress .content": {
           "accept": ".paragraph",
           "removable": true
         },
-        ".images": {
+        ".body .content": {
           "accept": ".image",
           "overflow": "shrinkLastWidth",
           "classes": ["slim","medium","wide"],
@@ -348,7 +337,7 @@ html(lang="en")
       })
     });
     print.on('drop', function(el) {
-      if(el.classList.contains('title')) {
+      if(el.classList.contains('title') && el.closest('.project, .theory')) {
         const textNode = el.firstChild
         let l = textNode.textContent.length
         const range = document.createRange()
