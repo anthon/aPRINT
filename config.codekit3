@@ -86,6 +86,13 @@
 		"oS": 0,
 		"rrU": 0
 		},
+	"/test/flow.html": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/test/flow.html",
+		"oF": 0
+		},
 	"/test/flow.jade": {
 		"cB": 0,
 		"cOD": 1,
@@ -110,6 +117,13 @@
 		"oAP": "/test/index.html",
 		"oF": 0,
 		"oS": 0
+		},
+	"/test/info.html": {
+		"cB": 0,
+		"ft": 8192,
+		"oA": 0,
+		"oAP": "/test/info.html",
+		"oF": 0
 		},
 	"/test/info.jade": {
 		"cB": 0,

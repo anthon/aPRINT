@@ -225,40 +225,74 @@ html(lang="en")
       dragImages: {
         '#left .image': 'http://hm/backnn/imgs/static/ui/image.svg'
       },
-      template: {
-        "first_page": {
-          "classes": ["page","A4","info"],
-          "children": {
-            "timestamp": {
-              "classes": ["timestamp"]
-            },
-            "header_container": {
-              "classes": ["header_container"],
-              "children": {
-                "header": {
-                  "classes": ["header"]
+      template: 
+        {
+          "first_page": {
+            "classes": ["page","A4","info"],
+            "children": {
+              "timestamp": {
+                "classes": ["timestamp"]
+              },
+              "header_container": {
+                "classes": ["header_container"],
+                "children": {
+                  "header": {
+                    "classes": ["header"]
+                  }
+                }
+              },
+              "first_ingress_container": {
+                "classes": ["ingress_container"],
+                "children": {
+                  "first_ingress": {
+                    "classes": ["ingress","content"]
+                  }
+                }
+              },
+              "first_body_container": {
+                "classes": ["body_container"],
+                "children": {
+                  "columns": {
+                    "classes": ["columns","body"],
+                    "children": {
+                      "left_column": {
+                        "classes": ["column","content","half"]
+                      },
+                      "right_column": {
+                        "classes": ["column","content","half"]
+                      }
+                    }
+                  }
                 }
               }
-            },
-            "first_ingress_container": {
-              "classes": ["ingress_container"],
-              "children": {
-                "first_ingress": {
-                  "classes": ["ingress","content"]
+            }
+          },
+          "page": {
+            "classes": ["page","A4","info"],
+            "children": {
+              "timestamp": {
+                "classes": ["timestamp"]
+              },
+              "ingress_container": {
+                "classes": ["ingress_container"],
+                "children": {
+                  "ingress": {
+                    "classes": ["ingress","content"]
+                  }
                 }
-              }
-            },
-            "first_body_container": {
-              "classes": ["body_container"],
-              "children": {
-                "columns": {
-                  "classes": ["columns","body"],
-                  "children": {
-                    "left_column": {
-                      "classes": ["column","content","half"]
-                    },
-                    "right_column": {
-                      "classes": ["column","content","half"]
+              },
+              "body_container": {
+                "classes": ["body_container"],
+                "children": {
+                  "columns": {
+                    "classes": ["columns","body"],
+                    "children": {
+                      "left_column": {
+                        "classes": ["column","content","half"]
+                      },
+                      "right_column": {
+                        "classes": ["column","content","half"]
+                      }
                     }
                   }
                 }
@@ -266,61 +300,30 @@ html(lang="en")
             }
           }
         },
-        "page": {
-          "classes": ["page","A4","info"],
-          "children": {
-            "timestamp": {
-              "classes": ["timestamp"]
-            },
-            "ingress_container": {
-              "classes": ["ingress_container"],
-              "children": {
-                "ingress": {
-                  "classes": ["ingress","content"]
-                }
-              }
-            },
-            "body_container": {
-              "classes": ["body_container"],
-              "children": {
-                "columns": {
-                  "classes": ["columns","body"],
-                  "children": {
-                    "left_column": {
-                      "classes": ["column","content","half"]
-                    },
-                    "right_column": {
-                      "classes": ["column","content","half"]
-                    }
-                  }
-                }
-              }
-            }
+      rules:
+        {
+          ".page": {
+            "repeatable": true
+          },
+          ".page:not(:first-child)": {
+            "removable": true
+          },
+          ".header_container .header": {
+            "accept": ".title",
+            "replaceable": true,
+            "removable": true
+          },
+          ".ingress": {
+            "accept": [".image",".paragraph"],
+            "replaceable": true,
+            "removable": true
+          },
+          ".body .content": {
+            "accept": ".paragraph",
+            "overflow": "continue",
+            "removable": true
           }
         }
-      },
-      rules: {
-        ".page": {
-          "repeatable": true,
-          "removable": true
-        },
-        ".header_container .header": {
-          "accept": ".title",
-          "replaceable": true,
-          "removable": true
-        },
-        ".ingress": {
-          "accept": [".image",".paragraph"],
-          "overflow": "shrinkLast",
-          "replaceable": true,
-          "removable": true
-        },
-        ".body .content": {
-          "accept": ".paragraph",
-          "overflow": "continue",
-          "removable": true
-        }
-      }
     });
     document.querySelector('#printer').addEventListener('click',(e)=> {
       print.print()

@@ -57,6 +57,14 @@ body .page.A4 .columns {
 }
 body .page.A4 .columns .column {
   width: 100%;
+  padding: 0 0 0 2mm;
+}
+body .page.A4 .columns .column.half {
+  width: 50%;
+}
+body .page.A4 .columns .column.two_thirds {
+  flex-shrink: 0;
+  width: 98mm;
 }
 body .page.A4 .columns .column.two_thirds {
   flex-shrink: 0;
@@ -79,8 +87,6 @@ body .page.A4 .header_container {
 body .page.A4 .header_container .header {
   display: inline-block;
   min-height: 16mm;
-  font-size: 18pt;
-  line-height: 19pt;
   text-transform: uppercase;
 }
 body .page.A4 .ingress_container,
@@ -103,6 +109,8 @@ body .page.project .header_container .header,
 body .page.theory .header_container .header {
   min-width: 66.66666666666667%;
   padding: 3.5mm 3.5mm 2.5mm;
+  font-size: 39pt;
+  line-height: 38pt;
   border: 0.25pt solid #000;
 }
 body .page.project .ingress_container .content,
@@ -157,6 +165,45 @@ body .page.info .ingress_container .content {
 body .page.info .ingress_container .content .image,
 body .page.info .ingress_container .content .paragraph {
   padding-bottom: 6mm;
+}
+body .cover {
+  text-align: right;
+}
+body .cover .page {
+  display: inline-block;
+  text-align: left;
+  padding: 8.75mm 7.75mm 8.75mm 9.75mm !important;
+}
+body .cover .page ul li {
+  margin: 2.25mm;
+  padding: 7.5mm 6mm 6mm;
+  list-style-type: none;
+  font-size: 42pt;
+  line-height: 43pt;
+  text-transform: uppercase;
+  display: inline-block;
+  border: 0.25pt solid #000;
+}
+body .cover .page ul li span {
+  display: inline-block;
+}
+body .cover .page .logo,
+body .cover .page .imprint {
+  position: absolute;
+  left: 12.5mm;
+  bottom: 6mm;
+  font-size: 8pt;
+}
+body .cover .page .logo {
+  background-image: url("/backnn/imgs/static/HM_Bildm_Trans.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  width: 41mm;
+  height: 35mm;
+}
+body .cover .page.back {
+  display: none;
 }
 @media print {
   body .cover .page.back {

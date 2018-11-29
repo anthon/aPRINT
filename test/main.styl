@@ -75,6 +75,12 @@ body
 				max-width 100%
 				.column
 					width 100%
+					padding 0 0 0 2mm
+					&.half
+						width 50%
+					&.two_thirds
+						flex-shrink 0
+						width 98mm
 					&.two_thirds
 						flex-shrink 0
 						width 98mm
@@ -92,8 +98,6 @@ body
 				.header
 					display inline-block
 					min-height 16mm
-					font-size 18pt
-					line-height 19pt
 					text-transform uppercase
 			.ingress_container
 			.body_container
@@ -112,6 +116,8 @@ body
 				.header
 					min-width ((100/3)*2)%
 					padding 3.5mm 3.5mm 2.5mm
+					font-size 39pt
+					line-height 38pt
 					border .25pt solid black
 			.ingress_container
 			.body_container
@@ -148,6 +154,40 @@ body
 					.image
 					.paragraph
 						padding-bottom 6mm
+
+	.cover
+		text-align right
+		.page
+			display inline-block
+			text-align left
+			padding 8.75mm 7.75mm 8.75mm 9.75mm !important
+			ul
+				li
+					margin 2.25mm
+					padding 7.5mm 6mm 6mm
+					list-style-type none
+					font-size 42pt
+					line-height 43pt
+					text-transform uppercase
+					display inline-block
+					border .25pt solid black
+					span
+						display inline-block
+			.logo
+			.imprint
+				position absolute
+				left 12.5mm
+				bottom 6mm
+				font-size 8pt
+			.logo
+				background-image url('/backnn/imgs/static/HM_Bildm_Trans.svg')
+				background-size contain
+				background-repeat no-repeat
+				background-position left bottom
+				width 41mm
+				height 35mm
+			&.back
+				display none
 			
 
 

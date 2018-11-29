@@ -1066,6 +1066,7 @@
       droppable_height = droppable.clientHeight; // Uncomment the conditional if text oveflow is screwed up.
 
       if (droppable.scrollHeight > droppable_height) {
+        console.log('overflow');
         action = droppable.dataset.overflow;
 
         switch (action) {
