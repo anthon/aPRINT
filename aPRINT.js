@@ -623,6 +623,10 @@
         droppable = el.parentNode;
       }
 
+      if (!droppable.dataset.classList) {
+        return;
+      }
+
       class_object = JSON.parse(droppable.dataset.classList);
 
       if (Array.isArray(class_object)) {

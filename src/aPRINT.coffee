@@ -366,6 +366,7 @@ A = (body,options)->
 
 	makeClassable = (el,droppable)->
 		if not droppable then droppable = el.parentNode
+		if not droppable.dataset.classList then return
 		class_object = JSON.parse(droppable.dataset.classList)
 		if Array.isArray(class_object)
 			class_list = class_object
