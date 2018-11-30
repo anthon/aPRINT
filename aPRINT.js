@@ -524,7 +524,7 @@
           droppable = targets[m];
 
           if (drop_classes) {
-            droppable.dataset.classList = drop_classes;
+            droppable.dataset.classList = JSON.stringify(drop_classes);
           }
 
           if (sortable) {
@@ -617,15 +617,29 @@
     };
 
     makeClassable = function makeClassable(el, droppable) {
-      var class_list, cls, container, expander, item, items, j, len, len1, list, m, results;
+      var class_list, class_object, cls, container, expander, item, items, j, len, len1, list, m, results;
 
       if (!droppable) {
         droppable = el.parentNode;
       }
 
-      if (droppable.dataset.classList) {
+      class_object = JSON.parse(droppable.dataset.classList);
+
+      if (Array.isArray(class_object)) {
+        class_list = class_object;
+      } else {
+        class_list = Object.keys(class_object).reduce(function (res, k) {
+          if (el.classList.contains(k.replace('.', ''))) {
+            console.log(class_object[k]);
+            return class_object[k];
+          } else {
+            return null;
+          }
+        }, null);
+      }
+
+      if (class_list) {
         items = el.querySelectorAll('.classes .item');
-        class_list = droppable.dataset.classList.split(',');
 
         if (items.length === 0) {
           container = document.createElement('div');

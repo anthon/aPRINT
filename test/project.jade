@@ -67,7 +67,7 @@ html(lang="en")
     #view
       #left
         .title
-          | Suspendisse elementum fermentum consectetur
+          p Suspendisse elementum fermentum consectetur
         .image
           .img
             img(src="http://placehold.it/1240x1620/F0F/FFF")
@@ -338,7 +338,9 @@ html(lang="en")
     });
     print.on('drop', function(el) {
       if(el.classList.contains('title') && el.closest('.project, .theory')) {
-        const textNode = el.firstChild
+        const textNode = (el.firstChild.nodeType === Node.TEXT_NODE) ? el.firstChild : el.firstChild.firstChild
+        console.log(el)
+        console.log(textNode.textContent)
         let l = textNode.textContent.length
         const range = document.createRange()
         range.selectNodeContents(textNode)
@@ -346,7 +348,7 @@ html(lang="en")
         while(l-- && l > 0 && height === range.getBoundingClientRect().height) {
           range.setEnd(textNode,l)
         }
-        range.surroundContents(document.createElement('div'))
+        if(l > 0)range.surroundContents(document.createElement('div'))
       }
     });
 

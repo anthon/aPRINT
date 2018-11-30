@@ -319,7 +319,7 @@ A = (body,options)->
 			drop_classes = if rule.classes then rule.classes else false
 
 			for droppable in targets
-				if drop_classes then droppable.dataset.classList = drop_classes
+				if drop_classes then droppable.dataset.classList = JSON.stringify(drop_classes)
 				if sortable then droppable.dataset.sortable = sortable
 				if replaceable then droppable.dataset.replaceable = replaceable
 				if overflow_action then droppable.dataset.overflow = overflow_action
@@ -366,9 +366,19 @@ A = (body,options)->
 
 	makeClassable = (el,droppable)->
 		if not droppable then droppable = el.parentNode
-		if droppable.dataset.classList
+		class_object = JSON.parse(droppable.dataset.classList)
+		if Array.isArray(class_object)
+			class_list = class_object
+		else
+			class_list = Object.keys(class_object).reduce (res,k)->
+				if el.classList.contains(k.replace('.',''))
+					console.log class_object[k]
+					return class_object[k]
+				else
+					return null
+			,null
+		if class_list
 			items = el.querySelectorAll '.classes .item'
-			class_list = droppable.dataset.classList.split ','
 			if items.length is 0
 				container = document.createElement 'div'
 				container.classList.add 'classes'

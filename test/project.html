@@ -64,7 +64,9 @@
   <body id="body">
     <div id="view">
       <div id="left">
-        <div class="title">Suspendisse elementum fermentum consectetur</div>
+        <div class="title">
+          <p>Suspendisse elementum fermentum consectetur</p>
+        </div>
         <div class="image">
           <div class="img"><img src="http://placehold.it/1240x1620/F0F/FFF"></div>
           <div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum dolores totam molestiae accusamus est, laudantium, illum adipisci.</div>
@@ -351,7 +353,9 @@
     });
     print.on('drop', function(el) {
       if(el.classList.contains('title') && el.closest('.project, .theory')) {
-        const textNode = el.firstChild
+        const textNode = (el.firstChild.nodeType === Node.TEXT_NODE) ? el.firstChild : el.firstChild.firstChild
+        console.log(el)
+        console.log(textNode.textContent)
         let l = textNode.textContent.length
         const range = document.createRange()
         range.selectNodeContents(textNode)
@@ -359,7 +363,7 @@
         while(l-- && l > 0 && height === range.getBoundingClientRect().height) {
           range.setEnd(textNode,l)
         }
-        range.surroundContents(document.createElement('div'))
+        if(l > 0)range.surroundContents(document.createElement('div'))
       }
     });
   </script>
