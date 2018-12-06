@@ -1067,7 +1067,7 @@
     };
 
     _checkOverflow = function checkOverflow(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcText, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_factor, max_height_percentage, n, next_page, overflow, page, results, start_height;
+      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, element_height, els, fc, fcText, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_factor, max_height_percentage, n, next_page, overflow, page, results, start_height;
 
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
@@ -1083,9 +1083,10 @@
         }
       }
 
-      droppable_height = droppable.offsetHeight; // Uncomment the conditional if text oveflow is screwed up.
+      element_height = element ? element.offsetHeight : 0;
+      droppable_height = droppable.clientHeight; // Uncomment the conditional if text oveflow is screwed up.
 
-      if (droppable.scrollHeight > droppable_height) {
+      if (droppable.scrollHeight > droppable_height || element_height > droppable_height) {
         console.log('overflow');
         action = droppable.dataset.overflow;
 

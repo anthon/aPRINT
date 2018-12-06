@@ -187,8 +187,8 @@ body .page.info .ingress_container {
   z-index: 1;
 }
 body .page.info .ingress_container .content {
-  margin-bottom: -11mm;
-  padding-bottom: 11mm;
+  margin-top: -11mm;
+  padding-top: 11mm;
   font-size: 10.7pt;
   line-height: 15pt;
 }
