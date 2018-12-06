@@ -11,12 +11,13 @@ body ol {
 body strong {
   font-family: 'Akkurat-Web', sans-serif;
   font-weight: 600;
+  font-weight: 300;
 }
 body .page {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 11mm 18mm 8mm 18mm;
+  padding: 12mm 18mm 15mm 18mm;
   font-size: 0;
 }
 body .page .header_container,
@@ -29,8 +30,11 @@ body .page.A4 .image {
   display: flex;
   flex-direction: column;
   padding-bottom: 3mm;
+}
+body .page.A4 .image .description {
   font-size: 8.7pt;
-  line-height: 12pt;
+  line-height: 11.2pt;
+  padding-top: 1mm;
 }
 body .page.A4 .image >* {
   min-width: 0;
@@ -57,7 +61,7 @@ body .page.A4 .columns {
 }
 body .page.A4 .columns .column {
   width: 100%;
-  padding: 0 0 0 2mm;
+  padding: 0 2mm 0 0;
 }
 body .page.A4 .columns .column.half {
   width: 50%;
@@ -66,18 +70,17 @@ body .page.A4 .columns .column.two_thirds {
   flex-shrink: 0;
   width: 98mm;
 }
-body .page.A4 .columns .column.two_thirds {
-  flex-shrink: 0;
-  width: 98mm;
-}
 body .page.A4 .columns .column.border {
   border-right: 0.25pt solid #000;
+}
+body .page.A4 .columns .column:last-child {
+  padding-right: 0;
 }
 body .page.A4 .timestamp {
   font-family: monospace;
   position: absolute;
   padding: 2mm 0;
-  font-size: 8.7pt;
+  font-size: 6pt;
   transform-origin: top left;
   transform: rotate(90deg);
 }
@@ -89,16 +92,11 @@ body .page.A4 .header_container .header {
   min-height: 16mm;
   text-transform: uppercase;
 }
-body .page.A4 .ingress_container,
+body .page.A4 .ingress_container {
+  flex: 0 1 auto;
+}
 body .page.A4 .body_container {
   flex: 1 1 auto;
-}
-body .page.A4 .ingress_container .content,
-body .page.A4 .body_container .content,
-body .page.A4 .ingress_container .list,
-body .page.A4 .body_container .list {
-  font-size: 10.7pt;
-  line-height: 15pt;
 }
 body .page.A4 .body_container {
   display: flex;
@@ -122,6 +120,14 @@ body .page.theory .ingress_container .list,
 body .page.project .body_container .list,
 body .page.theory .body_container .list {
   min-height: 5em;
+  font-size: 9pt;
+  line-height: 12pt;
+}
+body .page.project .ingress_container .content,
+body .page.theory .ingress_container .content,
+body .page.project .body_container .content,
+body .page.theory .body_container .content {
+  padding-top: 3mm;
 }
 body .page.project .ingress_container .content p,
 body .page.theory .ingress_container .content p,
@@ -145,15 +151,37 @@ body .page.project .body_container .content .image:last-child,
 body .page.theory .body_container .content .image:last-child {
   padding-bottom: 0 !important;
 }
+body .page.project .ingress_container .list,
+body .page.theory .ingress_container .list,
+body .page.project .body_container .list,
+body .page.theory .body_container .list {
+  padding-top: 2mm;
+}
+body .page.project .ingress_container .list strong,
+body .page.theory .ingress_container .list strong,
+body .page.project .body_container .list strong,
+body .page.theory .body_container .list strong {
+  font-family: 'Akkurat-Web', sans-serif;
+  font-weight: 600;
+}
+body .page.project .ingress_container .list ul li,
+body .page.theory .ingress_container .list ul li,
+body .page.project .body_container .list ul li,
+body .page.theory .body_container .list ul li {
+  padding: 1mm 0 1mm 2mm;
+  border-bottom: 0.25pt solid #000;
+}
 body .page.project .ingress_container .content,
 body .page.info .ingress_container .content {
-  max-height: 80%;
+  max-height: 46%;
 }
 body .page.info .header_container {
   margin-bottom: 11mm;
 }
 body .page.info .header_container .header {
   width: 100%;
+  font-size: 18pt;
+  line-height: 19pt;
 }
 body .page.info .ingress_container {
   z-index: 1;
@@ -161,10 +189,19 @@ body .page.info .ingress_container {
 body .page.info .ingress_container .content {
   margin-bottom: -11mm;
   padding-bottom: 11mm;
+  font-size: 10.7pt;
+  line-height: 15pt;
 }
 body .page.info .ingress_container .content .image,
 body .page.info .ingress_container .content .paragraph {
   padding-bottom: 6mm;
+}
+body .page.info .ingress_container .content .image .description {
+  display: none;
+}
+body .page.info .body_container .content {
+  font-size: 9pt;
+  line-height: 12pt;
 }
 body .cover {
   text-align: right;

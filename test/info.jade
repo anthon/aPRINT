@@ -88,9 +88,7 @@ html(lang="en")
           span Donec ut justo ut tortor congue consequat. Sed ac arcu egestas, fringilla mi sed, pharetra ipsum. Proin eu velit consectetur leo mollis lobortis.
           span Vestibulum sapien sem, venenatis vel mauris sed, sagittis faucibus urna. Praesent nulla erat, vulputate in mattis sed, lacinia non erat. Sed fermentum cursus venenatis.
         .image
-          img(src="http://placehold.it/1420x1240/0FF/FFF")
-          .description
-            | Lorem ipsum dolor sit amet
+          img(src="http://placehold.it/1420x840/0FF/FFF")
         .title
           | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         .image
@@ -230,7 +228,7 @@ html(lang="en")
           "first_page": {
             "classes": ["page","A4","info"],
             "children": {
-              "timestamp": {
+              "first_timestamp": {
                 "classes": ["timestamp"]
               },
               "header_container": {
@@ -303,9 +301,7 @@ html(lang="en")
       rules:
         {
           ".page": {
-            "repeatable": true
-          },
-          ".page:not(:first-child)": {
+            "repeatable": true,
             "removable": true
           },
           ".header_container .header": {

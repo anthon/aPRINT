@@ -37,11 +37,12 @@ body
 		list-style-position inside
 	strong
 		sans-serif-bold()
+		font-weight 300
 	.page
 		position relative
 		display flex
 		flex-direction column
-		padding 11mm 18mm 8mm 18mm
+		padding 12mm 18mm 15mm 18mm
 		font-size 0
 		.header_container
 		.ingress_container
@@ -53,8 +54,10 @@ body
 				display flex
 				flex-direction column
 				padding-bottom 3mm
-				font-size 8.7pt
-				line-height 12pt
+				.description
+					font-size 8.7pt
+					line-height 11.2pt
+					padding-top 1mm
 				>*
 					min-width 0
 					max-width 100%
@@ -75,22 +78,21 @@ body
 				max-width 100%
 				.column
 					width 100%
-					padding 0 0 0 2mm
+					padding 0 2mm 0 0
 					&.half
 						width 50%
 					&.two_thirds
 						flex-shrink 0
 						width 98mm
-					&.two_thirds
-						flex-shrink 0
-						width 98mm
 					&.border
 						border-right .25pt solid black
+					&:last-child
+						padding-right 0
 			.timestamp
 				monospace()
 				position absolute
 				padding 2mm 0
-				font-size 8.7pt
+				font-size 6pt
 				transform-origin top left
 				transform rotate(90deg)
 			.header_container
@@ -100,12 +102,9 @@ body
 					min-height 16mm
 					text-transform uppercase
 			.ingress_container
+				flex 0 1 auto
 			.body_container
 				flex 1 1 auto
-				.content
-				.list
-					font-size 10.7pt
-					line-height 15pt
 			.body_container
 				display flex
 				flex 1 99 auto
@@ -124,7 +123,10 @@ body
 				.content
 				.list
 					min-height 5em
+					font-size 9pt
+					line-height 12pt
 				.content
+					padding-top 3mm
 					p
 					ul
 						padding-bottom 1em
@@ -132,11 +134,19 @@ body
 						padding-bottom 3mm
 						&:last-child
 							padding-bottom 0 !important
+				.list
+					padding-top 2mm
+					strong
+						sans-serif-bold()
+					ul
+						li
+							padding 1mm 0 1mm 2mm
+							border-bottom .25pt solid black
 		&.project
 		&.info
 			.ingress_container
 				.content
-					max-height 80%
+					max-height 46%
 		&.theory
 			// .body_container
 			// 	.content
@@ -146,14 +156,25 @@ body
 				margin-bottom 11mm
 				.header
 					width 100%
+					font-size 18pt
+					line-height 19pt
 			.ingress_container
 				z-index 1
 				.content
 					margin-bottom -11mm
 					padding-bottom 11mm
+					font-size 10.7pt
+					line-height 15pt
 					.image
 					.paragraph
 						padding-bottom 6mm
+					.image
+						.description
+							display none
+			.body_container
+				.content
+					font-size 9pt
+					line-height 12pt
 
 	.cover
 		text-align right

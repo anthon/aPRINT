@@ -626,7 +626,7 @@ A = (body,options)->
 				el.style.height = 'auto'
 				el.style.width = 'auto'
 				if not el.dataset.slave then consolidate el
-		droppable_height = droppable.clientHeight
+		droppable_height = droppable.offsetHeight
 		# Uncomment the conditional if text oveflow is screwed up.
 		if droppable.scrollHeight > droppable_height
 			console.log 'overflow'
@@ -648,7 +648,7 @@ A = (body,options)->
 								lc = last_el.lastChild
 								if not lc
 									last_el.remove()
-									refuseDrop droppable
+									refuseDrop droppable, '[continue] No last child.'
 									return false
 								switch lc.nodeType
 									when 1
@@ -705,7 +705,7 @@ A = (body,options)->
 							fireCallbacks 'update'
 						else
 							if not _is_sorting and element then element.remove()
-							refuseDrop droppable
+							refuseDrop droppable, '[shrinkLast] Max height < 0.'
 				when 'shrinkLastWidth'
 					last_el = droppable.lastElementChild
 					if last_el
@@ -718,12 +718,12 @@ A = (body,options)->
 							last_el.style.width = l+'%'
 						if l is -1
 							if not _is_sorting and element then element.remove()
-							refuseDrop droppable
+							refuseDrop droppable, '[shrinkLastWidth] Too big.'
 						else
 							fireCallbacks 'update'
 				else
 					if not _is_sorting and element then element.remove()
-					refuseDrop droppable
+					refuseDrop droppable, 'Too big for container.'
 		else
 			fireCallbacks 'update'
 		if check_all
@@ -732,7 +732,8 @@ A = (body,options)->
 				if dop isnt droppable
 					checkOverflow dop
 
-	refuseDrop = (droppable)->
+	refuseDrop = (droppable,msg)->
+		if msg then console.error msg
 		droppable.classList.add 'nodrop'
 		droppable.width = droppable.offsetWidth
 		droppable.classList.add 'fade'
@@ -740,7 +741,7 @@ A = (body,options)->
 		droppable.classList.remove 'nodrop'
 		setTimeout ->
 			droppable.classList.remove 'fade'
-		,1000
+		,2000
 
 	setCallback = (key,callback)->
 		if not _callbacks[key] then _callbacks[key] = []

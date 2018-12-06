@@ -1083,7 +1083,7 @@
         }
       }
 
-      droppable_height = droppable.clientHeight; // Uncomment the conditional if text oveflow is screwed up.
+      droppable_height = droppable.offsetHeight; // Uncomment the conditional if text oveflow is screwed up.
 
       if (droppable.scrollHeight > droppable_height) {
         console.log('overflow');
@@ -1113,7 +1113,7 @@
 
                   if (!lc) {
                     last_el.remove();
-                    refuseDrop(droppable);
+                    refuseDrop(droppable, '[continue] No last child.');
                     return false;
                   }
 
@@ -1209,7 +1209,7 @@
                   element.remove();
                 }
 
-                refuseDrop(droppable);
+                refuseDrop(droppable, '[shrinkLast] Max height < 0.');
               }
             }
 
@@ -1234,7 +1234,7 @@
                   element.remove();
                 }
 
-                refuseDrop(droppable);
+                refuseDrop(droppable, '[shrinkLastWidth] Too big.');
               } else {
                 fireCallbacks('update');
               }
@@ -1247,7 +1247,7 @@
               element.remove();
             }
 
-            refuseDrop(droppable);
+            refuseDrop(droppable, 'Too big for container.');
         }
       } else {
         fireCallbacks('update');
@@ -1271,7 +1271,11 @@
       }
     };
 
-    refuseDrop = function refuseDrop(droppable) {
+    refuseDrop = function refuseDrop(droppable, msg) {
+      if (msg) {
+        console.error(msg);
+      }
+
       droppable.classList.add('nodrop');
       droppable.width = droppable.offsetWidth;
       droppable.classList.add('fade');
@@ -1279,7 +1283,7 @@
       droppable.classList.remove('nodrop');
       return setTimeout(function () {
         return droppable.classList.remove('fade');
-      }, 1000);
+      }, 2000);
     };
 
     setCallback = function setCallback(key, callback) {
