@@ -922,13 +922,14 @@
 
         makeRemovable(clone, that);
         makeClassable(clone, that);
+        fireCallbacks('drop', clone);
       } else if (_is_sorting) {
         _checkOverflow(that);
 
         assignImageNumbers(parentSection(that));
+        fireCallbacks('drop', _current_draggable);
       }
 
-      fireCallbacks('drop', clone);
       return false;
     };
 
@@ -1066,7 +1067,7 @@
     };
 
     _checkOverflow = function checkOverflow(droppable, element, check_all) {
-      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcText, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_factor, max_height_percentage, n, next_page, overflow, page, results;
+      var action, cl, continuer, dop, droppable_height, droppable_index, droppables_on_page, drp, drps, el, els, fc, fcText, j, l, last_el, lc, len, len1, len2, m, max_height, max_height_factor, max_height_percentage, n, next_page, overflow, page, results, start_height;
 
       if (_is_sorting || !element) {
         els = droppable.querySelectorAll('[data-item]');
@@ -1074,6 +1075,7 @@
         for (j = 0, len = els.length; j < len; j++) {
           el = els[j];
           el.style.height = 'auto';
+          el.style.width = 'auto';
 
           if (!el.dataset.slave) {
             consolidate(el);
@@ -1218,11 +1220,12 @@
 
             if (last_el) {
               overflow = droppable.scrollHeight - droppable_height;
-              max_height = last_el.clientHeight - overflow;
+              start_height = last_el.clientHeight;
+              max_height = start_height - overflow;
               l = 100;
               last_el.style.width = l + '%';
 
-              while (l-- && droppable.scrollHeight > droppable_height) {
+              while (l-- && droppable.scrollHeight > droppable_height && last_el.clientHeight <= start_height) {
                 last_el.style.width = l + '%';
               }
 

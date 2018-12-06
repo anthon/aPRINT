@@ -536,10 +536,11 @@ A = (body,options)->
 				checkOverflow(that,clone,true)
 			makeRemovable clone, that
 			makeClassable clone, that
+			fireCallbacks('drop',clone)
 		else if _is_sorting
 			checkOverflow that
 			assignImageNumbers parentSection that
-		fireCallbacks('drop',clone)
+			fireCallbacks('drop',_current_draggable)
 		return false
 
 	insertNextTo = (el,sibling)->
@@ -623,6 +624,7 @@ A = (body,options)->
 			els = droppable.querySelectorAll '[data-item]'
 			for el in els
 				el.style.height = 'auto'
+				el.style.width = 'auto'
 				if not el.dataset.slave then consolidate el
 		droppable_height = droppable.clientHeight
 		# Uncomment the conditional if text oveflow is screwed up.
@@ -708,10 +710,11 @@ A = (body,options)->
 					last_el = droppable.lastElementChild
 					if last_el
 						overflow = droppable.scrollHeight - droppable_height
-						max_height = last_el.clientHeight - overflow
+						start_height = last_el.clientHeight
+						max_height = start_height - overflow
 						l = 100
 						last_el.style.width = l+'%'
-						while l-- && droppable.scrollHeight > droppable_height
+						while l-- && droppable.scrollHeight > droppable_height && last_el.clientHeight <= start_height
 							last_el.style.width = l+'%'
 						if l is -1
 							if not _is_sorting and element then element.remove()
