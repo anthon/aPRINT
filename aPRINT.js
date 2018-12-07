@@ -106,8 +106,7 @@
 
       _frame.contentDocument.body.classList.add(_settings.format.screen);
 
-      _frame.contentDocument.body.appendChild(_body); // _frame.contentWindow.location.href = _frame.src
-
+      _frame.contentDocument.body.appendChild(_body);
 
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
@@ -923,9 +922,10 @@
           if (e.target === that) {
             that.appendChild(clone);
           } else {
-            insertNextTo(clone, getSortable(e.target, that));
+            refuseDrop(that, '[continue] Cannot drop here.');
           }
-        }
+        } // insertNextTo clone, getSortable(e.target,that)
+
 
         if (clone_img = clone.querySelector('img')) {
           clone_img.onload = function () {

@@ -79,7 +79,6 @@ A = (body,options)->
 		_frame.contentDocument.head.appendChild _expires_link
 		_frame.contentDocument.body.classList.add _settings.format.screen
 		_frame.contentDocument.body.appendChild _body
-		# _frame.contentWindow.location.href = _frame.src
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
@@ -540,7 +539,8 @@ A = (body,options)->
 				if e.target is that
 					that.appendChild clone
 				else
-					insertNextTo clone, getSortable(e.target,that)
+					refuseDrop that, '[continue] Cannot drop here.'
+					# insertNextTo clone, getSortable(e.target,that)
 			if clone_img = clone.querySelector 'img'
 				clone_img.onload = ->
 					checkOverflow(that,clone,true)

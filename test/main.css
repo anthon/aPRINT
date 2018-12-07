@@ -26,9 +26,6 @@ body .page .body_container {
   position: relative;
   min-height: 0;
 }
-body .page.A4 {
-  background: #008000;
-}
 body .page.A4 .image {
   display: flex;
   flex-direction: column;
