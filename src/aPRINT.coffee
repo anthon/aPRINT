@@ -40,6 +40,16 @@ A = (body,options)->
 	createIframe = ->
 		_frame = document.createElement 'iframe'
 		_frame.style.borderWidth = 0
+		_cc_link = document.createElement 'meta'
+		_cc_link.httpEquiv = 'Cache-Control'
+		_cc_link.content = 'no-cache'
+		_pragma_link = document.createElement 'meta'
+		_pragma_link.httpEquiv = 'Pragma'
+		_pragma_link.content = 'no-cache'
+		_expires_link = document.createElement 'meta'
+		_expires_link.httpEquiv = 'Expires'
+		_expires_link.content = '0'
+		_frame.contentDocument.head.appendChild document.createElement 'meta'
 		# _frame.style.overflow = 'hidden'
 		# _frame.style.resize = 'horizontal'
 

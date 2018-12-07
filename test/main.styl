@@ -55,8 +55,8 @@ body
 				flex-direction column
 				padding-bottom 3mm
 				.description
-					font-size 8.7pt
-					line-height 11.2pt
+					font-size 7pt
+					line-height 7.6pt
 					padding-top 1mm
 				>*
 					min-width 0
@@ -78,20 +78,20 @@ body
 				max-width 100%
 				.column
 					width 100%
-					padding 0 2mm 0 0
 					&.half
 						width 50%
+						&:last-child
+							padding-right 0
 					&.two_thirds
 						flex-shrink 0
 						width 98mm
+						padding-right 2mm
 					&.border
-						border-right .25pt solid black
-					&:last-child
-						padding-right 0
+						border-right .2pt solid black
 			.timestamp
 				monospace()
 				position absolute
-				padding 2mm 0
+				padding 2mm .8mm
 				font-size 6pt
 				transform-origin top left
 				transform rotate(90deg)
@@ -100,6 +100,7 @@ body
 				.header
 					display inline-block
 					min-height 16mm
+					max-height 3em
 					text-transform uppercase
 			.ingress_container
 				flex 0 1 auto
@@ -127,9 +128,9 @@ body
 					line-height 12pt
 				.content
 					padding-top 3mm
-					p
-					ul
-						padding-bottom 1em
+					// p
+					// ul
+					// 	padding-bottom 1em
 					.image
 						padding-bottom 3mm
 						&:last-child
@@ -142,11 +143,18 @@ body
 						li
 							padding 1mm 0 1mm 2mm
 							border-bottom .25pt solid black
+				&:first-child
+					.content
+						padding-top 0
 		&.project
+			.ingress_container
+				padding-bottom 2mm
+				.content
+					max-height 46%
 		&.info
 			.ingress_container
 				.content
-					max-height 46%
+					max-height 60%
 		&.theory
 			// .body_container
 			// 	.content

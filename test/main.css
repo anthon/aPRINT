@@ -32,8 +32,8 @@ body .page.A4 .image {
   padding-bottom: 3mm;
 }
 body .page.A4 .image .description {
-  font-size: 8.7pt;
-  line-height: 11.2pt;
+  font-size: 7pt;
+  line-height: 7.6pt;
   padding-top: 1mm;
 }
 body .page.A4 .image >* {
@@ -61,25 +61,25 @@ body .page.A4 .columns {
 }
 body .page.A4 .columns .column {
   width: 100%;
-  padding: 0 2mm 0 0;
 }
 body .page.A4 .columns .column.half {
   width: 50%;
 }
+body .page.A4 .columns .column.half:last-child {
+  padding-right: 0;
+}
 body .page.A4 .columns .column.two_thirds {
   flex-shrink: 0;
   width: 98mm;
+  padding-right: 2mm;
 }
 body .page.A4 .columns .column.border {
-  border-right: 0.25pt solid #000;
-}
-body .page.A4 .columns .column:last-child {
-  padding-right: 0;
+  border-right: 0.2pt solid #000;
 }
 body .page.A4 .timestamp {
   font-family: monospace;
   position: absolute;
-  padding: 2mm 0;
+  padding: 2mm 0.8mm;
   font-size: 6pt;
   transform-origin: top left;
   transform: rotate(90deg);
@@ -90,6 +90,7 @@ body .page.A4 .header_container {
 body .page.A4 .header_container .header {
   display: inline-block;
   min-height: 16mm;
+  max-height: 3em;
   text-transform: uppercase;
 }
 body .page.A4 .ingress_container {
@@ -129,16 +130,6 @@ body .page.project .body_container .content,
 body .page.theory .body_container .content {
   padding-top: 3mm;
 }
-body .page.project .ingress_container .content p,
-body .page.theory .ingress_container .content p,
-body .page.project .body_container .content p,
-body .page.theory .body_container .content p,
-body .page.project .ingress_container .content ul,
-body .page.theory .ingress_container .content ul,
-body .page.project .body_container .content ul,
-body .page.theory .body_container .content ul {
-  padding-bottom: 1em;
-}
 body .page.project .ingress_container .content .image,
 body .page.theory .ingress_container .content .image,
 body .page.project .body_container .content .image,
@@ -171,9 +162,20 @@ body .page.theory .body_container .list ul li {
   padding: 1mm 0 1mm 2mm;
   border-bottom: 0.25pt solid #000;
 }
-body .page.project .ingress_container .content,
-body .page.info .ingress_container .content {
+body .page.project .ingress_container:first-child .content,
+body .page.theory .ingress_container:first-child .content,
+body .page.project .body_container:first-child .content,
+body .page.theory .body_container:first-child .content {
+  padding-top: 0;
+}
+body .page.project .ingress_container {
+  padding-bottom: 2mm;
+}
+body .page.project .ingress_container .content {
   max-height: 46%;
+}
+body .page.info .ingress_container .content {
+  max-height: 60%;
 }
 body .page.info .header_container {
   margin-bottom: 11mm;
