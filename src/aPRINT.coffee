@@ -65,6 +65,18 @@ A = (body,options)->
 				populateIframe()
 
 	populateIframe = ->
+		_cc_link = document.createElement 'meta'
+		_cc_link.httpEquiv = 'Cache-Control'
+		_cc_link.content = 'no-cache'
+		_pragma_link = document.createElement 'meta'
+		_pragma_link.httpEquiv = 'Pragma'
+		_pragma_link.content = 'no-cache'
+		_expires_link = document.createElement 'meta'
+		_expires_link.httpEquiv = 'Expires'
+		_expires_link.content = '0'
+		_frame.contentDocument.head.appendChild _cc_link
+		_frame.contentDocument.head.appendChild _pragma_link
+		_frame.contentDocument.head.appendChild _expires_link
 		_frame.contentDocument.body.classList.add _settings.format.screen
 		_frame.contentDocument.body.appendChild _body
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
