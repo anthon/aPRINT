@@ -50,24 +50,10 @@
     };
 
     createIframe = function createIframe() {
-      var _cc_link, _expires_link, _pragma_link;
-
       _frame = document.createElement('iframe');
-      _frame.style.borderWidth = 0;
-      _cc_link = document.createElement('meta');
-      _cc_link.httpEquiv = 'Cache-Control';
-      _cc_link.content = 'no-cache';
-      _pragma_link = document.createElement('meta');
-      _pragma_link.httpEquiv = 'Pragma';
-      _pragma_link.content = 'no-cache';
-      _expires_link = document.createElement('meta');
-      _expires_link.httpEquiv = 'Expires';
-      _expires_link.content = '0';
-
-      _frame.contentDocument.head.appendChild(document.createElement('meta')); // _frame.style.overflow = 'hidden'
+      _frame.style.borderWidth = 0; // _frame.style.overflow = 'hidden'
       // _frame.style.resize = 'horizontal'
       // Creating drag image container
-
 
       _drag_image = document.querySelector('#aPRINT-image-drag');
 
