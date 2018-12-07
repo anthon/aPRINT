@@ -106,7 +106,8 @@
 
       _frame.contentDocument.body.classList.add(_settings.format.screen);
 
-      _frame.contentDocument.body.appendChild(_body);
+      _frame.contentDocument.body.appendChild(_body); // _frame.contentWindow.location.href = _frame.src
+
 
       if (typeof _settings.styles === 'string') {
         _settings.styles = [_settings.styles];
@@ -144,7 +145,7 @@
       styleLink = document.createElement('link');
       styleLink.type = 'text/css';
       styleLink.rel = 'stylesheet';
-      styleLink.href = style;
+      styleLink.href = style + '?' + new Date().getTime();
       return _frame.contentDocument.head.appendChild(styleLink);
     };
 

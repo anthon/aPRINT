@@ -79,6 +79,7 @@ A = (body,options)->
 		_frame.contentDocument.head.appendChild _expires_link
 		_frame.contentDocument.body.classList.add _settings.format.screen
 		_frame.contentDocument.body.appendChild _body
+		# _frame.contentWindow.location.href = _frame.src
 		if typeof _settings.styles is 'string' then _settings.styles = [_settings.styles]
 		for stylesheet in _settings.styles
 			insertStyle stylesheet
@@ -101,7 +102,7 @@ A = (body,options)->
 		styleLink = document.createElement 'link'
 		styleLink.type = 'text/css'
 		styleLink.rel = 'stylesheet'
-		styleLink.href = style
+		styleLink.href = style+'?'+(new Date()).getTime()
 		_frame.contentDocument.head.appendChild styleLink
 
 	addEventListener = (el,evt,callback)->
