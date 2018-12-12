@@ -85,7 +85,7 @@ body
 					&.two_thirds
 						flex-shrink 0
 						width 98mm
-						padding-right 2mm
+						padding-right 3mm
 					&.border
 						border-right .2pt solid black
 			.timestamp
@@ -100,7 +100,7 @@ body
 				.header
 					display inline-block
 					min-height 16mm
-					max-height 3em
+					max-height 4em
 					text-transform uppercase
 			.ingress_container
 				flex 0 1 auto
@@ -132,7 +132,10 @@ body
 					// ul
 					// 	padding-bottom 1em
 					.image
-						padding-bottom 3mm
+						padding 3mm 0	
+						&:first-child
+						& + .image
+							padding-top 0 !important
 						&:last-child
 							padding-bottom 0 !important
 				.list

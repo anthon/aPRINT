@@ -1156,14 +1156,14 @@
                 fc = continuer.firstChild;
                 cl = fc.cloneNode(false);
                 last_el.appendChild(fc);
-                cl.textContent = '';
+                cl.innerHTML = '';
                 l = 20000;
 
-                if (fc.textContent.length > 0) {
+                if (fc.innerHTML.length > 0) {
                   while (l-- && droppable.scrollHeight > droppable_height) {
-                    fcText = fc.textContent.split(' ');
-                    cl.textContent = fcText.pop() + ' ' + cl.textContent;
-                    fc.textContent = fcText.join(' ');
+                    fcText = fc.innerHTML.split(' ');
+                    cl.innerHTML = fcText.pop() + ' ' + cl.innerHTML;
+                    fc.innerHTML = fcText.join(' ');
                   }
                 }
 

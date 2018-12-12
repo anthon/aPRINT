@@ -71,7 +71,7 @@ body .page.A4 .columns .column.half:last-child {
 body .page.A4 .columns .column.two_thirds {
   flex-shrink: 0;
   width: 98mm;
-  padding-right: 2mm;
+  padding-right: 3mm;
 }
 body .page.A4 .columns .column.border {
   border-right: 0.2pt solid #000;
@@ -90,7 +90,7 @@ body .page.A4 .header_container {
 body .page.A4 .header_container .header {
   display: inline-block;
   min-height: 16mm;
-  max-height: 3em;
+  max-height: 4em;
   text-transform: uppercase;
 }
 body .page.A4 .ingress_container {
@@ -134,7 +134,17 @@ body .page.project .ingress_container .content .image,
 body .page.theory .ingress_container .content .image,
 body .page.project .body_container .content .image,
 body .page.theory .body_container .content .image {
-  padding-bottom: 3mm;
+  padding: 3mm 0;
+}
+body .page.project .ingress_container .content .image:first-child,
+body .page.theory .ingress_container .content .image:first-child,
+body .page.project .body_container .content .image:first-child,
+body .page.theory .body_container .content .image:first-child,
+body .page.project .ingress_container .content .image + .image,
+body .page.theory .ingress_container .content .image + .image,
+body .page.project .body_container .content .image + .image,
+body .page.theory .body_container .content .image + .image {
+  padding-top: 0 !important;
 }
 body .page.project .ingress_container .content .image:last-child,
 body .page.theory .ingress_container .content .image:last-child,
